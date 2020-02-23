@@ -1,0 +1,13 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Your groups</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-nav-list>
+            <a mat-list-item [title]="group.name + ' group'" [routerLink]="['/groups', group.id]"
+                *ngFor="let group of groups">
+                {{ group.name }}
+            </a>
+        </mat-nav-list>
+    </mat-card-content>
+</mat-card>

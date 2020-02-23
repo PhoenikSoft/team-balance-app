@@ -1,0 +1,45 @@
+<mat-card>
+  <mat-card-title>Profile</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="formControl" (ngSubmit)="update()">
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="First name" formControlName="firstName">
+          <!--      <mat-error *ngIf="firstName.hasError('required')">First name is <strong>required</strong></mat-error>-->
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Last name" formControlName="lastName">
+          <!--      <mat-error *ngIf="lastName.hasError('required')">Last name is <strong>required</strong></mat-error>-->
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Email" formControlName="email">
+          <!--      <mat-error *ngIf="email.hasError('required')">Email is <strong>required</strong></mat-error>-->
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Phone" formControlName="phone">
+          <!--      <mat-error *ngIf="phone.hasError('required')">Phone number is <strong>required</strong></mat-error>-->
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput type="number" placeholder="Rating" formControlName="rating">
+          <!--      <mat-error *ngIf="rating.hasError('required')">Rating is <strong>required</strong></mat-error>-->
+        </mat-form-field>
+      </div>
+
+      <mat-error *ngIf="formControl.hasError('internalError')">
+        Something went wrong. Please try again later...
+      </mat-error>
+
+      <div>
+        <button mat-raised-button color="primary">Update</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

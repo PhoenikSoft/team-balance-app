@@ -1,0 +1,3 @@
+<div *ngIf="groups$ | async as groupsData">
+	<app-your-groups [groups]="groupsData.groups"></app-your-groups>
+</div>

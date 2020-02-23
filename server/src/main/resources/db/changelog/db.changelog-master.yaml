@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: postgres
+
+  - changeSet:
+      id: add-user-group-tables-with-data
+      author: Andriy Kuzmin
+      changes:
+        - sqlFile:
+            path: changes/create_user_group_tables.sql
+            relativeToChangelogFile: true
+            stripComments: true
+        - sqlFile:
+            path: changes/insert_init_data.sql
+            relativeToChangelogFile: true
+            stripComments: true
+  - changeSet:
+      id: add-game-tables-with-data
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/create_game_table.sql
+            relativeToChangelogFile: true
+            stripComments: true
+        - sqlFile:
+            path: changes/insert_game_data.sql
+            relativeToChangelogFile: true
+            stripComments: true

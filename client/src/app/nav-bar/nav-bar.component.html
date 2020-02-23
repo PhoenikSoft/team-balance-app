@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+    <span><a mat-button routerLink="/">Team Balance App</a></span>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="toolbar-fill-remaining-space "></span>
+
+    <span *ngIf="isUserLoggedIn">
+        <span><a mat-button routerLink="/profile">Profile</a></span>
+        <app-logout color="accent"></app-logout>
+    </span>
+</mat-toolbar>

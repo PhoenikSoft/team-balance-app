@@ -1,0 +1,7 @@
+FROM node:alpine
+WORKDIR "/app"
+RUN npm -g install @angular/cli
+COPY ./package.json ./
+RUN npm install
+COPY . .
+CMD ng serve --host 0.0.0.0
