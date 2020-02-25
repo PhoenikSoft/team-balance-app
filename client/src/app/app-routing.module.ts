@@ -21,15 +21,11 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'profile',
-    // canActivate: [LoginGuard],
-    component: ProfileComponent
-  },
-  {
     path: '',
     canActivateChild: [AuthGuard],
     children: [
       { path: 'groups/:groupId', component: GroupViewComponent },
+      { path: 'profile', component: ProfileComponent },
       { path: '', component: MainPageComponent },
       { path: '**', component: NotFoundComponent }
     ]
