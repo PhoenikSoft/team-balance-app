@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupViewComponent } from './group-view.component';
+import { MaterialModule } from '../material/material.module';
 
 describe('GroupViewComponent', () => {
   let component: GroupViewComponent;
@@ -8,7 +9,8 @@ describe('GroupViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupViewComponent ]
+      declarations: [ GroupViewComponent ],
+      imports: [ MaterialModule ]
     })
     .compileComponents();
   }));

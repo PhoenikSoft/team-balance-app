@@ -18,3 +18,7 @@ spring:
 
   sendgrid:
     api-key: ${SENDGRID_API-KEY:dummy}
+
+cors:
+  origins:
+    - http://localhost:4200

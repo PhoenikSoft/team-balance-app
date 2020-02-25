@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       },
       err => {
         switch (err.status) {
-          case 403:
+          case 400:
             this.formControl.setErrors({
               invalidCredentials: true
             });

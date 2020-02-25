@@ -1,0 +1,33 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t ekarychkovsky/team-balance-app-server-test -f ./server/Dockerfile.dev ./server
+
+script:
+    - docker run ekarychkovsky/team-balance-app-server-test ./gradlew test
+#    - docker build -f ./client/Dockerfile.ci ./client
+
+after_success:
+    - docker build -t ekarychkovsky/team-balance-app-client ./client
+    - docker build -t ekarychkovsky/team-balance-app-server ./server
+    - docker build -t ekarychkovsky/team-balance-app-nginx ./nginx
+    # Login to Docker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Push images to Docker Hub
+    - docker push ekarychkovsky/team-balance-app-client
+    - docker push ekarychkovsky/team-balance-app-server
+    - docker push ekarychkovsky/team-balance-app-nginx
+
+deploy:
+    provider: elasticbeanstalk
+    region: eu-west-1
+    app: udemy-multi-docker
+    env: UdemyMultiDocker-env
+    bucket_name: elasticbeanstalk-eu-west-1-805957902858
+    bucket_path: udemy-docker-multi
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

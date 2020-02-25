@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddGameDialogComponent } from './add-game-dialog.component';
+import { MaterialModule } from '../material/material.module';
 
 describe('AddGameDialogComponent', () => {
   let component: AddGameDialogComponent;
@@ -8,7 +9,8 @@ describe('AddGameDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddGameDialogComponent ]
+      declarations: [ AddGameDialogComponent ],
+      imports: [ MaterialModule ]
     })
     .compileComponents();
   }));

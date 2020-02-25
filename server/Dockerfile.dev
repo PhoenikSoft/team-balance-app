@@ -2,4 +2,4 @@ FROM openjdk:8-jdk-alpine
 WORKDIR "/app"
 COPY . .
 EXPOSE 8080
-CMD ./gradlew bootRun -Dspring.profiles.active=prod
+CMD ./gradlew bootRun
