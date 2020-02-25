@@ -6,7 +6,7 @@ before_install:
     - docker build -t ekarychkovsky/team-balance-app-server-test -f ./server/Dockerfile.dev ./server
 
 script:
-    - docker run ekarychkovsky/team-balance-app-server-test ./gradlew test
+    - docker run ekarychkovsky/team-balance-app-server-test -c "./gradlew test"
 #    - docker build -f ./client/Dockerfile.ci ./client
 
 after_success:
