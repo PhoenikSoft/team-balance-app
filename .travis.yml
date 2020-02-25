@@ -3,10 +3,10 @@ services:
     - docker
 
 before_install:
-    - docker build -t ekarychkovsky/team-balance-app-server-test -f ./server/Dockerfile.dev ./server
+    - docker build -t ekarychkovsky/team-balance-app-server-test -f ./server/Dockerfile.test ./server
 
 script:
-    - docker run ekarychkovsky/team-balance-app-server-test -c "./gradlew test"
+    - docker run ekarychkovsky/team-balance-app-server-test
 #    - docker build -f ./client/Dockerfile.ci ./client
 
 after_success:
