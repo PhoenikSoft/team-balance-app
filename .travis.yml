@@ -23,10 +23,10 @@ after_success:
 deploy:
     provider: elasticbeanstalk
     region: eu-west-1
-    app: udemy-multi-docker
-    env: UdemyMultiDocker-env
+    app: TeamBalanceApp
+    env: Teambalanceapp-env
     bucket_name: elasticbeanstalk-eu-west-1-805957902858
-    bucket_path: udemy-docker-multi
+    bucket_path: team-balance-app
     on:
         branch: master
     access_key_id: $AWS_ACCESS_KEY
