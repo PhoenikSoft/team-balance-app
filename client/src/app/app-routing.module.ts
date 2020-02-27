@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile-page/profile.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginGuard } from './auth/_guards/login.guard';
+import {GameViewComponent} from "./game-view/game-view.component";
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       { path: 'groups/:groupId', component: GroupViewComponent },
+      { path: 'groups/:groupId/games/:gameId', component: GameViewComponent },
       { path: 'profile', component: ProfileComponent },
       { path: '', component: MainPageComponent },
       { path: '**', component: NotFoundComponent }

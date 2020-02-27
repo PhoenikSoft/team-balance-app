@@ -19,6 +19,8 @@ import {LogoutComponent} from './auth/logout/logout.component';
 import {YourGroupsComponent} from './your-groups/your-groups.component';
 import {NavBarComponent} from './nav-bar/nav-bar.component';
 import {UpdateDialogComponent} from "./profile-page/update-dialog/update-dialog.component";
+import { GameViewComponent } from './game-view/game-view.component';
+import { GameDetailsComponent } from './game-details/game-details.component';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import {UpdateDialogComponent} from "./profile-page/update-dialog/update-dialog.
     LogoutComponent,
     YourGroupsComponent,
     NavBarComponent,
-    UpdateDialogComponent
+    UpdateDialogComponent,
+    GameViewComponent,
+    GameDetailsComponent
   ],
   imports: [
     BrowserModule,
