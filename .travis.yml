@@ -23,8 +23,8 @@ after_success:
 deploy:
     provider: elasticbeanstalk
     region: eu-west-1
-    app: TeamBalanceApp
-    env: Teambalanceapp-env
+    app: team-balance-app
+    env: MultiTeamBalanceApp-env
     bucket_name: elasticbeanstalk-eu-west-1-805957902858
     bucket_path: team-balance-app
     on:

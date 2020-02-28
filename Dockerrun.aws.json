@@ -12,7 +12,7 @@
             "name": "server",
             "image": "ekarychkovsky/team-balance-app-server",
             "hostname": "api",
-            "essential": true,
+            "essential": false,
             "memory": 128
         },
         {
