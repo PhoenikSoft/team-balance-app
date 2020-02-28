@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameProjection, GroupProjection} from "../services/group.service";
+import {GameProjection, GroupProjection, MemberProjection} from "../services/group.service";
 import {GameService} from "../services/game.service";
+import {UserProjection} from "../services/user.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-game-details',
@@ -11,7 +13,15 @@ export class GameDetailsComponent implements OnInit {
 
   @Input() game: GameProjection;
 
-  constructor(private gameService: GameService) { }
+  @Input() players: UserProjection[];
+
+  constructor(private gameService: GameService, private route: ActivatedRoute) { }
+
+  async removePlayer(player: UserProjection) {
+    return this.gameService.removePlayer(+this.route.snapshot.paramMap.get('groupId'), this.game.id, player.id).toPromise()
+      .then(() => this.players = this.players.filter(m => m.id !== player.id),
+        err => console.error('Cannot remove player', err));
+  }
 
   ngOnInit() {
   }

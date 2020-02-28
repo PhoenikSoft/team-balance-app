@@ -1,3 +1,7 @@
 <div *ngIf="game$ | async as game">
   <app-game-details [game]="game"></app-game-details>
 </div>
+<!--todo error with this shit -->
+<div *ngIf="players$ | async as players">
+  <app-game-details [players]="players"></app-game-details>
+</div>
