@@ -15,8 +15,6 @@ spring:
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/teambalance
     username: ${PGUSER:postgres}
     password: ${PGPASSWORD:root}
-  liquibase:
-    enabled: false
 
   sendgrid:
     api-key: ${SENDGRID_API-KEY:dummy}

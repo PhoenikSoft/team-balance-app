@@ -1,4 +1,4 @@
 cors:
   origins:
-    - http://Teambalanceapp-env.6maprm68xg.eu-west-1.elasticbeanstalk.com
+    - http://multiteambalanceapp-env.eba-hr27tgvj.eu-west-1.elasticbeanstalk.com
     - http://localhost
