@@ -13,13 +13,11 @@ export class GameDetailsComponent implements OnInit {
 
   @Input() game: GameProjection;
 
-  @Input() players: UserProjection[];
-
   constructor(private gameService: GameService, private route: ActivatedRoute) { }
 
   async removePlayer(player: UserProjection) {
     return this.gameService.removePlayer(+this.route.snapshot.paramMap.get('groupId'), this.game.id, player.id).toPromise()
-      .then(() => this.players = this.players.filter(m => m.id !== player.id),
+      .then(() => this.game.players = this.game.players.filter(m => m.id !== player.id),
         err => console.error('Cannot remove player', err));
   }
 

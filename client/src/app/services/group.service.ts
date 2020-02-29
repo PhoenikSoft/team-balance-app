@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Moment } from 'moment';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
+import {UserProjection} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -57,4 +58,5 @@ export interface GameProjection {
   id?: number;
   name: string;
   startDateTime?: Moment;
+  players: UserProjection[];
 }

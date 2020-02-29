@@ -5,6 +5,7 @@ import { GameProjection } from '../services/group.service';
 import { Moment } from 'moment';
 
 import * as moment from 'moment';
+import {UserProjection} from "../services/user.service";
 
 @Component({
   selector: 'app-add-game-dialog',
@@ -42,11 +43,13 @@ export class AddGameData extends Object {
   name: string;
   startDate: Moment;
   startTime: string;
+  players: UserProjection[];
 
   toGameObj(): GameProjection {
     const result = {
       name: this.name,
-      startDateTime: this.startDate
+      startDateTime: this.startDate,
+      players: this.players
     };
 
     if (result.startDateTime && this.startTime) {

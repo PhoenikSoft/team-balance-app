@@ -14,13 +14,10 @@ export class GameViewComponent implements OnInit {
 
   game$: Observable<GameProjection>;
 
-  players$: Observable<UserProjection[]>;
-
   constructor(gameService: GameService, route: ActivatedRoute) {
     const groupId = +route.snapshot.paramMap.get('groupId');
     const gameId = +route.snapshot.paramMap.get('gameId');
     this.game$ = gameService.fetchGame(groupId, gameId);
-    this.players$ = gameService.fetchGamePlayers(groupId, gameId);
   }
 
   ngOnInit() {
