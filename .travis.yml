@@ -1,7 +1,3 @@
-branches:
-  only:
-    - release
-
 sudo: required
 services:
   - docker
