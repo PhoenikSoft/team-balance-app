@@ -75,4 +75,9 @@ public class User {
         this.roles.remove(role);
         role.getUsers().remove(this);
     }
+
+    public void addRoles(Set<Role> newRoles) {
+        this.getRoles().addAll(newRoles);
+        newRoles.forEach(role -> role.getUsers().add(this));
+    }
 }

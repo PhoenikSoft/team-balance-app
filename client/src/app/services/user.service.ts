@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
+import { UserProjection } from './dto/user.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +21,3 @@ export class UserService {
   }
 
 }
-
-export interface UserProjection {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  rating: number;
-}
-

@@ -31,14 +31,12 @@ public class GroupService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    public Group save(GroupRequestDto dto, Long userCreatorId) {
+    public Group save(GroupRequestDto dto, User creatorUser) {
         Group group = new Group();
         group.setName(dto.getName());
-        User creator = userRepository.findById(userCreatorId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userCreatorId));
-        group.getMembers().add(creator);
+        group.getMembers().add(creatorUser);
         Group createdGroup = groupRepository.save(group);
-        createAndAssignGroupRoles(createdGroup.getId(), creator);
+        createAndAssignGroupRoles(createdGroup.getId(), creatorUser);
         return createdGroup;
     }
 
@@ -107,11 +105,11 @@ public class GroupService {
     private void createAndAssignGroupRoles(Long groupId, User creator) {
         Role adminRole = new Role();
         adminRole.setName(ADMIN_ROLE_PREFIX + groupId);
-        roleRepository.save(adminRole);
         Role userRole = new Role();
         userRole.setName(USER_ROLE_PREFIX + groupId);
+        creator.addRoles(new HashSet<>(Arrays.asList(adminRole, userRole)));
+        roleRepository.save(adminRole);
         roleRepository.save(userRole);
-        creator.getRoles().addAll(new HashSet<>(Arrays.asList(adminRole, userRole)));
         userRepository.save(creator);
     }
 

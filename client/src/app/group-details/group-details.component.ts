@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { GroupProjection, GroupService, MemberProjection, GameProjection } from '../services/group.service';
+import { GroupService } from '../services/group.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGameDialogComponent, AddGameData } from '../add-game-dialog/add-game-dialog.component';
+import { GroupProjection, MemberProjection } from '../services/dto/group.dto';
+import { GameProjection } from '../services/dto/game.dto';
 
 @Component({
   selector: 'app-group-details',

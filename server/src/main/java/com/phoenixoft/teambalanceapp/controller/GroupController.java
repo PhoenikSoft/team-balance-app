@@ -1,5 +1,6 @@
 package com.phoenixoft.teambalanceapp.controller;
 
+import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
@@ -8,6 +9,7 @@ import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.GroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.util.Converter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class GroupController {
 
     private GroupService groupService;
+    private UserService userService;
 
     @GetMapping
     public GroupsResponseDto getGroups(@RequestParam Long userId) {
@@ -40,10 +43,11 @@ public class GroupController {
     }
 
     @PostMapping
-    public GroupResponseDto save(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
+    public AddedGroupResponseDto save(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
-        Group entity = groupService.save(dto, user.getId());
-        return Converter.convertGroup(entity);
+        User creatorUser = userService.findById(user.getId());
+        Group group = groupService.save(dto, creatorUser);
+        return Converter.convertAddGroup(group, creatorUser);
     }
 
     @GetMapping(path = "/{groupId}")

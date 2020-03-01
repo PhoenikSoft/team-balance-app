@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GroupViewComponent } from './group-view/group-view.component';
-import { MainPageComponent } from './main-page/main-page.component';
+import { MainPageViewComponent } from './main-page-view/main-page-view.component';
 import { AuthGuard } from './auth/_guards/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { ProfileComponent } from './profile-page/profile.component';
@@ -26,7 +26,7 @@ const routes: Routes = [
     children: [
       { path: 'groups/:groupId', component: GroupViewComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: '', component: MainPageComponent },
+      { path: '', component: MainPageViewComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

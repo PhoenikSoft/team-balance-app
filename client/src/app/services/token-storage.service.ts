@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserDetails } from './dto/user.dto';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -31,8 +32,3 @@ export class TokenStorageService {
     return <UserDetails>JSON.parse(sessionStorage.getItem(USER_KEY));
   }
 }
-
-export interface UserDetails {
-  id: number;
-  username: string;
-} 

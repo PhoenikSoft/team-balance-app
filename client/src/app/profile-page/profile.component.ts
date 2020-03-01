@@ -1,17 +1,18 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {UserProjection, UserService} from "../services/user.service";
-import {TokenStorageService} from "../services/token-storage.service";
-import {MatDialog} from "@angular/material/dialog";
-import {UpdateDialogComponent} from "./update-dialog/update-dialog.component";
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from "../services/user.service";
+import { TokenStorageService } from "../services/token-storage.service";
+import { MatDialog } from "@angular/material/dialog";
+import { UpdateDialogComponent } from "./update-dialog/update-dialog.component";
+import { UserProjection } from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.sass']
 })
-export class ProfileComponent{
+export class ProfileComponent {
 
   formControl: FormGroup; // Validation control
 
