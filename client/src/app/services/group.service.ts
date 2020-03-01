@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Moment } from 'moment';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
-import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection } from './dto/group.dto';
+import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
 import { GameProjection } from './dto/game.dto';
 
 @Injectable({
@@ -39,5 +39,14 @@ export class GroupService {
 
   addGame(groupId: number, game: GameProjection) {
     return this.http.post(`${this.beEndpoint}/groups/${groupId}/games`, game);
+  }
+
+  checkUserAccessToGroup(groupId: number) {
+    return this.http.get<GroupAccessChecks>(`${this.beEndpoint}/groups/${groupId}/accessChecks`);
+  }
+
+  checkAdminAccessForGroup(groupId: number) {
+    const user = this.tokenService.getUser();
+    return user.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
   }
 }

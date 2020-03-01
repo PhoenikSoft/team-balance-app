@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.controller;
 
 import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GroupAccessResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
@@ -43,7 +44,7 @@ public class GroupController {
     }
 
     @PostMapping
-    public AddedGroupResponseDto save(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
+    public AddedGroupResponseDto saveGroup(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
         User creatorUser = userService.findById(user.getId());
         Group group = groupService.save(dto, creatorUser);
@@ -57,8 +58,8 @@ public class GroupController {
     }
 
     @PutMapping(path = "/{groupId}")
-    public GroupResponseDto update(@Valid @RequestBody GroupRequestDto dto, @PathVariable Long groupId,
-                                   Authentication authentication) {
+    public GroupResponseDto updateGroup(@Valid @RequestBody GroupRequestDto dto, @PathVariable Long groupId,
+                                        Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         Group entity = groupService.update(groupId, dto);
@@ -66,7 +67,7 @@ public class GroupController {
     }
 
     @DeleteMapping(path = "/{groupId}")
-    public void delete(@PathVariable Long groupId, Authentication authentication) {
+    public void deleteGroup(@PathVariable Long groupId, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         groupService.delete(groupId);
@@ -99,5 +100,11 @@ public class GroupController {
         groupService.checkAdminPermissions(userDetails, groupId);
         // todo refactor to check group existence first
         groupService.assignAdminRoleToUser(groupId, userId);
+    }
+
+    @GetMapping(path = "/{groupId}/accessChecks")
+    public GroupAccessResponseDto checkAccess(@PathVariable Long groupId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return GroupAccessResponseDto.of(groupService.hasUserAccessToGroup(groupId, userDetails));
     }
 }

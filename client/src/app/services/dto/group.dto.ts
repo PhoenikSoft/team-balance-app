@@ -28,3 +28,7 @@ export interface MemberProjection {
     firstName: string;
     lastName: string;
 }
+
+export interface GroupAccessChecks {
+    canAccess: boolean;
+}
