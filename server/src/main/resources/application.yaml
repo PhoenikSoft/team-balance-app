@@ -13,8 +13,12 @@ spring:
   datasource:
     platform: postgres
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/teambalance
-    username: postgres
-    password: root
+    username: ${PGUSER:postgres}
+    password: ${PGPASSWORD:root}
 
   sendgrid:
     api-key: ${SENDGRID_API-KEY:dummy}
+
+cors:
+  origins:
+    - http://localhost:4200

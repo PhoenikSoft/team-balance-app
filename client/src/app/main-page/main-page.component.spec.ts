@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainPageComponent } from './main-page.component';
+import { MaterialModule } from '../material/material.module';
+import { YourGroupsComponent } from '../your-groups/your-groups.component';
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;
@@ -8,7 +10,8 @@ describe('MainPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainPageComponent ]
+      declarations: [ MainPageComponent, YourGroupsComponent ],
+      imports: [ MaterialModule ]
     })
     .compileComponents();
   }));

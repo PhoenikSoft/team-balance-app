@@ -1,0 +1,33 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "ekarychkovsky/team-balance-app-client",
+            "hostname": "client",
+            "essential": false,
+            "memory": 128
+        }, 
+        {
+            "name": "server",
+            "image": "ekarychkovsky/team-balance-app-server",
+            "hostname": "api",
+            "essential": false,
+            "memory": 512
+        },
+        {
+            "name": "nginx",
+            "image": "ekarychkovsky/team-balance-app-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"],
+            "memory": 128
+        }
+    ]
+}
