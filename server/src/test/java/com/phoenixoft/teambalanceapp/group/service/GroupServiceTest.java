@@ -50,26 +50,15 @@ public class GroupServiceTest {
         GroupRequestDto dto = new GroupRequestDto();
         dto.setName("Group A");
         long userCreatorId = 25L;
+        User user = new User();
+        user.setId(userCreatorId);
 
-        Optional<User> expectedUser = Optional.of(new User());
-        when(userRepository.findById(userCreatorId)).thenReturn(expectedUser);
         Group expectedGroup = new Group();
         expectedGroup.setId(26L);
         when(groupRepository.save(any(Group.class))).thenReturn(expectedGroup);
 
-        Group group = groupService.save(dto, userCreatorId);
+        Group group = groupService.save(dto, user);
         assertEquals(expectedGroup, group);
-    }
-
-    @Test
-    public void saveWhenUserNotFound() {
-        GroupRequestDto dto = new GroupRequestDto();
-        dto.setName("Group A");
-        long userCreatorId = 25L;
-
-        when(userRepository.findById(userCreatorId)).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> groupService.save(dto, userCreatorId));
     }
 
     @Test
