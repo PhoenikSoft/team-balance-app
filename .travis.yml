@@ -7,22 +7,22 @@ services:
   - docker
 
 before_install:
-  - docker build -t ekarychkovsky/team-balance-app-server-test -f ./server/Dockerfile.test ./server
+  - docker build -t $DOCKER_ID/team-balance-app-server-test -f ./server/Dockerfile.test ./server
 
 script:
-  - docker run ekarychkovsky/team-balance-app-server-test
+  - docker run $DOCKER_ID/team-balance-app-server-test
 #    - docker build -f ./client/Dockerfile.ci ./client
 
 after_success:
-  - docker build -t ekarychkovsky/team-balance-app-client ./client
-  - docker build -t ekarychkovsky/team-balance-app-server ./server
-  - docker build -t ekarychkovsky/team-balance-app-nginx ./nginx
+  - docker build -t $DOCKER_ID/team-balance-app-client ./client
+  - docker build -t $DOCKER_ID/team-balance-app-server ./server
+  - docker build -t $DOCKER_ID/team-balance-app-nginx ./nginx
   # Login to Docker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Push images to Docker Hub
-  - docker push ekarychkovsky/team-balance-app-client
-  - docker push ekarychkovsky/team-balance-app-server
-  - docker push ekarychkovsky/team-balance-app-nginx
+  - docker push $DOCKER_ID/team-balance-app-client
+  - docker push $DOCKER_ID/team-balance-app-server
+  - docker push $DOCKER_ID/team-balance-app-nginx
 
 deploy:
   provider: elasticbeanstalk
