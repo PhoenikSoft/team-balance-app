@@ -8,7 +8,7 @@
 		<mat-nav-list>
 			<mat-list-item *ngFor="let member of group.members">
 				<span class="list-item">{{ member.firstName }} {{ member.lastName }}</span>
-				<button mat-raised-button color="warn" (click)="removeMember(member)">Delete</button>
+				<button *ngIf="isAdmin" mat-raised-button color="warn" (click)="removeMember(member)">Delete</button>
 			</mat-list-item>
 		</mat-nav-list>
 	</mat-card-content>
@@ -22,10 +22,10 @@
 		<mat-nav-list>
 			<mat-list-item *ngFor="let game of group.games">
 				<span class="list-item">{{ game.name }}</span>
-				<button mat-raised-button color="warn" (click)="removeGame(game)">Delete</button>
+				<button *ngIf="isAdmin" mat-raised-button color="warn" (click)="removeGame(game)">Delete</button>
 			</mat-list-item>
 		</mat-nav-list>
 
-		<button mat-raised-button color="primary" (click)="openAddGameDialog()">Add new game</button>
+		<button *ngIf="isAdmin" mat-raised-button color="primary" (click)="openAddGameDialog()">Add new game</button>
 	</mat-card-content>
 </mat-card>

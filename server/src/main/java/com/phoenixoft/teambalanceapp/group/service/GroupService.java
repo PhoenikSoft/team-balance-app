@@ -9,6 +9,7 @@ import com.phoenixoft.teambalanceapp.user.entity.Role;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.repository.RoleRepository;
 import com.phoenixoft.teambalanceapp.user.repository.UserRepository;
+import com.phoenixoft.teambalanceapp.util.RoleGenerator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,21 +25,16 @@ import java.util.Set;
 @AllArgsConstructor
 public class GroupService {
 
-    public static final String ADMIN_ROLE_PREFIX = "ADMIN_ROLE_";
-    public static final String USER_ROLE_PREFIX = "USER_ROLE_";
-
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    public Group save(GroupRequestDto dto, Long userCreatorId) {
+    public Group save(GroupRequestDto dto, User creatorUser) {
         Group group = new Group();
         group.setName(dto.getName());
-        User creator = userRepository.findById(userCreatorId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userCreatorId));
-        group.getMembers().add(creator);
+        group.getMembers().add(creatorUser);
         Group createdGroup = groupRepository.save(group);
-        createAndAssignGroupRoles(createdGroup.getId(), creator);
+        createAndAssignGroupRoles(createdGroup.getId(), creatorUser);
         return createdGroup;
     }
 
@@ -96,7 +92,7 @@ public class GroupService {
     }
 
     public void checkAdminPermissions(UserDetails userDetails, Long groupId) {
-        String processingGroupAdminRole = ADMIN_ROLE_PREFIX + groupId;
+        String processingGroupAdminRole = RoleGenerator.createAdminRole(groupId);
         Set<SimpleGrantedAuthority> authorities = (Set<SimpleGrantedAuthority>) userDetails.getAuthorities();
         boolean matchAdminRole = authorities.stream().anyMatch(simpleGrantedAuthority -> simpleGrantedAuthority.getAuthority().equals(processingGroupAdminRole));
         if (!matchAdminRole) {
@@ -104,19 +100,14 @@ public class GroupService {
         }
     }
 
-    private void createAndAssignGroupRoles(Long groupId, User creator) {
-        Role adminRole = new Role();
-        adminRole.setName(ADMIN_ROLE_PREFIX + groupId);
-        roleRepository.save(adminRole);
-        Role userRole = new Role();
-        userRole.setName(USER_ROLE_PREFIX + groupId);
-        roleRepository.save(userRole);
-        creator.getRoles().addAll(new HashSet<>(Arrays.asList(adminRole, userRole)));
-        userRepository.save(creator);
+    public boolean hasUserAccessToGroup(Long groupId, UserDetails userDetails) {
+        String userRole = RoleGenerator.createUserRole(groupId);
+        Set<SimpleGrantedAuthority> authorities = (Set<SimpleGrantedAuthority>) userDetails.getAuthorities();
+        return authorities.stream().anyMatch(authority -> authority.getAuthority().equals(userRole));
     }
 
     public void assignAdminRoleToUser(Long groupId, Long userId) {
-        String processingGroupAdminRole = ADMIN_ROLE_PREFIX + groupId;
+        String processingGroupAdminRole = RoleGenerator.createAdminRole(groupId);
         Role existingAdminRole = roleRepository.findByName(processingGroupAdminRole)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin role for the group not found"));
         User user = userRepository.findById(userId)
@@ -126,7 +117,7 @@ public class GroupService {
     }
 
     public void assignUserRoleToUser(Long groupId, Long userId) {
-        String processingGroupAdminRole = USER_ROLE_PREFIX + groupId;
+        String processingGroupAdminRole = RoleGenerator.createUserRole(groupId);
         Role existingAdminRole = roleRepository.findByName(processingGroupAdminRole)
                 .orElseThrow(() -> new ResourceNotFoundException("User role for the group not found"));
         User user = userRepository.findById(userId)
@@ -135,4 +126,14 @@ public class GroupService {
         userRepository.save(user);
     }
 
+    private void createAndAssignGroupRoles(Long groupId, User creator) {
+        Role adminRole = new Role();
+        adminRole.setName(RoleGenerator.createAdminRole(groupId));
+        Role userRole = new Role();
+        userRole.setName(RoleGenerator.createUserRole(groupId));
+        creator.addRoles(new HashSet<>(Arrays.asList(adminRole, userRole)));
+        roleRepository.save(adminRole);
+        roleRepository.save(userRole);
+        userRepository.save(creator);
+    }
 }

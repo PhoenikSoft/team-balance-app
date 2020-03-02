@@ -1,18 +1,27 @@
-import { Component, Input } from '@angular/core';
-import { GroupProjection, GroupService, MemberProjection, GameProjection } from '../services/group.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { GroupService } from '../services/group.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGameDialogComponent, AddGameData } from '../add-game-dialog/add-game-dialog.component';
+import { GroupProjection, MemberProjection } from '../services/dto/group.dto';
+import { GameProjection } from '../services/dto/game.dto';
+import { group } from '@angular/animations';
 
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.sass']
 })
-export class GroupDetailsComponent {
+export class GroupDetailsComponent implements OnInit {
 
   @Input() group: GroupProjection;
 
+  isAdmin: boolean;
+
   constructor(private groupService: GroupService, private dialog: MatDialog) {
+  }
+
+  ngOnInit() {
+    this.isAdmin = this.groupService.checkAdminAccessForGroup(this.group.id);
   }
 
   async removeMember(member: MemberProjection) {

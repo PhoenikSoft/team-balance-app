@@ -1,5 +1,7 @@
 package com.phoenixoft.teambalanceapp.controller;
 
+import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GroupAccessResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
@@ -8,6 +10,7 @@ import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.GroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.util.Converter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,7 @@ import java.util.stream.Collectors;
 public class GroupController {
 
     private GroupService groupService;
+    private UserService userService;
 
     @GetMapping
     public GroupsResponseDto getGroups(@RequestParam Long userId) {
@@ -40,10 +44,11 @@ public class GroupController {
     }
 
     @PostMapping
-    public GroupResponseDto save(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
+    public AddedGroupResponseDto saveGroup(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
-        Group entity = groupService.save(dto, user.getId());
-        return Converter.convertGroup(entity);
+        User creatorUser = userService.findById(user.getId());
+        Group group = groupService.save(dto, creatorUser);
+        return Converter.convertAddGroup(group, creatorUser);
     }
 
     @GetMapping(path = "/{groupId}")
@@ -53,8 +58,8 @@ public class GroupController {
     }
 
     @PutMapping(path = "/{groupId}")
-    public GroupResponseDto update(@Valid @RequestBody GroupRequestDto dto, @PathVariable Long groupId,
-                                   Authentication authentication) {
+    public GroupResponseDto updateGroup(@Valid @RequestBody GroupRequestDto dto, @PathVariable Long groupId,
+                                        Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         Group entity = groupService.update(groupId, dto);
@@ -62,7 +67,7 @@ public class GroupController {
     }
 
     @DeleteMapping(path = "/{groupId}")
-    public void delete(@PathVariable Long groupId, Authentication authentication) {
+    public void deleteGroup(@PathVariable Long groupId, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         groupService.delete(groupId);
@@ -95,5 +100,11 @@ public class GroupController {
         groupService.checkAdminPermissions(userDetails, groupId);
         // todo refactor to check group existence first
         groupService.assignAdminRoleToUser(groupId, userId);
+    }
+
+    @GetMapping(path = "/{groupId}/accessChecks")
+    public GroupAccessResponseDto checkAccess(@PathVariable Long groupId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return GroupAccessResponseDto.of(groupService.hasUserAccessToGroup(groupId, userDetails));
     }
 }

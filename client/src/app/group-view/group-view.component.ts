@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { GroupService, GroupProjection } from '../services/group.service';
+import { GroupService } from '../services/group.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { GroupProjection } from '../services/dto/group.dto';
 
 @Component({
   selector: 'app-group-view',
