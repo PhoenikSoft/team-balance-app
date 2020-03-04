@@ -9,6 +9,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginGuard } from './auth/_guards/login.guard';
 import { GroupGuard } from './auth/_guards/group.guard';
+import { AddMemberGuardGuard } from './auth/_guards/add-member-guard.guard';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
+        path: 'groups/addMe/:ref',
+        canActivate: [AddMemberGuardGuard],
+        component: NotFoundComponent
+      },
+      {
         path: 'groups/:groupId',
         canActivateChild: [GroupGuard],
         children: [
@@ -34,6 +40,7 @@ const routes: Routes = [
       },
       { path: 'profile', component: ProfileComponent },
       { path: '', component: MainPageViewComponent },
+      { path: 'not-found', component: NotFoundComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

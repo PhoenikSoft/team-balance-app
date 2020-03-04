@@ -71,6 +71,10 @@ public class User {
         group.getMembers().remove(this);
     }
 
+    public void removeRoles(Set<Role> roles) {
+        roles.forEach(this::removeRole);
+    }
+
     public void removeRole(Role role) {
         this.roles.remove(role);
         role.getUsers().remove(this);

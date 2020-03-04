@@ -32,6 +32,8 @@ public class Group {
 
     private String name;
 
+    private String ref;
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "tbl_group_users",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
