@@ -40,7 +40,6 @@ const routes: Routes = [
       },
       { path: 'profile', component: ProfileComponent },
       { path: '', component: MainPageViewComponent },
-      { path: 'not-found', component: NotFoundComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }
