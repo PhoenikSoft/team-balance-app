@@ -15,6 +15,7 @@ export interface AddGroupProjection {
 export interface GroupProjection {
     id: number;
     name: string;
+    ref: string;
     members: MemberProjection[];
     games: GameProjection[];
 }

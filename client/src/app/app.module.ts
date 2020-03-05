@@ -21,6 +21,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { UpdateDialogComponent } from "./profile-page/update-dialog/update-dialog.component";
 import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { MainPageComponent } from './main-page/main-page.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    ClipboardModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent],

@@ -29,6 +29,10 @@ export class GroupService {
     return this.http.get<GroupsProjection>(`${this.beEndpoint}/groups`, { params });
   }
 
+  addMember(groupRef: string) {
+    return this.http.post<GroupProjection>(`${this.beEndpoint}/groups/refs/${groupRef}/members`, null);
+  }
+
   removeMember(groupId: number, memberId: number) {
     return this.http.delete(`${this.beEndpoint}/groups/${groupId}/members/${memberId}`);
   }

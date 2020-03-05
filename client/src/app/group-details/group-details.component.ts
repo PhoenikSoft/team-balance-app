@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
 import { GroupService } from '../services/group.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGameDialogComponent, AddGameData } from '../add-game-dialog/add-game-dialog.component';
@@ -16,12 +17,15 @@ export class GroupDetailsComponent implements OnInit {
   @Input() group: GroupProjection;
 
   isAdmin: boolean;
+  addMemberUri: string;
 
-  constructor(private groupService: GroupService, private dialog: MatDialog) {
+  constructor(private groupService: GroupService, private dialog: MatDialog, private location: PlatformLocation) {
   }
 
   ngOnInit() {
     this.isAdmin = this.groupService.checkAdminAccessForGroup(this.group.id);
+    const domain = this.location.href.replace(this.location.pathname, '');
+    this.addMemberUri = `${domain}/groups/addMe/${this.group.ref}`;
   }
 
   async removeMember(member: MemberProjection) {

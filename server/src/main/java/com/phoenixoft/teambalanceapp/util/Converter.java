@@ -40,6 +40,7 @@ public class Converter {
         GroupResponseDto dto = new GroupResponseDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setRef(entity.getRef());
         dto.setMembers(entity.getMembers().stream().map(Converter::convertUser).collect(Collectors.toList()));
         dto.setGames(entity.getGames().stream().map(Converter::convertGame).collect(Collectors.toList()));
         return dto;
