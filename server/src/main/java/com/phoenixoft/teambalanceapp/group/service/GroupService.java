@@ -1,5 +1,6 @@
 package com.phoenixoft.teambalanceapp.group.service;
 
+import com.phoenixoft.teambalanceapp.common.exception.AdminRemovalException;
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupRequestDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
@@ -86,11 +87,19 @@ public class GroupService {
 
     public void deleteMember(Long groupId, Long deletableMemberId) {
         Group group = findById(groupId);
-        if (group.removeMember(deletableMemberId)) {
-            User member = userRepository.findById(deletableMemberId)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found: " + deletableMemberId));
+        User member = userRepository.findById(deletableMemberId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + deletableMemberId));
+        checkMemberForRemoval(group, member);
+        if (group.removeMember(member)) {
             removeGroupRoles(groupId, member);
             groupRepository.save(group);
+        }
+    }
+
+    private void checkMemberForRemoval(Group group, User member) {
+        if (member.isAdminInGroup(group.getId())) {
+            throw new AdminRemovalException(String.format("Cannot remove admin [%s] for group [%s]",
+                    member.getId(), group.getId()));
         }
     }
 
@@ -149,13 +158,9 @@ public class GroupService {
     }
 
     private void removeGroupRoles(Long groupId, User creator) {
-        Role adminRole = new Role();
-        adminRole.setName(RoleGenerator.createAdminRole(groupId));
-        Role userRole = new Role();
-        userRole.setName(RoleGenerator.createUserRole(groupId));
-        creator.removeRoles(new HashSet<>(Arrays.asList(adminRole, userRole)));
-        roleRepository.save(adminRole);
-        roleRepository.save(userRole);
+        List<Role> groupRoles = roleRepository.findAllByGroupId(groupId);
+        creator.removeRoles(new HashSet<>(groupRoles));
+        roleRepository.saveAll(groupRoles);
         userRepository.save(creator);
     }
 }
