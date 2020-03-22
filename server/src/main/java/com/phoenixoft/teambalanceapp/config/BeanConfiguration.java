@@ -5,6 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -48,6 +49,7 @@ public class BeanConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()))
+                .ignoredParameterTypes(Authentication.class)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))
