@@ -87,11 +87,11 @@ public class GroupService {
 
     public void deleteMember(Long groupId, Long deletableMemberId) {
         Group group = findById(groupId);
-        User member = userRepository.findById(deletableMemberId)
+        User memberToDelete = userRepository.findById(deletableMemberId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + deletableMemberId));
-        checkMemberForRemoval(group, member);
-        if (group.removeMember(member)) {
-            removeGroupRoles(groupId, member);
+        checkMemberForRemoval(group, memberToDelete);
+        if (group.removeMember(memberToDelete)) {
+            removeGroupRoles(groupId, memberToDelete);
             groupRepository.save(group);
         }
     }

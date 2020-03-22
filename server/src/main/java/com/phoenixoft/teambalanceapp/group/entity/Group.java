@@ -43,9 +43,9 @@ public class Group {
     @OneToMany(orphanRemoval = true, mappedBy = "group")
     private List<Game> games = new ArrayList<>();
 
-    public boolean removeMember(User member) {
-        member.getGroups().remove(this);
-        return members.removeIf(groupMember -> groupMember.getId().equals(member.getId()));
+    public boolean removeMember(User memberToDelete) {
+        memberToDelete.getGroups().remove(this);
+        return members.removeIf(groupMember -> groupMember.getId().equals(memberToDelete.getId()));
     }
 
     public Optional<User> findMember(Long memberId) {
