@@ -17,4 +17,4 @@ export interface UserDetails {
     id: number;
     username: string;
     roles: RoleProjection[];
-  } 
+} 

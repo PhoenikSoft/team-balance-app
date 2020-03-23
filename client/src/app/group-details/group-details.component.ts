@@ -5,7 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddGameDialogComponent, AddGameData } from '../add-game-dialog/add-game-dialog.component';
 import { GroupProjection, MemberProjection } from '../services/dto/group.dto';
 import { GameProjection } from '../services/dto/game.dto';
-import { group } from '@angular/animations';
+import { TokenStorageService } from '../services/token-storage.service';
+import { UserDetails } from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-group-details',
@@ -17,13 +18,15 @@ export class GroupDetailsComponent implements OnInit {
   @Input() group: GroupProjection;
 
   isAdmin: boolean;
+  currentUser: UserDetails;
   addMemberUri: string;
 
-  constructor(private groupService: GroupService, private dialog: MatDialog, private location: PlatformLocation) {
+  constructor(private groupService: GroupService, private tokenService: TokenStorageService, private dialog: MatDialog, private location: PlatformLocation) {
   }
 
   ngOnInit() {
     this.isAdmin = this.groupService.checkAdminAccessForGroup(this.group.id);
+    this.currentUser = this.tokenService.getUser();
     const domain = this.location.href.replace(this.location.pathname, '');
     this.addMemberUri = `${domain}/groups/addMe/${this.group.ref}`;
   }
@@ -52,5 +55,9 @@ export class GroupDetailsComponent implements OnInit {
             err => console.error('Cannot add game', err));
       }
     });
+  }
+
+  notCurrentUser(member: MemberProjection) {
+    return member.id !== this.currentUser.id;
   }
 }

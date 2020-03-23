@@ -218,23 +218,24 @@ public class GroupServiceTest {
     @Test
     public void deleteMember() {
         long groupId = 25L;
-        long userId = 26L;
-        User user = new User();
-        user.setId(userId);
+        long deletableUserId = 26L;
+        User deletableUser = new User();
+        deletableUser.setId(deletableUserId);
         User user2 = new User();
         user2.setId(99L);
 
         Group expectedGroup = new Group();
-        expectedGroup.setMembers(new LinkedList<>(Arrays.asList(user, user2)));
+        expectedGroup.setId(8008L);
+        expectedGroup.setMembers(new LinkedList<>(Arrays.asList(deletableUser, user2)));
         when(groupRepository.findById(groupId)).thenReturn(Optional.of(expectedGroup));
+        when(userRepository.findById(deletableUserId)).thenReturn(Optional.of(deletableUser));
         when(groupRepository.save(expectedGroup)).then(invocation -> {
-            assertFalse(expectedGroup.getMembers().contains(user));
+            assertFalse(expectedGroup.getMembers().contains(deletableUser));
             assertEquals(1, expectedGroup.getMembers().size());
             return expectedGroup;
         });
-        when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
 
-        groupService.deleteMember(groupId, userId);
+        groupService.deleteMember(groupId, deletableUserId);
     }
 
     @Test
