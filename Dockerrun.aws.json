@@ -1,0 +1,33 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "phoeniksoft/team-balance-app-client",
+            "hostname": "client",
+            "essential": false,
+            "memory": 128
+        }, 
+        {
+            "name": "server",
+            "image": "phoeniksoft/team-balance-app-server",
+            "hostname": "api",
+            "essential": false,
+            "memory": 512
+        },
+        {
+            "name": "nginx",
+            "image": "phoeniksoft/team-balance-app-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"],
+            "memory": 128
+        }
+    ]
+}

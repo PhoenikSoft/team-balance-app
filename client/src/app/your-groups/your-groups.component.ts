@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GroupsProjection } from '../services/group.service';
+import { GroupsProjection } from '../services/dto/group.dto';
 
 @Component({
   selector: 'app-your-groups',

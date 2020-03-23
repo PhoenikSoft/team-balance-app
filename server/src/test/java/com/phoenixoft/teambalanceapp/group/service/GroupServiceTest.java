@@ -9,6 +9,8 @@ import com.phoenixoft.teambalanceapp.user.entity.Role;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.repository.RoleRepository;
 import com.phoenixoft.teambalanceapp.user.repository.UserRepository;
+import com.phoenixoft.teambalanceapp.util.StringGenerator;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,31 +47,23 @@ public class GroupServiceTest {
     @Mock
     private RoleRepository roleRepository;
 
+    @Mock
+    private StringGenerator stringGenerator;
+
     @Test
     public void save() {
         GroupRequestDto dto = new GroupRequestDto();
         dto.setName("Group A");
         long userCreatorId = 25L;
+        User user = new User();
+        user.setId(userCreatorId);
 
-        Optional<User> expectedUser = Optional.of(new User());
-        when(userRepository.findById(userCreatorId)).thenReturn(expectedUser);
         Group expectedGroup = new Group();
         expectedGroup.setId(26L);
         when(groupRepository.save(any(Group.class))).thenReturn(expectedGroup);
 
-        Group group = groupService.save(dto, userCreatorId);
+        Group group = groupService.save(dto, user);
         assertEquals(expectedGroup, group);
-    }
-
-    @Test
-    public void saveWhenUserNotFound() {
-        GroupRequestDto dto = new GroupRequestDto();
-        dto.setName("Group A");
-        long userCreatorId = 25L;
-
-        when(userRepository.findById(userCreatorId)).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> groupService.save(dto, userCreatorId));
     }
 
     @Test
@@ -167,23 +161,24 @@ public class GroupServiceTest {
     }
 
     @Test
+    @Disabled
     public void addMember() {
-        long userId = 25L;
+        String userName = "testName";
         Group group1 = new Group();
         group1.setId(1L);
         Group group2 = new Group();
         group2.setId(2L);
         User expectedUser = new User();
         expectedUser.setGroups(Arrays.asList(group1, group2));
-        long requestedGroupId = 3L;
+        String requestedGroupRef = "testRef";
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
         Group expectedGroup = new Group();
-        when(groupRepository.findById(requestedGroupId)).thenReturn(Optional.of(expectedGroup));
+        when(groupRepository.findByRef(requestedGroupRef)).thenReturn(Optional.of(expectedGroup));
+        when(userRepository.findByEmail(userName)).thenReturn(Optional.of(expectedUser));
         Role expectedAdminRole = new Role();
         when(roleRepository.findByName(anyString())).thenReturn(Optional.of(expectedAdminRole));
 
-        Group group = groupService.addMember(requestedGroupId, userId);
+        Group group = groupService.addMember(requestedGroupRef, userName);
 
         assertEquals(expectedGroup, group);
         assertEquals(1, group.getMembers().size());
@@ -192,51 +187,55 @@ public class GroupServiceTest {
 
     @Test
     public void addMemberWhenUserAlreadyInGroup() {
-        long userId = 25L;
         long requestedGroupId = 1L;
+        String requestedGroupRef = "ref";
         Group group1 = new Group();
         group1.setId(requestedGroupId);
+        group1.setRef(requestedGroupRef);
         Group group2 = new Group();
         group2.setId(2L);
+        String userName = "test";
         User expectedUser = new User();
+        expectedUser.setEmail(userName);
         expectedUser.setGroups(Arrays.asList(group1, group2));
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
 
-        assertThrows(ResourceNotFoundException.class, () -> groupService.addMember(requestedGroupId, userId));
+        when(groupRepository.findByRef(requestedGroupRef)).thenReturn(Optional.of(group1));
+        when(userRepository.findByEmail(userName)).thenReturn(Optional.of(expectedUser));
+
+        assertThrows(ResourceNotFoundException.class, () -> groupService.addMember(requestedGroupRef, userName));
     }
 
     @Test
     public void addMemberWhenGroupNotFound() {
-        long userId = 25L;
-        User expectedUser = new User();
-        long requestedGroupId = 3L;
+        String requestedGroupRef = "ref";
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
-        when(groupRepository.findById(requestedGroupId)).thenReturn(Optional.empty());
+        when(groupRepository.findByRef(requestedGroupRef)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> groupService.addMember(requestedGroupId, userId));
+        assertThrows(ResourceNotFoundException.class, () -> groupService.addMember(requestedGroupRef, null));
     }
 
     @Test
     public void deleteMember() {
         long groupId = 25L;
-        long userId = 26L;
-        User user = new User();
-        user.setId(userId);
+        long deletableUserId = 26L;
+        User deletableUser = new User();
+        deletableUser.setId(deletableUserId);
         User user2 = new User();
         user2.setId(99L);
 
         Group expectedGroup = new Group();
-        expectedGroup.setMembers(new LinkedList<>(Arrays.asList(user, user2)));
+        expectedGroup.setId(8008L);
+        expectedGroup.setMembers(new LinkedList<>(Arrays.asList(deletableUser, user2)));
         when(groupRepository.findById(groupId)).thenReturn(Optional.of(expectedGroup));
+        when(userRepository.findById(deletableUserId)).thenReturn(Optional.of(deletableUser));
         when(groupRepository.save(expectedGroup)).then(invocation -> {
-            assertFalse(expectedGroup.getMembers().contains(user));
+            assertFalse(expectedGroup.getMembers().contains(deletableUser));
             assertEquals(1, expectedGroup.getMembers().size());
             return expectedGroup;
         });
 
-        groupService.deleteMember(groupId, userId);
+        groupService.deleteMember(groupId, deletableUserId);
     }
 
     @Test

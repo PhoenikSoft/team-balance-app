@@ -27,3 +27,32 @@ databaseChangeLog:
             path: changes/insert_game_data.sql
             relativeToChangelogFile: true
             stripComments: true
+  - changeSet:
+      id: add-group-ref-str-column
+      author: Yevhen Karychkovskyi
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: ref
+                  type: char(20)
+            schemaName: public
+            tableName: tbl_group
+  - changeSet:
+      id: add-group-ref-unique-constraint
+      author: Yevhen Karychkovskyi
+      changes:
+        - addUniqueConstraint:
+            columnNames: ref
+            constraintName: group-ref-unique
+            schemaName: public
+            tableName: tbl_group
+            validate: true
+  - changeSet:
+      id: fill-group-ref-column
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/insert_group_ref_data.sql
+            relativeToChangelogFile: true
+            stripComments: true

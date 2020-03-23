@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { GameProjection } from '../services/group.service';
 import { Moment } from 'moment';
 
 import * as moment from 'moment';
-import {UserProjection} from "../services/user.service";
+import { UserProjection } from "../services/user.service";
+import { GameProjection } from '../services/dto/game.dto';
 
 @Component({
   selector: 'app-add-game-dialog',
@@ -22,7 +22,7 @@ export class AddGameDialogComponent {
     this.buildFormValidation(fb);
   }
 
-  saveGroup() {
+  saveGame() {
     this.dialogRef.close(Object.assign(new AddGameData(), this.formControl.value));
   }
 

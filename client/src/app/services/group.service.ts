@@ -3,7 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Moment } from 'moment';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
-import {UserProjection} from "./user.service";
+import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
+import { GameProjection } from './dto/game.dto';
+import { UserProjection } from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +20,18 @@ export class GroupService {
     return this.http.get<GroupProjection>(`${this.beEndpoint}/groups/${id}`);
   }
 
+  addGroup(group: AddGroupProjection) {
+    return this.http.post<AddedGroupProjection>(`${this.beEndpoint}/groups`, group);
+  }
+
   fetchCurrentUserGroups() {
     const user = this.tokenService.getUser();
     const params = new HttpParams().set('userId', user.id.toString());
     return this.http.get<GroupsProjection>(`${this.beEndpoint}/groups`, { params });
+  }
+
+  addMember(groupRef: string) {
+    return this.http.post<GroupProjection>(`${this.beEndpoint}/groups/refs/${groupRef}/members`, null);
   }
 
   removeMember(groupId: number, memberId: number) {
@@ -35,18 +45,15 @@ export class GroupService {
   addGame(groupId: number, game: GameProjection) {
     return this.http.post(`${this.beEndpoint}/groups/${groupId}/games`, game);
   }
-}
 
-export interface GroupProjection {
-  id: number;
-  name: string;
-  members: MemberProjection[];
-  games: GameProjection[];
-}
+  checkUserAccessToGroup(groupId: number) {
+    return this.http.get<GroupAccessChecks>(`${this.beEndpoint}/groups/${groupId}/accessChecks`);
+  }
 
-export interface GroupsProjection {
-  groups: GroupProjection[];
-}
+  checkAdminAccessForGroup(groupId: number) {
+    const user = this.tokenService.getUser();
+    return user.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
+  }
 
 export interface MemberProjection {
   id: number;

@@ -1,0 +1,34 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres'
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=teambalance
+  api:
+    depends_on:
+      - postgres
+    build:
+      context: ./server
+    environment:
+      - PGHOST=postgres
+    ports:
+      - '8080:8080'
+  client:
+    build:
+      context: ./client
+    volumes:
+      - '/app/node_modules'
+      - './client:/app'
+    ports:
+      - '4200:4200'
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+    - '80:80'

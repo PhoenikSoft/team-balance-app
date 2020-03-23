@@ -1,5 +1,6 @@
 package com.phoenixoft.teambalanceapp.security;
 
+import com.phoenixoft.teambalanceapp.common.exception.CredentialsFailedException;
 import com.phoenixoft.teambalanceapp.security.dto.AuthUserDetails;
 import com.phoenixoft.teambalanceapp.security.dto.AuthenticationRequest;
 import com.phoenixoft.teambalanceapp.security.dto.AuthenticationResponse;
@@ -24,13 +25,13 @@ public class AuthenticationService {
     private final CustomUserDetailsService userDetailsService;
     private final UserRepository userRepository;
 
-    public AuthenticationResponse authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public AuthenticationResponse authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect email or password", e);
+            throw new CredentialsFailedException("Incorrect email or password");
         }
 
         CustomUser userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
@@ -38,7 +39,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new UsernameNotFoundException("User by email is not found"));
         return AuthenticationResponse.builder()
                 .userDetails(AuthUserDetails.of(user))
-                .jwt(jwtTokenUtil.generateToken(userDetails))
+                .jwt(jwtTokenUtil.generateToken(userDetails, user))
                 .build();
     }
 

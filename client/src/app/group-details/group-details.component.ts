@@ -1,18 +1,34 @@
-import { Component, Input } from '@angular/core';
-import { GroupProjection, GroupService, MemberProjection, GameProjection } from '../services/group.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
+import { GroupService } from '../services/group.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGameDialogComponent, AddGameData } from '../add-game-dialog/add-game-dialog.component';
+import { GroupProjection, MemberProjection } from '../services/dto/group.dto';
+import { GameProjection } from '../services/dto/game.dto';
+import { TokenStorageService } from '../services/token-storage.service';
+import { UserDetails } from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.sass']
 })
-export class GroupDetailsComponent {
+export class GroupDetailsComponent implements OnInit {
 
   @Input() group: GroupProjection;
 
-  constructor(private groupService: GroupService, private dialog: MatDialog) {
+  isAdmin: boolean;
+  currentUser: UserDetails;
+  addMemberUri: string;
+
+  constructor(private groupService: GroupService, private tokenService: TokenStorageService, private dialog: MatDialog, private location: PlatformLocation) {
+  }
+
+  ngOnInit() {
+    this.isAdmin = this.groupService.checkAdminAccessForGroup(this.group.id);
+    this.currentUser = this.tokenService.getUser();
+    const domain = this.location.href.replace(this.location.pathname, '');
+    this.addMemberUri = `${domain}/groups/addMe/${this.group.ref}`;
   }
 
   async removeMember(member: MemberProjection) {
@@ -39,5 +55,9 @@ export class GroupDetailsComponent {
             err => console.error('Cannot add game', err));
       }
     });
+  }
+
+  notCurrentUser(member: MemberProjection) {
+    return member.id !== this.currentUser.id;
   }
 }

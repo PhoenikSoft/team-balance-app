@@ -23,7 +23,7 @@ import static org.springframework.boot.actuate.trace.http.Include.AUTHORIZATION_
 
 @Configuration
 @EnableSwagger2
-public class BeanConfiguration {
+public class BeanConfig {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 

@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.user.entity;
 
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
+import com.phoenixoft.teambalanceapp.util.RoleGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -18,8 +19,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -54,25 +53,22 @@ public class User {
     @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
     private List<Game> games = new ArrayList<>();
 
-    public Optional<Group> removeGroup(long groupId) {
-        ListIterator<Group> groupListIterator = groups.listIterator();
-        while (groupListIterator.hasNext()) {
-            Group group = groupListIterator.next();
-            if (group.getId().equals(groupId)) {
-                groupListIterator.remove();
-                return Optional.of(group);
-            }
-        }
-        return Optional.empty();
-    }
-
-    public void removeGroup(Group group) {
-        this.groups.remove(group);
-        group.getMembers().remove(this);
+    public void removeRoles(Set<Role> roles) {
+        roles.forEach(this::removeRole);
     }
 
     public void removeRole(Role role) {
-        this.roles.remove(role);
+        this.roles.removeIf(userRole -> userRole.getName().equals(role.getName()));
         role.getUsers().remove(this);
+    }
+
+    public void addRoles(Set<Role> newRoles) {
+        this.getRoles().addAll(newRoles);
+        newRoles.forEach(role -> role.getUsers().add(this));
+    }
+
+    public boolean isAdminInGroup(long groupId) {
+        return this.roles.stream()
+                .anyMatch(role -> role.getName().equals(RoleGenerator.createAdminRole(groupId)));
     }
 }

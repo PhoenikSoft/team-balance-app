@@ -1,0 +1,4 @@
+cors:
+  origins:
+    - http://multiteambalanceapp-env.eba-hr27tgvj.eu-west-1.elasticbeanstalk.com
+    - http://localhost

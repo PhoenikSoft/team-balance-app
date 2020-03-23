@@ -1,8 +1,10 @@
 package com.phoenixoft.teambalanceapp.util;
 
+import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.RoleResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
@@ -24,6 +26,7 @@ public class Converter {
         dto.setLastName(entity.getLastName());
         dto.setRating(entity.getRating());
         dto.setPhone(entity.getPhone());
+        dto.setRoles(entity.getRoles().stream().map(RoleResponseDto::of).collect(Collectors.toList()));
         return dto;
     }
 
@@ -37,8 +40,16 @@ public class Converter {
         GroupResponseDto dto = new GroupResponseDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setRef(entity.getRef());
         dto.setMembers(entity.getMembers().stream().map(Converter::convertUser).collect(Collectors.toList()));
         dto.setGames(entity.getGames().stream().map(Converter::convertGame).collect(Collectors.toList()));
+        return dto;
+    }
+
+    public static AddedGroupResponseDto convertAddGroup(Group group, User user) {
+        AddedGroupResponseDto dto = new AddedGroupResponseDto();
+        dto.setGroup(convertGroup(group));
+        dto.setUpdatedUser(convertUser(user));
         return dto;
     }
 
