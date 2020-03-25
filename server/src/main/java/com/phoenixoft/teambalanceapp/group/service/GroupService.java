@@ -93,7 +93,7 @@ public class GroupService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + deletableMemberId));
         checkMemberForRemoval(group, memberToDelete);
         if (group.removeMember(memberToDelete)) {
-            deleteGroupRoles(groupId);
+            revokeGroupPrivilegesFromMember(groupId, memberToDelete);
             groupRepository.save(group);
         }
     }
@@ -141,11 +141,14 @@ public class GroupService {
     private void deleteGroupRoles(Long groupId) {
         List<Role> groupRoles = roleRepository.findAllByGroupId(groupId);
         for (Role role : groupRoles) {
-//            role.getUsers().forEach(user -> {
-//                user.removeRole(role);
-//            });
             roleRepository.delete(role);
         }
+    }
+    
+    private void revokeGroupPrivilegesFromMember(Long groupId, User memberToDelete) {
+        List<Role> groupRoles = roleRepository.findAllByGroupId(groupId);
+        memberToDelete.removeRoles(new HashSet<>(groupRoles));
+        roleRepository.saveAll(groupRoles);
     }
 
     public void assignAdminRoleToUser(Long groupId, Long userId) {
