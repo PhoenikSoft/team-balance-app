@@ -4,8 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Moment } from 'moment';
 
 import * as moment from 'moment';
-import { UserProjection } from "../services/user.service";
 import { GameProjection } from '../services/dto/game.dto';
+import { UserProjection } from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-add-game-dialog',

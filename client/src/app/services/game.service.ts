@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {TokenStorageService} from "./token-storage.service";
-import {GameProjection, GroupProjection, GroupsProjection} from "./group.service";
-import {UserProjection} from "./user.service";
+import { GameProjection } from "./group.service";
+import { UserProjection } from "./dto/user.dto";
+import { GroupProjection } from "./dto/group.dto";
 
 @Injectable({
   providedIn: 'root'

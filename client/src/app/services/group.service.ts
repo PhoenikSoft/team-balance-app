@@ -5,7 +5,7 @@ import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
 import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
 import { GameProjection } from './dto/game.dto';
-import { UserProjection } from "./user.service";
+import { UserProjection } from "./dto/user.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class GroupService {
   fetchCurrentUserGroups() {
     const user = this.tokenService.getUser();
     const params = new HttpParams().set('userId', user.id.toString());
-    return this.http.get<GroupsProjection>(`${this.beEndpoint}/groups`, { params });
+    return this.http.get<GroupsProjection>(`${this.beEndpoint}/groups`, {params});
   }
 
   addMember(groupRef: string) {
@@ -54,6 +54,8 @@ export class GroupService {
     const user = this.tokenService.getUser();
     return user.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
   }
+
+}
 
 export interface MemberProjection {
   id: number;

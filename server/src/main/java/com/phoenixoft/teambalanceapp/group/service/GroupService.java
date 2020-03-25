@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,7 +93,7 @@ public class GroupService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + deletableMemberId));
         checkMemberForRemoval(group, memberToDelete);
         if (group.removeMember(memberToDelete)) {
-            removeGroupRoles(groupId, memberToDelete);
+            deleteGroupRoles(groupId);
             groupRepository.save(group);
         }
     }
@@ -113,7 +112,7 @@ public class GroupService {
     }
 
     public void checkAdminPermissions(UserDetails userDetails, Long groupId) {
-        String processingGroupAdminRole = RoleGenerator.createAdminRole(groupId);
+        String processingGroupAdminRole = RoleGenerator.createAdminRoleTitle(groupId);
         Set<SimpleGrantedAuthority> authorities = (Set<SimpleGrantedAuthority>) userDetails.getAuthorities();
         boolean matchAdminRole = authorities.stream().anyMatch(simpleGrantedAuthority -> simpleGrantedAuthority.getAuthority().equals(processingGroupAdminRole));
         if (!matchAdminRole) {
@@ -122,42 +121,35 @@ public class GroupService {
     }
 
     public boolean hasUserAccessToGroup(Long groupId, UserDetails userDetails) {
-        String userRole = RoleGenerator.createUserRole(groupId);
+        String userRole = RoleGenerator.createUserRoleTitle(groupId);
+        String adminRole = RoleGenerator.createAdminRoleTitle(groupId);
         User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userDetails.getUsername()));
-        return user.getRoles().stream().anyMatch(role -> role.getName().equals(userRole));
+        return user.getRoles().stream().anyMatch(role -> role.getName().equals(userRole) || role.getName().equals(adminRole));
     }
 
     private void createAndAssignGroupRoles(Long groupId, User creator) {
         Role adminRole = new Role();
-        adminRole.setName(ADMIN_ROLE_PREFIX + groupId);
-        adminRole.getUsers().add(creator);
-        roleRepository.save(adminRole);
+        adminRole.setName(RoleGenerator.createAdminRoleTitle(groupId));
         Role userRole = new Role();
-        userRole.setName(USER_ROLE_PREFIX + groupId);
-        userRole.getUsers().add(creator);
+        userRole.setName(RoleGenerator.createUserRoleTitle(groupId));
+        creator.addRoles(new HashSet<>(Arrays.asList(adminRole, userRole)));
+        roleRepository.save(adminRole);
         roleRepository.save(userRole);
     }
 
     private void deleteGroupRoles(Long groupId) {
-        String adminRoleName = ADMIN_ROLE_PREFIX + groupId;
-        roleRepository.findByName(adminRoleName).ifPresent(role -> {
-            role.getUsers().forEach(user -> {
-                user.removeRole(role);
-            });
+        List<Role> groupRoles = roleRepository.findAllByGroupId(groupId);
+        for (Role role : groupRoles) {
+//            role.getUsers().forEach(user -> {
+//                user.removeRole(role);
+//            });
             roleRepository.delete(role);
-        });
-        String userRoleName = USER_ROLE_PREFIX + groupId;
-        roleRepository.findByName(userRoleName).ifPresent(role -> {
-            role.getUsers().forEach(user -> {
-                user.removeRole(role);
-            });
-            roleRepository.delete(role);
-        });
+        }
     }
 
     public void assignAdminRoleToUser(Long groupId, Long userId) {
-        String processingGroupAdminRole = RoleGenerator.createAdminRole(groupId);
+        String processingGroupAdminRole = RoleGenerator.createAdminRoleTitle(groupId);
         Role existingAdminRole = roleRepository.findByName(processingGroupAdminRole)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin role for the group not found"));
         User user = userRepository.findById(userId)
@@ -167,8 +159,8 @@ public class GroupService {
     }
 
     public void assignUserRoleToUser(Long groupId, Long userId) {
-        String processingGroupUserRole = RoleGenerator.createUserRole(groupId);
-        Role existingUserRole = roleRepository.findByName(processingGroupUserRole)
+        String processingGroupUserRole = RoleGenerator.createUserRoleTitle(groupId);
+        Role existingAdminRole = roleRepository.findByName(processingGroupUserRole)
                 .orElseThrow(() -> new ResourceNotFoundException("User role for the group not found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));

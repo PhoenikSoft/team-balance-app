@@ -3,7 +3,6 @@ import {GameProjection} from "../services/group.service";
 import {Observable} from "rxjs";
 import {GameService} from "../services/game.service";
 import {ActivatedRoute} from "@angular/router";
-import {UserProjection} from "../services/user.service";
 
 @Component({
   selector: 'app-game-view',
