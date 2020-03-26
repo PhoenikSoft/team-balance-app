@@ -58,6 +58,7 @@ public class Converter {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setStartDateTime(entity.getStartDateTime());
+        dto.setPlayers(entity.getPlayers().stream().map(Converter::convertUser).collect(Collectors.toList()));
         return dto;
     }
 }

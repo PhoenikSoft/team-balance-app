@@ -10,6 +10,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginGuard } from './auth/_guards/login.guard';
 import { GroupGuard } from './auth/_guards/group.guard';
 import { AddMemberGuardGuard } from './auth/_guards/add-member-guard.guard';
+import { GameViewComponent } from "./game-view/game-view.component";
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
         children: [
           { path: '', component: GroupViewComponent }
         ]
+      },
+      {
+        path: 'groups/:groupId/games/:gameId',
+        component: GameViewComponent
       },
       { path: 'profile', component: ProfileComponent },
       { path: '', component: MainPageViewComponent },

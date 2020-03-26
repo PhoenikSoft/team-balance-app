@@ -69,6 +69,6 @@ public class User {
 
     public boolean isAdminInGroup(long groupId) {
         return this.roles.stream()
-                .anyMatch(role -> role.getName().equals(RoleGenerator.createAdminRole(groupId)));
+                .anyMatch(role -> role.getName().equals(RoleGenerator.createAdminRoleTitle(groupId)));
     }
 }

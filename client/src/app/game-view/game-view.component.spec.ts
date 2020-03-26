@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainPageViewComponent } from "../main-page-view/main-page-view.component";
+import { GameViewComponent } from './game-view.component';
 
-describe('MainPageViewComponent', () => {
-  let component: MainPageViewComponent;
-  let fixture: ComponentFixture<MainPageViewComponent>;
+describe('GameViewComponent', () => {
+  let component: GameViewComponent;
+  let fixture: ComponentFixture<GameViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainPageViewComponent ]
+      declarations: [ GameViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainPageViewComponent);
+    fixture = TestBed.createComponent(GameViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

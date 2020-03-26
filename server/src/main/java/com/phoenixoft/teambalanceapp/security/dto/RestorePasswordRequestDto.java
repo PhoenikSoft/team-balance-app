@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 @Data
 public class RestorePasswordRequestDto {
 
-    @Email(message = "Provided email is not correct.")
+    @Email(message = "{email.invalid}")
     private String email;
 
 }

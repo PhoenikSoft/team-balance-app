@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Moment } from 'moment';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
 import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
@@ -26,7 +25,7 @@ export class GroupService {
   fetchCurrentUserGroups() {
     const user = this.tokenService.getUser();
     const params = new HttpParams().set('userId', user.id.toString());
-    return this.http.get<GroupsProjection>(`${this.beEndpoint}/groups`, { params });
+    return this.http.get<GroupsProjection>(`${this.beEndpoint}/groups`, {params});
   }
 
   addMember(groupRef: string) {
@@ -53,4 +52,5 @@ export class GroupService {
     const user = this.tokenService.getUser();
     return user.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
   }
+
 }

@@ -22,6 +22,8 @@ import { UpdateDialogComponent } from "./profile-page/update-dialog/update-dialo
 import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { GameViewComponent } from './game-view/game-view.component';
+import { GameDetailsComponent } from './game-details/game-details.component';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { ClipboardModule } from 'ngx-clipboard';
     NavBarComponent,
     UpdateDialogComponent,
     AddGroupDialogComponent,
-    MainPageComponent
+    MainPageComponent,
+    GameViewComponent,
+    GameDetailsComponent
   ],
   imports: [
     BrowserModule,
