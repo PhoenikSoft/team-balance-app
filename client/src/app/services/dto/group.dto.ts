@@ -1,4 +1,3 @@
-import { Moment } from 'moment';
 import { UserProjection } from './user.dto';
 import { GameProjection } from './game.dto';
 

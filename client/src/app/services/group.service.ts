@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Moment } from 'moment';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
 import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
 import { GameProjection } from './dto/game.dto';
-import { UserProjection } from "./dto/user.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -55,17 +53,4 @@ export class GroupService {
     return user.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
   }
 
-}
-
-export interface MemberProjection {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
-
-export interface GameProjection {
-  id?: number;
-  name: string;
-  startDateTime?: Moment;
-  players: UserProjection[];
 }

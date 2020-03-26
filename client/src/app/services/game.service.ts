@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {TokenStorageService} from "./token-storage.service";
-import { GameProjection } from "./group.service";
+import {GameProjection} from "./dto/game.dto";
 import { UserProjection } from "./dto/user.dto";
-import { GroupProjection } from "./dto/group.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -21,16 +20,11 @@ export class GameService {
 
   fetchGamePlayers(groupId: number, gameId: number) {
     const user = this.tokenService.getUser();
-    const params = new HttpParams().set('userId', user.id.toString());
-    return this.http.get<UserProjection[]>(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/players`, { params });
+    return this.http.get<UserProjection[]>(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/players`, { });
   }
 
   removePlayer(groupId: number, gameId: number, playerId: number) {
     return this.http.delete(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/players/${playerId}`);
   }
 
-}
-
-export interface GamesProjection {
-  games: GroupProjection[];
 }

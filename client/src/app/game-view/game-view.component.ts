@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameProjection} from "../services/group.service";
+import {GameProjection} from "../services/dto/game.dto";
 import {Observable} from "rxjs";
 import {GameService} from "../services/game.service";
 import {ActivatedRoute} from "@angular/router";
