@@ -13,7 +13,11 @@ export class GameDetailsComponent implements OnInit {
 
   @Input() game: GameProjection;
 
-  constructor(private gameService: GameService, private route: ActivatedRoute) { }
+  @Input() groupId: number;
+
+  constructor(private gameService: GameService, private route: ActivatedRoute) {
+    this.groupId = +route.snapshot.paramMap.get('groupId');
+  }
 
   async removePlayer(player: UserProjection) {
     return this.gameService.removePlayer(+this.route.snapshot.paramMap.get('groupId'), this.game.id, player.id).toPromise()
