@@ -7,3 +7,17 @@ export interface GameProjection {
     startDateTime?: Moment;
     players: UserProjection[];
 }
+
+export interface BalancedTeamsProjection {
+    teams: TeamProjection[];
+}
+
+export interface TeamProjection {
+    players: PlayerProjection[];
+}
+
+export interface PlayerProjection {
+    id: number;
+    firstName: string;
+    lastName: string;
+}

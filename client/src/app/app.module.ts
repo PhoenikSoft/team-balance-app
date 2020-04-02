@@ -24,6 +24,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { GameViewComponent } from './game-view/game-view.component';
 import { GameDetailsComponent } from './game-details/game-details.component';
+import { BalancedTeamsTableComponent } from './balanced-teams-table/balanced-teams-table.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { GameDetailsComponent } from './game-details/game-details.component';
     AddGroupDialogComponent,
     MainPageComponent,
     GameViewComponent,
-    GameDetailsComponent
+    GameDetailsComponent,
+    BalancedTeamsTableComponent
   ],
   imports: [
     BrowserModule,

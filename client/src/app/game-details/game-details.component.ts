@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {GameProjection} from "../services/dto/game.dto";
-import {GameService} from "../services/game.service";
-import {ActivatedRoute} from "@angular/router";
-import {UserProjection} from "../services/dto/user.dto";
+import { Component, Input, OnInit } from '@angular/core';
+import { GameProjection, BalancedTeamsProjection } from "../services/dto/game.dto";
+import { GameService } from "../services/game.service";
+import { ActivatedRoute } from "@angular/router";
+import { UserProjection } from "../services/dto/user.dto";
 
 @Component({
   selector: 'app-game-details',
@@ -14,9 +14,13 @@ export class GameDetailsComponent implements OnInit {
   @Input() game: GameProjection;
 
   groupId: number;
+  balancedTeams: BalancedTeamsProjection;
 
   constructor(private gameService: GameService, private route: ActivatedRoute) {
     this.groupId = +route.snapshot.paramMap.get('groupId');
+  }
+
+  ngOnInit() {
   }
 
   async removePlayer(player: UserProjection) {
@@ -25,7 +29,9 @@ export class GameDetailsComponent implements OnInit {
         err => console.error('Cannot remove player', err));
   }
 
-  ngOnInit() {
+  async balanceTeams() {
+    return this.gameService.balancePlayers(this.groupId, this.game.id).toPromise()
+      .then(balanceTeamsProjection => this.balancedTeams = balanceTeamsProjection,
+        err => console.error('Cannot balance players', err));
   }
-
 }
