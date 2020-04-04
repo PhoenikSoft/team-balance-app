@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { GameProjection, BalancedTeamsProjection } from "../services/dto/game.dto";
-import { GameService } from "../services/game.service";
-import { ActivatedRoute } from "@angular/router";
-import { UserProjection } from "../services/dto/user.dto";
+import {Component, Input, OnInit} from '@angular/core';
+import {GameProjection, BalancedTeamsProjection} from '../services/dto/game.dto';
+import {GameService} from '../services/game.service';
+import {ActivatedRoute} from '@angular/router';
+import {UserProjection} from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-game-details',
