@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+// import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,8 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { GameViewComponent } from './game-view/game-view.component';
 import { GameDetailsComponent } from './game-details/game-details.component';
+import { AddPlayerDialogComponent } from './add-player-dialog/add-player-dialog.component';
+import { AddPlayerDialogViewComponent } from './add-player-dialog-view/add-player-dialog-view.component';
 
 
 @NgModule({
@@ -45,7 +48,9 @@ import { GameDetailsComponent } from './game-details/game-details.component';
     AddGroupDialogComponent,
     MainPageComponent,
     GameViewComponent,
-    GameDetailsComponent
+    GameDetailsComponent,
+    AddPlayerDialogComponent,
+    AddPlayerDialogViewComponent
   ],
   imports: [
     BrowserModule,
@@ -55,11 +60,14 @@ import { GameDetailsComponent } from './game-details/game-details.component';
     MaterialModule,
     ClipboardModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [
+    authInterceptorProviders],
   bootstrap: [AppComponent],
   entryComponents: [
     AddGameDialogComponent,
-    AddGroupDialogComponent
+    AddGroupDialogComponent,
+    AddPlayerDialogComponent,
+    AddPlayerDialogViewComponent
   ]
 })
 export class AppModule { }

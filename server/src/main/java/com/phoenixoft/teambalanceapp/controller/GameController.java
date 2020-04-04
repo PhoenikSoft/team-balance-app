@@ -1,5 +1,6 @@
 package com.phoenixoft.teambalanceapp.controller;
 
+import com.phoenixoft.teambalanceapp.controller.dto.AddPlayersRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
@@ -79,8 +80,16 @@ public class GameController {
     }
 
     @PostMapping(path = "/{gameId}/players/{playerId}")
-    public List<UserResponseDto> addMember(@PathVariable Long groupId, @PathVariable Long gameId, @PathVariable Long playerId) {
+    public List<UserResponseDto> addPlayer(@PathVariable Long groupId, @PathVariable Long gameId, @PathVariable Long playerId) {
         Game entity = gameService.addPlayerToGame(groupId, gameId, playerId);
+        return entity.getPlayers().stream()
+                .map(Converter::convertUser)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping(path = "/{gameId}/players")
+    public List<UserResponseDto> addPlayers(@PathVariable Long groupId, @PathVariable Long gameId, @RequestBody AddPlayersRequestDto addPlayersRequestDto) {
+        Game entity = gameService.addPlayersToGame(groupId, gameId, addPlayersRequestDto);
         return entity.getPlayers().stream()
                 .map(Converter::convertUser)
                 .collect(Collectors.toList());

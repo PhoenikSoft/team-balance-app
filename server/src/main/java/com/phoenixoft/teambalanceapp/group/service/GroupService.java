@@ -75,7 +75,7 @@ public class GroupService {
                 .getMembers();
     }
 
-    public Group addMember(String groupRef, String username) {
+    public Group addMemberByGroupRef(String groupRef, String username) {
         Group group = groupRepository.findByRef(groupRef)
                 .orElseThrow(() -> new ResourceNotFoundException("Group not found by ref: " + groupRef));
         User newMember = userRepository.findByEmail(username)
@@ -83,6 +83,18 @@ public class GroupService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for email: " + username));
         group.getMembers().add(newMember);
         assignUserRoleToUser(group.getId(), newMember.getId());
+        groupRepository.save(group);
+        return group;
+    }
+
+    public Group addMember(Long groupId, Long userId) {
+        User newMember = userRepository.findById(userId)
+                .filter(user -> user.getGroups().stream().noneMatch(group -> group.getId().equals(groupId)))
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId));
+        group.getMembers().add(newMember);
+        assignUserRoleToUser(groupId, userId);
         groupRepository.save(group);
         return group;
     }

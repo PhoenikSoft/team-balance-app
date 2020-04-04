@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from './../../environments/environment';
-import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
+import {
+  GroupsProjection,
+  AddGroupProjection,
+  GroupProjection,
+  AddedGroupProjection,
+  GroupAccessChecks,
+  MemberProjection
+} from './dto/group.dto';
 import { GameProjection } from './dto/game.dto';
 
 @Injectable({
@@ -42,6 +49,10 @@ export class GroupService {
 
   addGame(groupId: number, game: GameProjection) {
     return this.http.post(`${this.beEndpoint}/groups/${groupId}/games`, game);
+  }
+
+  fetchGroupMembers(groupId: number) {
+    return this.http.get<MemberProjection[]>(`${this.beEndpoint}/groups/${groupId}/members`)
   }
 
   checkUserAccessToGroup(groupId: number) {
