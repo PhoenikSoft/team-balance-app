@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-add-group-dialog',
@@ -17,7 +17,7 @@ export class AddGroupDialogComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
   saveGroup() {
     this.dialogRef.close(Object.assign(new AddGroupData(), this.formControl.value));
   }
