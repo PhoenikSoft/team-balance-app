@@ -26,7 +26,7 @@ deploy:
   provider: elasticbeanstalk
   region: eu-central-1
   app: TeamBalanceApp
-  env: Teambalanceapp-env-1
+  env: Teambalanceapp-env
   bucket_name: elasticbeanstalk-eu-central-1-805957902858
   bucket_path: team-balance-app
   on:
