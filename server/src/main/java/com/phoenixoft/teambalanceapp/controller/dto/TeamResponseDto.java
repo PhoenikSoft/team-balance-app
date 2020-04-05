@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 @Data
 public class TeamResponseDto {
-    private List<UserResponseDto> players;
+    private List<PlayerResponseDto> players;
 
     public static TeamResponseDto of(Team team) {
         TeamResponseDto dto = new TeamResponseDto();
-        dto.players = team.getPlayers().stream().map(Converter::convertUser).collect(Collectors.toList());
+        dto.players = team.getPlayers().stream().map(Converter::convertPlayer).collect(Collectors.toList());
         return dto;
     }
 }

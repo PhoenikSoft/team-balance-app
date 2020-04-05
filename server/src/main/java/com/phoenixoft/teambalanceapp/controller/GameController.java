@@ -96,7 +96,7 @@ public class GameController {
     }
 
     @DeleteMapping(path = "/{gameId}/players/{playerId}")
-    public List<UserResponseDto> deleteMember(@PathVariable Long groupId, @PathVariable Long gameId, @PathVariable Long playerId) {
+    public List<UserResponseDto> deletePlayer(@PathVariable Long groupId, @PathVariable Long gameId, @PathVariable Long playerId) {
         Game entity = gameService.deletePlayerFromGame(groupId, gameId, playerId);
         return entity.getPlayers().stream()
                 .map(Converter::convertUser)
