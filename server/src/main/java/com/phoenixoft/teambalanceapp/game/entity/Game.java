@@ -5,7 +5,9 @@ import com.phoenixoft.teambalanceapp.user.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +41,11 @@ public class Game {
 
     @Column(name = "start_timestamp")
     private LocalDateTime startDateTime;
+
+    @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")
+    @Column(name = "balanced_teams", columnDefinition = "jsonb")
+    @Basic(fetch = FetchType.LAZY)
+    private BalancedTeams balancedTeams;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "tbl_game_players",

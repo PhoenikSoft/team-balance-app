@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameProjection, BalancedTeamsProjection} from '../services/dto/game.dto';
+import {BalancedTeamsProjection, GameProjection} from '../services/dto/game.dto';
 import {GameService} from '../services/game.service';
 import {ActivatedRoute} from '@angular/router';
 import {UserProjection} from '../services/dto/user.dto';
@@ -17,10 +17,11 @@ export class GameDetailsComponent implements OnInit {
   balancedTeams: BalancedTeamsProjection;
 
   constructor(private gameService: GameService, private route: ActivatedRoute) {
-    this.groupId = +route.snapshot.paramMap.get('groupId');
   }
 
   ngOnInit() {
+    this.groupId = +this.route.snapshot.paramMap.get('groupId');
+    this.balancedTeams = this.game.balancedTeams;
   }
 
   async removePlayer(player: UserProjection) {

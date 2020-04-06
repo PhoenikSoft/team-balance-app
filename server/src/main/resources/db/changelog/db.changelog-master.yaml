@@ -56,3 +56,14 @@ databaseChangeLog:
             path: changes/insert_group_ref_data.sql
             relativeToChangelogFile: true
             stripComments: true
+  - changeSet:
+      id: add-balanced-teams-column-to-game
+      author: Yevhen Karychkovskyi
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: balanced_teams
+                  type: jsonb
+            schemaName: public
+            tableName: tbl_game

@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.game.service;
 
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
+import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.repository.GameRepository;
@@ -75,6 +76,11 @@ public class GameService {
 
     public List<Team> generateBalancedTeams(Long groupId, Long gameId) {
         Game game = findGame(groupId, gameId);
-        return teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()));
+        List<Team> teams = teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()));
+
+        game.setBalancedTeams(new BalancedTeams(teams));
+        gameRepository.save(game);
+
+        return teams;
     }
 }

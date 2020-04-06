@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class BalancedTeamsResponseDto {
+
     private List<TeamResponseDto> teams;
 
     public static BalancedTeamsResponseDto of(List<Team> teams) {
