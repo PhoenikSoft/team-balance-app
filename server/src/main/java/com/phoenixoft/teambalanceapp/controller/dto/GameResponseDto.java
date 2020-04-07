@@ -11,4 +11,5 @@ public class GameResponseDto {
     private String name;
     private LocalDateTime startDateTime;
     private List<UserResponseDto> players;
+    private BalancedTeamsResponseDto balancedTeams;
 }

@@ -1,29 +1,34 @@
 package com.phoenixoft.teambalanceapp.game.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phoenixoft.teambalanceapp.user.entity.User;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-@Value
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Team {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Team implements Serializable {
 
-    List<User> players;
+    private List<User> players;
 
     public void addPlayer(User player) {
         players.add(player);
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return players.isEmpty();
     }
 
+    @JsonIgnore
     public BigDecimal getAverageRating() {
         return players.stream()
                 .map(User::getRating)
