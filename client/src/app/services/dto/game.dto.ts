@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { UserProjection } from "./user.dto";
+import { UserProjection } from './user.dto';
 
 export interface GameProjection {
     id?: number;
@@ -20,4 +20,5 @@ export interface PlayerProjection {
     id: number;
     firstName: string;
     lastName: string;
+    rating: number;
 }

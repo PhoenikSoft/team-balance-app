@@ -1,9 +1,8 @@
-import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {Observable} from "rxjs";
-import {MemberProjection} from "../services/dto/group.dto";
-import {GroupService} from "../services/group.service";
-import {ActivatedRoute} from "@angular/router";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnInit, Optional} from '@angular/core';
+import {Observable} from 'rxjs';
+import {GroupService} from '../services/group.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {UserProjection} from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-add-player-dialog-view',
@@ -12,7 +11,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class AddPlayerDialogViewComponent implements OnInit {
 
-  $groupMembers: Observable<MemberProjection[]>;
+  $groupMembers: Observable<UserProjection[]>;
+
+  currentPlayers: UserProjection[];
 
   constructor(
     public dialogRef: MatDialogRef<AddPlayerDialogViewComponent>,
@@ -20,6 +21,7 @@ export class AddPlayerDialogViewComponent implements OnInit {
     groupService: GroupService
   ) {
     this.$groupMembers = groupService.fetchGroupMembers(data.groupId);
+    this.currentPlayers = data.currentPlayers;
   }
 
   ngOnInit() {

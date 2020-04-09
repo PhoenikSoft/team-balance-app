@@ -3,10 +3,10 @@ import { PlatformLocation } from '@angular/common';
 import { GroupService } from '../services/group.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGameDialogComponent, AddGameData } from '../add-game-dialog/add-game-dialog.component';
-import { GroupProjection, MemberProjection } from '../services/dto/group.dto';
+import { GroupProjection } from '../services/dto/group.dto';
 import { GameProjection } from '../services/dto/game.dto';
 import { TokenStorageService } from '../services/token-storage.service';
-import { UserDetails } from '../services/dto/user.dto';
+import { UserDetails, UserProjection } from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-group-details',
@@ -31,7 +31,7 @@ export class GroupDetailsComponent implements OnInit {
     this.addMemberUri = `${domain}/groups/addMe/${this.group.ref}`;
   }
 
-  async removeMember(member: MemberProjection) {
+  async removeMember(member: UserProjection) {
     return this.groupService.removeMember(this.group.id, member.id).toPromise()
       .then(() => this.group.members = this.group.members.filter(m => m.id !== member.id),
         err => console.error('Cannot remove member', err));
@@ -57,7 +57,7 @@ export class GroupDetailsComponent implements OnInit {
     });
   }
 
-  notCurrentUser(member: MemberProjection) {
+  notCurrentUser(member: UserProjection) {
     return member.id !== this.currentUser.id;
   }
 }

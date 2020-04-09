@@ -87,7 +87,7 @@ public class GameController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(path = "/{gameId}/players")
+    @PostMapping(path = "/{gameId}/playersBatch")
     public List<UserResponseDto> addPlayers(@PathVariable Long groupId, @PathVariable Long gameId, @RequestBody AddPlayersRequestDto addPlayersRequestDto) {
         Game entity = gameService.addPlayersToGame(groupId, gameId, addPlayersRequestDto);
         return entity.getPlayers().stream()

@@ -15,18 +15,12 @@ export interface GroupProjection {
     id: number;
     name: string;
     ref: string;
-    members: MemberProjection[];
+    members: UserProjection[];
     games: GameProjection[];
 }
 
 export interface GroupsProjection {
     groups: GroupProjection[];
-}
-
-export interface MemberProjection {
-    id: number;
-    firstName: string;
-    lastName: string;
 }
 
 export interface GroupAccessChecks {

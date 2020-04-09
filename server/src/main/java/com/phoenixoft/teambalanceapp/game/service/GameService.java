@@ -69,7 +69,7 @@ public class GameService {
     public Game addPlayersToGame(Long groupId, Long gameId, AddPlayersRequestDto addPlayersRequestDto) {
         Group group = groupService.findById(groupId);
         Game game = findGame(groupId, gameId);
-        for (Long playerId : addPlayersRequestDto.getPlayersIds()) {
+        for (Long playerId : addPlayersRequestDto.getPlayers()) {
             User newPlayer = group.findMember(playerId)
                     .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + playerId));
             game.getPlayers().add(newPlayer);

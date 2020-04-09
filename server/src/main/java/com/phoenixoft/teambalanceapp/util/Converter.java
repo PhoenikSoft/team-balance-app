@@ -27,7 +27,7 @@ public class Converter {
         dto.setLastName(entity.getLastName());
         dto.setRating(entity.getRating());
         dto.setPhone(entity.getPhone());
-        dto.setRoles(entity.getRoles().stream().map(RoleResponseDto::of).collect(Collectors.toList()));
+//        dto.setRoles(entity.getRoles().stream().map(RoleResponseDto::of).collect(Collectors.toList()));
         return dto;
     }
 

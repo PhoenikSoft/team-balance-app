@@ -1,18 +1,22 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
-import {GroupProjection, MemberProjection} from "../services/dto/group.dto";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {UserProjection} from '../services/dto/user.dto';
 
 @Component({
   selector: 'app-add-player-dialog',
   templateUrl: './add-player-dialog.component.html',
   styleUrls: ['./add-player-dialog.component.sass']
 })
-export class AddPlayerDialogComponent {
+export class AddPlayerDialogComponent implements OnInit{
 
-  @Input() groupMembers: MemberProjection[];
+  @Input() groupMembers: UserProjection[];
 
-  players: MemberProjection[];
+  @Input() currentPlayers: UserProjection[];
+
+  playersShowInDialog: UserProjection[] = [];
+
+  selectedPlayers: UserProjection[];
 
   formControl: FormGroup;
 
@@ -20,9 +24,18 @@ export class AddPlayerDialogComponent {
     this.buildFormValidation(fb);
   }
 
+  ngOnInit(): void {
+    for (const groupMember of this.groupMembers) {
+      if (!(this.currentPlayers.map(value => value.id).indexOf(groupMember.id) >= 0)) {
+        this.playersShowInDialog.push(groupMember);
+      }
+    }
+  }
+
   addPlayers(list) {
-    console.log(list.selectedOptions.selected.map(item => item.value))
-    this.dialogRef.close(Object.assign(list.selectedOptions.selected.map(item => item.value), this.formControl.value));
+    this.selectedPlayers = list.selectedOptions.selected.map(item => item.value);
+    console.log(this.selectedPlayers);
+    this.dialogRef.close(this.selectedPlayers);
   }
 
   private buildFormValidation(fb: FormBuilder) {
@@ -33,5 +46,9 @@ export class AddPlayerDialogComponent {
 }
 
 export class GamePlayersList {
-  players: MemberProjection[];
+  players: number[];
+
+  constructor(players: number[]) {
+    this.players = players;
+  }
 }

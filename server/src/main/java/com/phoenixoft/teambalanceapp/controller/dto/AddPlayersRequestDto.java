@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class AddPlayersRequestDto {
 
-    List<Long> playersIds = new ArrayList<>();
+    List<Long> players = new ArrayList<>();
+
 }
