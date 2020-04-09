@@ -4,7 +4,6 @@ import {GameService} from '../services/game.service';
 import {ActivatedRoute} from '@angular/router';
 import {UserProjection} from '../services/dto/user.dto';
 import {MatDialog} from '@angular/material/dialog';
-import {GroupService} from '../services/group.service';
 import {AddPlayerDialogViewComponent} from '../add-player-dialog-view/add-player-dialog-view.component';
 import {GamePlayersList} from '../add-player-dialog/add-player-dialog.component';
 
@@ -21,17 +20,12 @@ export class GameDetailsComponent implements OnInit {
 
   balancedTeams: BalancedTeamsProjection;
 
-  private groupService: GroupService;
-
-  private route;
-
-  constructor(private gameService: GameService, route: ActivatedRoute, private dialog: MatDialog, groupService: GroupService) {
-    this.groupId = +route.snapshot.paramMap.get('groupId');
-    this.groupService = groupService;
-    this.route = route;
+  constructor(private gameService: GameService, private route: ActivatedRoute, private dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.groupId = +this.route.snapshot.paramMap.get('groupId');
+    this.balancedTeams = this.game.balancedTeams;
   }
 
   async removePlayer(player: UserProjection) {
@@ -44,7 +38,6 @@ export class GameDetailsComponent implements OnInit {
     return this.gameService.balancePlayers(this.groupId, this.game.id).toPromise()
       .then(balanceTeamsProjection => this.balancedTeams = balanceTeamsProjection,
         err => console.error('Cannot balance players', err));
-
   }
 
   openAddPlayerDialog() {

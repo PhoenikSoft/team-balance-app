@@ -1,5 +1,6 @@
 package com.phoenixoft.teambalanceapp.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.util.RoleGenerator;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,7 +28,7 @@ import java.util.Set;
 @Data
 @ToString(exclude = {"roles", "games", "groups"})
 @EqualsAndHashCode(exclude = {"roles", "games", "groups"})
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
@@ -44,12 +46,15 @@ public class User {
 
     private BigDecimal rating;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     private List<Group> groups = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
     private List<Game> games = new ArrayList<>();
 

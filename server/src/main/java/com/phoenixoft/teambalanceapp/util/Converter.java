@@ -1,19 +1,23 @@
 package com.phoenixoft.teambalanceapp.util;
 
 import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.PlayerResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.RoleResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
+import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -68,6 +72,9 @@ public class Converter {
         dto.setName(entity.getName());
         dto.setStartDateTime(entity.getStartDateTime());
         dto.setPlayers(entity.getPlayers().stream().map(Converter::convertUser).collect(Collectors.toList()));
+        dto.setBalancedTeams(BalancedTeamsResponseDto.of(
+                Optional.ofNullable(entity.getBalancedTeams())
+                        .map(BalancedTeams::getTeams).orElse(Collections.EMPTY_LIST)));
         return dto;
     }
 }

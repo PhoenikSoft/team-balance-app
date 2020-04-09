@@ -1,24 +1,25 @@
-import { Moment } from 'moment';
-import { UserProjection } from './user.dto';
+import {Moment} from 'moment';
+import {UserProjection} from './user.dto';
 
 export interface GameProjection {
-    id?: number;
-    name: string;
-    startDateTime?: Moment;
-    players: UserProjection[];
+  id?: number;
+  name: string;
+  startDateTime?: Moment;
+  players: UserProjection[];
+  balancedTeams?: BalancedTeamsProjection;
 }
 
 export interface BalancedTeamsProjection {
-    teams: TeamProjection[];
+  teams: TeamProjection[];
 }
 
 export interface TeamProjection {
-    players: PlayerProjection[];
+  players: PlayerProjection[];
 }
 
 export interface PlayerProjection {
-    id: number;
-    firstName: string;
-    lastName: string;
-    rating: number;
+  id: number;
+  firstName: string;
+  lastName: string;
+  rating: number;
 }
