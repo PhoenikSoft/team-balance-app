@@ -162,7 +162,7 @@ public class GroupServiceTest {
 
     @Test
     @Disabled
-    public void addMember() {
+    public void addMemberByGroupRef() {
         String userName = "testName";
         Group group1 = new Group();
         group1.setId(1L);
@@ -178,7 +178,7 @@ public class GroupServiceTest {
         Role expectedAdminRole = new Role();
         when(roleRepository.findByName(anyString())).thenReturn(Optional.of(expectedAdminRole));
 
-        Group group = groupService.addMember(requestedGroupRef, userName);
+        Group group = groupService.addMemberByGroupRef(requestedGroupRef, userName);
 
         assertEquals(expectedGroup, group);
         assertEquals(1, group.getMembers().size());
@@ -203,7 +203,7 @@ public class GroupServiceTest {
         when(groupRepository.findByRef(requestedGroupRef)).thenReturn(Optional.of(group1));
         when(userRepository.findByEmail(userName)).thenReturn(Optional.of(expectedUser));
 
-        assertThrows(ResourceNotFoundException.class, () -> groupService.addMember(requestedGroupRef, userName));
+        assertThrows(ResourceNotFoundException.class, () -> groupService.addMemberByGroupRef(requestedGroupRef, userName));
     }
 
     @Test
@@ -212,7 +212,7 @@ public class GroupServiceTest {
 
         when(groupRepository.findByRef(requestedGroupRef)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> groupService.addMember(requestedGroupRef, null));
+        assertThrows(ResourceNotFoundException.class, () -> groupService.addMemberByGroupRef(requestedGroupRef, null));
     }
 
     @Test
