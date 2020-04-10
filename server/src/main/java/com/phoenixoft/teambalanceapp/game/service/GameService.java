@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.game.service;
 
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
+import com.phoenixoft.teambalanceapp.controller.dto.AddPlayersRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
@@ -63,6 +64,17 @@ public class GameService {
                 .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + userId));
         Game game = findGame(groupId, gameId);
         game.getPlayers().add(newPlayer);
+        return gameRepository.save(game);
+    }
+
+    public Game addPlayersToGame(Long groupId, Long gameId, AddPlayersRequestDto addPlayersRequestDto) {
+        Group group = groupService.findById(groupId);
+        Game game = findGame(groupId, gameId);
+        for (Long playerId : addPlayersRequestDto.getPlayers()) {
+            User newPlayer = group.findMember(playerId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + playerId));
+            game.getPlayers().add(newPlayer);
+        }
         return gameRepository.save(game);
     }
 

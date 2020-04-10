@@ -84,7 +84,13 @@ public class GroupController {
     @PostMapping(path = "/refs/{groupRef}/members")
     public GroupResponseDto addMember(@PathVariable String groupRef, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Group entity = groupService.addMember(groupRef, userDetails.getUsername());
+        Group entity = groupService.addMemberByGroupRef(groupRef, userDetails.getUsername());
+        return Converter.convertGroup(entity);
+    }
+
+    @PostMapping(path = "/{groupId}/members/{userId}")
+    public GroupResponseDto addMember(@PathVariable Long groupId, @PathVariable Long userId) {
+        Group entity = groupService.addMember(groupId, userId);
         return Converter.convertGroup(entity);
     }
 

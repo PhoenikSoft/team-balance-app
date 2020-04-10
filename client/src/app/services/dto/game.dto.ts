@@ -21,4 +21,5 @@ export interface PlayerProjection {
   id: number;
   firstName: string;
   lastName: string;
+  rating: number;
 }

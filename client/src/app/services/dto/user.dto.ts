@@ -5,7 +5,7 @@ export interface UserProjection {
     lastName: string;
     phone: string;
     rating: number;
-    roles: RoleProjection[];
+    // roles: RoleProjection[];
 }
 
 export interface RoleProjection {
@@ -17,4 +17,4 @@ export interface UserDetails {
     id: number;
     username: string;
     roles: RoleProjection[];
-} 
+}

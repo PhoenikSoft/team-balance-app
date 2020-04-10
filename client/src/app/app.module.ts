@@ -25,6 +25,8 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { GameViewComponent } from './game-view/game-view.component';
 import { GameDetailsComponent } from './game-details/game-details.component';
 import { BalancedTeamsTableComponent } from './balanced-teams-table/balanced-teams-table.component';
+import { AddPlayerDialogComponent } from './add-player-dialog/add-player-dialog.component';
+import { AddPlayerDialogViewComponent } from './add-player-dialog-view/add-player-dialog-view.component';
 
 
 @NgModule({
@@ -47,7 +49,9 @@ import { BalancedTeamsTableComponent } from './balanced-teams-table/balanced-tea
     MainPageComponent,
     GameViewComponent,
     GameDetailsComponent,
-    BalancedTeamsTableComponent
+    BalancedTeamsTableComponent,
+    AddPlayerDialogComponent,
+    AddPlayerDialogViewComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,9 @@ import { BalancedTeamsTableComponent } from './balanced-teams-table/balanced-tea
   bootstrap: [AppComponent],
   entryComponents: [
     AddGameDialogComponent,
-    AddGroupDialogComponent
+    AddGroupDialogComponent,
+    AddPlayerDialogComponent,
+    AddPlayerDialogViewComponent
   ]
 })
 export class AppModule { }

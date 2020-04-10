@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { TokenStorageService } from './token-storage.service';
-import { environment } from './../../environments/environment';
-import { GroupsProjection, AddGroupProjection, GroupProjection, AddedGroupProjection, GroupAccessChecks } from './dto/group.dto';
-import { GameProjection } from './dto/game.dto';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {TokenStorageService} from './token-storage.service';
+import {environment} from './../../environments/environment';
+import {AddedGroupProjection, AddGroupProjection, GroupAccessChecks, GroupProjection, GroupsProjection,} from './dto/group.dto';
+import {GameProjection} from './dto/game.dto';
+import {UserProjection} from './dto/user.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class GroupService {
 
   private beEndpoint = `${environment.serverEndpoint}/api`;
 
-  constructor(private http: HttpClient, private tokenService: TokenStorageService) { }
+  constructor(private http: HttpClient, private tokenService: TokenStorageService) {
+  }
 
   fetchGroup(id: number) {
     return this.http.get<GroupProjection>(`${this.beEndpoint}/groups/${id}`);
@@ -42,6 +44,10 @@ export class GroupService {
 
   addGame(groupId: number, game: GameProjection) {
     return this.http.post(`${this.beEndpoint}/groups/${groupId}/games`, game);
+  }
+
+  fetchGroupMembers(groupId: number) {
+    return this.http.get<UserProjection[]>(`${this.beEndpoint}/groups/${groupId}/members`);
   }
 
   checkUserAccessToGroup(groupId: number) {

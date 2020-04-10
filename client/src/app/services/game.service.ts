@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { environment } from "../../environments/environment";
-import { HttpClient } from "@angular/common/http";
-import { TokenStorageService } from "./token-storage.service";
-import { GameProjection, BalancedTeamsProjection } from "./dto/game.dto";
-import { UserProjection } from "./dto/user.dto";
+import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {TokenStorageService} from './token-storage.service';
+import {BalancedTeamsProjection, GameProjection} from './dto/game.dto';
+import {UserProjection} from './dto/user.dto';
+import {GamePlayersList} from '../add-player-dialog/add-player-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class GameService {
 
   balancePlayers(groupId: number, gameId: number) {
     return this.http.get<BalancedTeamsProjection>(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/balancedTeams`);
+  }
+
+  addPlayers(groupId: number, gameId: number, playersList: GamePlayersList) {
+    return this.http.post<UserProjection[]>(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/playersBatch`, playersList);
   }
 
 }

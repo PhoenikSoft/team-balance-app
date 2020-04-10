@@ -3,6 +3,9 @@ import {BalancedTeamsProjection, GameProjection} from '../services/dto/game.dto'
 import {GameService} from '../services/game.service';
 import {ActivatedRoute} from '@angular/router';
 import {UserProjection} from '../services/dto/user.dto';
+import {MatDialog} from '@angular/material/dialog';
+import {AddPlayerDialogViewComponent} from '../add-player-dialog-view/add-player-dialog-view.component';
+import {GamePlayersList} from '../add-player-dialog/add-player-dialog.component';
 
 @Component({
   selector: 'app-game-details',
@@ -14,9 +17,10 @@ export class GameDetailsComponent implements OnInit {
   @Input() game: GameProjection;
 
   groupId: number;
+
   balancedTeams: BalancedTeamsProjection;
 
-  constructor(private gameService: GameService, private route: ActivatedRoute) {
+  constructor(private gameService: GameService, private route: ActivatedRoute, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -35,4 +39,23 @@ export class GameDetailsComponent implements OnInit {
       .then(balanceTeamsProjection => this.balancedTeams = balanceTeamsProjection,
         err => console.error('Cannot balance players', err));
   }
+
+  openAddPlayerDialog() {
+
+    const dialogRef = this.dialog.open(AddPlayerDialogViewComponent, {
+      width: '300px',
+      data: {groupId : this.groupId, currentPlayers: this.game.players}
+    });
+
+    dialogRef.afterClosed().subscribe((result: UserProjection[]) => {
+      if (result) {
+        const playersList: GamePlayersList = new GamePlayersList(result.map(value => value.id));
+        this.gameService.addPlayers(this.groupId, this.game.id, playersList).toPromise()
+          .then((newPlayers: UserProjection[]) => this.game.players = newPlayers,
+            err => console.error('Cannot add players', err));
+      }
+    });
+
+  }
+
 }

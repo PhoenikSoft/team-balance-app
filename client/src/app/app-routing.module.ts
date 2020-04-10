@@ -36,12 +36,13 @@ const routes: Routes = [
         path: 'groups/:groupId',
         canActivateChild: [GroupGuard],
         children: [
-          { path: '', component: GroupViewComponent }
+          { path: '',
+            component: GroupViewComponent },
+          {
+            path: 'games/:gameId',
+            component: GameViewComponent
+          }
         ]
-      },
-      {
-        path: 'groups/:groupId/games/:gameId',
-        component: GameViewComponent
       },
       { path: 'profile', component: ProfileComponent },
       { path: '', component: MainPageViewComponent },

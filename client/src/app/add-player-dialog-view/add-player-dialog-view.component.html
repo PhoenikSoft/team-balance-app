@@ -1,0 +1,3 @@
+<div *ngIf="$groupMembers | async as groupMembers">
+  <app-add-player-dialog [groupMembers]="groupMembers" [currentPlayers]="currentPlayers"></app-add-player-dialog>
+</div>
