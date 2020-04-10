@@ -17,7 +17,7 @@ export class AddPlayerDialogViewComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<AddPlayerDialogViewComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     groupService: GroupService
   ) {
     this.$groupMembers = groupService.fetchGroupMembers(data.groupId);

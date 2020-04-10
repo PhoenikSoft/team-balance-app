@@ -34,7 +34,6 @@ export class AddPlayerDialogComponent implements OnInit{
 
   addPlayers(list) {
     this.selectedPlayers = list.selectedOptions.selected.map(item => item.value);
-    console.log(this.selectedPlayers);
     this.dialogRef.close(this.selectedPlayers);
   }
 
