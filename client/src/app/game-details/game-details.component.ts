@@ -14,6 +14,8 @@ import {GamePlayersList} from '../add-player-dialog/add-player-dialog.component'
 })
 export class GameDetailsComponent implements OnInit {
 
+  readonly minPlayersForBalancing = 3;
+
   @Input() game: GameProjection;
 
   groupId: number;
@@ -30,8 +32,10 @@ export class GameDetailsComponent implements OnInit {
 
   async removePlayer(player: UserProjection) {
     return this.gameService.removePlayer(this.groupId, this.game.id, player.id).toPromise()
-      .then(() => this.game.players = this.game.players.filter(m => m.id !== player.id),
-        err => console.error('Cannot remove player', err));
+      .then(() => {
+              this.game.players = this.game.players.filter(m => m.id !== player.id);
+              this.balancedTeams = null;
+            }, err => console.error('Cannot remove player', err));
   }
 
   async balanceTeams() {
@@ -41,7 +45,6 @@ export class GameDetailsComponent implements OnInit {
   }
 
   openAddPlayerDialog() {
-
     const dialogRef = this.dialog.open(AddPlayerDialogViewComponent, {
       width: '300px',
       data: {groupId : this.groupId, currentPlayers: this.game.players}
@@ -55,7 +58,9 @@ export class GameDetailsComponent implements OnInit {
             err => console.error('Cannot add players', err));
       }
     });
-
   }
 
+  get isBalanceTeamsButtonsDisabled() {
+    return this.game.players.length < this.minPlayersForBalancing;
+  }
 }
