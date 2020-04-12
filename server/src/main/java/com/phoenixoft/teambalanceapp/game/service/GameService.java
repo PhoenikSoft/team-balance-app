@@ -96,10 +96,4 @@ public class GameService {
 
         return teams;
     }
-
-    public void clearBalancedTeams(Long groupId, Long gameId) {
-        Game game = findGame(groupId, gameId);
-        game.setBalancedTeams(null);
-        gameRepository.save(game);
-    }
 }
