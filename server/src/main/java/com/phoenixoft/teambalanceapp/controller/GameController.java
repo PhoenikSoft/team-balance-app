@@ -44,8 +44,8 @@ public class GameController {
     }
 
     @PostMapping
-    public GameResponseDto save(@PathVariable Long groupId, @Valid @RequestBody GameRequestDto dto,
-                                Authentication authentication) {
+    public GameResponseDto saveGame(@PathVariable Long groupId, @Valid @RequestBody GameRequestDto dto,
+                                    Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         Game entity = gameService.save(groupId, dto);
@@ -53,13 +53,13 @@ public class GameController {
     }
 
     @GetMapping(path = "/{gameId}")
-    public GameResponseDto get(@PathVariable Long groupId, @PathVariable Long gameId) {
+    public GameResponseDto getGame(@PathVariable Long groupId, @PathVariable Long gameId) {
         Game entity = gameService.findGame(groupId, gameId);
         return Converter.convertGame(entity);
     }
 
     @PutMapping(path = "/{gameId}")
-    public GameResponseDto update(@PathVariable Long groupId, @PathVariable Long gameId, @Valid @RequestBody GameRequestDto dto) {
+    public GameResponseDto updateGame(@PathVariable Long groupId, @PathVariable Long gameId, @Valid @RequestBody GameRequestDto dto) {
         Game entity = gameService.updateGame(groupId, gameId, dto);
         return Converter.convertGame(entity);
     }

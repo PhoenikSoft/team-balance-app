@@ -19,10 +19,6 @@ export class GameService {
     return this.http.get<GameProjection>(`${this.beEndpoint}/groups/${groupId}/games/${gameId}`);
   }
 
-  fetchGamePlayers(groupId: number, gameId: number) {
-    return this.http.get<UserProjection[]>(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/players`);
-  }
-
   removePlayer(groupId: number, gameId: number, playerId: number) {
     return this.http.delete(`${this.beEndpoint}/groups/${groupId}/games/${gameId}/players/${playerId}`);
   }

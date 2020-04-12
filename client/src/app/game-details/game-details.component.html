@@ -23,7 +23,7 @@
 </div>
 
 <button mat-raised-button color="primary" [disabled]="isBalanceTeamsButtonsDisabled" (click)="balanceTeams()">Balance teams</button>
-<span *ngIf="isBalanceTeamsButtonsDisabled" class="alert alert-warning" role="alert">To balance teams should be at least {{ minPlayersForBalancing }} players added to the game</span>
+<span *ngIf="isBalanceTeamsButtonsDisabled">To balance teams should be at least {{ minPlayersForBalancing }} players added to the game</span>
 <div *ngIf="balancedTeams">
   <mat-card class="teams-section">
     <mat-card-header>

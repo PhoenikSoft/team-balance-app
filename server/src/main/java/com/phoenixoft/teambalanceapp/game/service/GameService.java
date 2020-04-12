@@ -81,6 +81,7 @@ public class GameService {
     public Game deletePlayerFromGame(Long groupId, Long gameId, Long userId) {
         Game game = findGame(groupId, gameId);
         if (game.removePlayer(userId)) {
+            game.setBalancedTeams(null);
             game = gameRepository.save(game);
         }
         return game;
