@@ -5,7 +5,10 @@ export interface UserProjection {
     lastName: string;
     phone: string;
     rating: number;
-    // roles: RoleProjection[];
+}
+
+export interface RolesProjection {
+    roles: RoleProjection[];
 }
 
 export interface RoleProjection {

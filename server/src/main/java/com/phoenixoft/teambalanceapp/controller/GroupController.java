@@ -11,8 +11,10 @@ import com.phoenixoft.teambalanceapp.group.service.GroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
-import com.phoenixoft.teambalanceapp.util.Converter;
+import com.phoenixoft.teambalanceapp.util.DtoConverter;
+import com.phoenixoft.teambalanceapp.util.HttpUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,25 +38,27 @@ public class GroupController {
 
     private GroupService groupService;
     private UserService userService;
+    private HttpUtils httpUtils;
 
     @GetMapping
     public GroupsResponseDto getGroups(@RequestParam Long userId) {
         List<Group> groups = groupService.findGroupsByUser(userId);
-        return Converter.convertGroups(groups);
+        return DtoConverter.convertGroups(groups);
     }
 
     @PostMapping
-    public AddedGroupResponseDto saveGroup(@Valid @RequestBody GroupRequestDto dto, Authentication authentication) {
+    public ResponseEntity<AddedGroupResponseDto> saveGroup(@Valid @RequestBody GroupRequestDto dto,
+                                                           Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
         User creatorUser = userService.findById(user.getId());
         Group group = groupService.save(dto, creatorUser);
-        return Converter.convertAddGroup(group, creatorUser);
+        return httpUtils.addJwtToResponse(ResponseEntity.ok(), creatorUser).body(DtoConverter.convertAddGroup(group));
     }
 
     @GetMapping(path = "/{groupId}")
     public GroupResponseDto getGroup(@PathVariable Long groupId) {
         Group entity = groupService.findById(groupId);
-        return Converter.convertGroup(entity);
+        return DtoConverter.convertGroup(entity);
     }
 
     @PutMapping(path = "/{groupId}")
@@ -63,7 +67,7 @@ public class GroupController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         Group entity = groupService.update(groupId, dto);
-        return Converter.convertGroup(entity);
+        return DtoConverter.convertGroup(entity);
     }
 
     @DeleteMapping(path = "/{groupId}")
@@ -77,32 +81,35 @@ public class GroupController {
     public List<UserResponseDto> getMembers(@PathVariable Long groupId) {
         List<User> membersEntityList = groupService.getMembers(groupId);
         return membersEntityList.stream()
-                .map(Converter::convertUser)
+                .map(DtoConverter::convertUser)
                 .collect(Collectors.toList());
     }
 
     @PostMapping(path = "/refs/{groupRef}/members")
-    public GroupResponseDto addMember(@PathVariable String groupRef, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    public ResponseEntity<GroupResponseDto> addMember(@PathVariable String groupRef, Authentication authentication) {
+        CustomUser userDetails = (CustomUser) authentication.getPrincipal();
         Group entity = groupService.addMemberByGroupRef(groupRef, userDetails.getUsername());
-        return Converter.convertGroup(entity);
+        User user = userService.findById(userDetails.getId());
+        return httpUtils.addJwtToResponse(ResponseEntity.ok(), user).body(DtoConverter.convertGroup(entity));
     }
 
     @PostMapping(path = "/{groupId}/members/{userId}")
     public GroupResponseDto addMember(@PathVariable Long groupId, @PathVariable Long userId) {
         Group entity = groupService.addMember(groupId, userId);
-        return Converter.convertGroup(entity);
+        return DtoConverter.convertGroup(entity);
     }
 
     @DeleteMapping(path = "/{groupId}/members/{userId}")
-    public void deleteMember(@PathVariable Long groupId, @PathVariable Long userId, Authentication authentication) {
+    public void deleteMember(@PathVariable Long groupId, @PathVariable Long userId,
+                             Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         groupService.deleteMember(groupId, userId);
     }
 
     @PostMapping(path = "/{groupId}/members/{userId}/addAdminPrivileges")
-    public void assignUserToGroupAdmins(@PathVariable Long groupId, @PathVariable Long userId, Authentication authentication) {
+    public void assignUserToGroupAdmins(@PathVariable Long groupId, @PathVariable Long userId,
+                                        Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         // todo refactor to check group existence first

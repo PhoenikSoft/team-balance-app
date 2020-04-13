@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {TokenStorageService} from './token-storage.service';
-import {environment} from './../../environments/environment';
-import {AddedGroupProjection, AddGroupProjection, GroupAccessChecks, GroupProjection, GroupsProjection,} from './dto/group.dto';
+import {environment} from '../../environments/environment';
+import {AddedGroupProjection, AddGroupProjection, GroupAccessChecks, GroupProjection, GroupsProjection} from './dto/group.dto';
 import {GameProjection} from './dto/game.dto';
-import {UserProjection} from './dto/user.dto';
+import {RolesProjection, UserDetails, UserProjection} from './dto/user.dto';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -55,8 +56,9 @@ export class GroupService {
   }
 
   checkAdminAccessForGroup(groupId: number) {
-    const user = this.tokenService.getUser();
-    return user.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
+    const token = this.tokenService.getToken();
+    const jwt = jwt_decode(token);
+    const rolesObj = JSON.parse(jwt.roles) as RolesProjection;
+    return rolesObj.roles.map(role => role.name).includes('ADMIN_ROLE_' + groupId);
   }
-
 }

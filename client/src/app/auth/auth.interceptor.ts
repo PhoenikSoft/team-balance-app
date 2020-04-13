@@ -1,25 +1,33 @@
-import { HTTP_INTERCEPTORS, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { TokenStorageService } from '../services/token-storage.service';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { catchError } from "rxjs/operators";
+import {HTTP_INTERCEPTORS, HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {TokenStorageService} from '../services/token-storage.service';
+import {AuthService} from '../services/auth.service';
+import {catchError, tap} from 'rxjs/operators';
 
 const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private tokenService: TokenStorageService, private authService: AuthService, private router: Router) { }
+    private static NEW_JWT_HEADER = 'APP_NEW_JWT';
+
+    constructor(private tokenService: TokenStorageService, private authService: AuthService) {
+    }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         let authReq = req;
         const token = this.tokenService.getToken();
         if (token != null) {
-            authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token) });
+            authReq = req.clone({headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)});
         }
         return next.handle(authReq).pipe(
+            tap(evt => {
+                if (evt instanceof HttpResponse) {
+                    if (evt.headers.has(AuthInterceptor.NEW_JWT_HEADER)) {
+                        this.tokenService.saveToken(evt.headers.get(AuthInterceptor.NEW_JWT_HEADER));
+                    }
+                }
+            }),
             catchError(err => {
                 if (err instanceof HttpErrorResponse) {
                     this.handleErrorResponse(err);
@@ -38,5 +46,5 @@ export class AuthInterceptor implements HttpInterceptor {
 }
 
 export const authInterceptorProviders = [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
 ];

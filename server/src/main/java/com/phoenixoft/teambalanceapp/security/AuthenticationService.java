@@ -39,7 +39,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new UsernameNotFoundException("User by email is not found"));
         return AuthenticationResponse.builder()
                 .userDetails(AuthUserDetails.of(user))
-                .jwt(jwtTokenUtil.generateToken(userDetails, user))
+                .jwt(jwtTokenUtil.generateToken(user))
                 .build();
     }
 

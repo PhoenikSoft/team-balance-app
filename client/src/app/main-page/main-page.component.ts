@@ -28,7 +28,6 @@ export class MainPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: AddedGroupProjection) => {
       if (result) {
         this.groups.groups.push(result.group);
-        this.tokenService.saveUser(result.updatedUser);
       }
     });
   }

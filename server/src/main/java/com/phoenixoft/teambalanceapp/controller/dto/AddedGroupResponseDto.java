@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class AddedGroupResponseDto {
     private GroupResponseDto group;
-    private UserResponseDto updatedUser;
 }
