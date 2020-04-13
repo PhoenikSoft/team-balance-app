@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { GroupService } from '../services/group.service';
 import { MatDialog } from '@angular/material';
 import { AddGroupDialogComponent, AddGroupData } from '../add-group-dialog/add-group-dialog.component';
-import { AddedGroupProjection, GroupsProjection } from '../services/dto/group.dto';
+import {AddedGroupProjection, AddGroupProjection, GroupsProjection} from '../services/dto/group.dto';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class MainPageComponent implements OnInit {
   @Input() groups: GroupsProjection;
 
   constructor(private groupService: GroupService, private tokenService: TokenStorageService,
-    private dialog: MatDialog) { }
+              private dialog: MatDialog) { }
 
   ngOnInit() {
   }
@@ -25,13 +25,10 @@ export class MainPageComponent implements OnInit {
       width: '280px'
     });
 
-    dialogRef.afterClosed().subscribe((result: AddGroupData) => {
+    dialogRef.afterClosed().subscribe((result: AddedGroupProjection) => {
       if (result) {
-        this.groupService.addGroup(result).toPromise()
-          .then((newGroup: AddedGroupProjection) => {
-            this.groups.groups.push(newGroup.group);
-            this.tokenService.saveUser(newGroup.updatedUser);
-          }, err => console.error('Cannot add group', err));
+        this.groups.groups.push(result.group);
+        this.tokenService.saveUser(result.updatedUser);
       }
     });
   }

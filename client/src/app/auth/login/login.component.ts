@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   formControl: FormGroup; // Validation control
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService,
-    private router: Router, fb: FormBuilder) {
+              private router: Router, fb: FormBuilder) {
     this.buildFormValidation(fb);
   }
 
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveToken(data.jwt);
         this.tokenStorage.saveUser(data.userDetails);
 
-        let redirectUrl = this.authService.redirectUrl || '';
+        const redirectUrl = this.authService.redirectUrl || '';
         this.authService.redirectUrl = null;
         this.router.navigate([redirectUrl]);
       },

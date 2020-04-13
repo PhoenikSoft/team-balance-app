@@ -13,5 +13,5 @@ public class UserResponseDto {
     private String lastName;
     private String phone;
     private BigDecimal rating;
-//    private List<RoleResponseDto> roles;
+    private List<RoleResponseDto> roles;
 }

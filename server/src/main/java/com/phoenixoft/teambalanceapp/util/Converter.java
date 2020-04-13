@@ -6,6 +6,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.PlayerResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.RoleResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
@@ -29,7 +30,7 @@ public class Converter {
         dto.setLastName(entity.getLastName());
         dto.setRating(entity.getRating());
         dto.setPhone(entity.getPhone());
-//        dto.setRoles(entity.getRoles().stream().map(RoleResponseDto::of).collect(Collectors.toList()));
+        dto.setRoles(entity.getRoles().stream().map(RoleResponseDto::of).collect(Collectors.toList()));
         return dto;
     }
 
