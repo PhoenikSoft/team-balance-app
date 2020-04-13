@@ -28,10 +28,8 @@ export class MainPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: AddGroupData) => {
       if (result) {
         this.groupService.addGroup(result).toPromise()
-          .then((newGroup: AddedGroupProjection) => {
-            this.groups.groups.push(newGroup.group);
-            this.tokenService.saveUser(newGroup.updatedUser);
-          }, err => console.error('Cannot add group', err));
+          .then((newGroup: AddedGroupProjection) => this.groups.groups.push(newGroup.group),
+                  err => console.error('Cannot add group', err));
       }
     });
   }

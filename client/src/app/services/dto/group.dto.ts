@@ -4,7 +4,6 @@ import { GameProjection } from './game.dto';
 
 export interface AddedGroupProjection {
     group: GroupProjection;
-    updatedUser: UserProjection;
 }
 
 export interface AddGroupProjection {

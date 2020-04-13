@@ -3,7 +3,6 @@ package com.phoenixoft.teambalanceapp.controller.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 public class UserResponseDto {
@@ -13,5 +12,4 @@ public class UserResponseDto {
     private String lastName;
     private String phone;
     private BigDecimal rating;
-//    private List<RoleResponseDto> roles;
 }

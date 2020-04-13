@@ -6,7 +6,7 @@ import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.security.dto.UpdatePasswordRequestDto;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
-import com.phoenixoft.teambalanceapp.util.Converter;
+import com.phoenixoft.teambalanceapp.util.DtoConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,19 +29,19 @@ public class UserController {
     @PostMapping(consumes = "application/json")
     public UserResponseDto save(@Valid @RequestBody UserRequestDto dto) {
         User entity = userService.save(dto);
-        return Converter.convertUser(entity);
+        return DtoConverter.convertUser(entity);
     }
 
     @GetMapping(path = "/{userId}")
     public UserResponseDto get(@PathVariable Long userId) {
         User entity = userService.findById(userId);
-        return Converter.convertUser(entity);
+        return DtoConverter.convertUser(entity);
     }
 
     @PutMapping(path = "/{userId}")
     public UserResponseDto update(@Valid @RequestBody UserRequestDto dto, @PathVariable Long userId) {
         User entity = userService.update(userId, dto);
-        return Converter.convertUser(entity);
+        return DtoConverter.convertUser(entity);
     }
 
 //    @DeleteMapping(path = "/{userId}")

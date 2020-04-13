@@ -21,6 +21,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
+
+import static com.phoenixoft.teambalanceapp.util.HttpUtils.RESPONSE_NEW_JWT_HEADER;
 
 @EnableWebSecurity
 @AllArgsConstructor
@@ -73,6 +76,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // setAllowedHeaders is important! Without it, OPTIONS preflight request
         // will fail with 403 Invalid CORS request
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Collections.singletonList(RESPONSE_NEW_JWT_HEADER));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

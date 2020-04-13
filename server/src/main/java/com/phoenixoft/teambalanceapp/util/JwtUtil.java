@@ -29,10 +29,10 @@ public class JwtUtil {
     }
 
     @SneakyThrows
-    public String generateToken(UserDetails userDetails, User dbUser) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", objectMapper.writeValueAsString(JwtRoles.of(dbUser.getRoles())));
-        return createToken(claims, userDetails.getUsername());
+        claims.put("roles", objectMapper.writeValueAsString(JwtRoles.of(user.getRoles())));
+        return createToken(claims, user.getEmail());
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
