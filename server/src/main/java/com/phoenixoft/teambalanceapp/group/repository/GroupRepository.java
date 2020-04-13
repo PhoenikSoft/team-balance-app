@@ -8,7 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface GroupRepository extends CrudRepository<Group, Long> {
+
     boolean existsById(Long groupId);
+
+    boolean existsByName(String name);
 
     Optional<Group> findByRef(String ref);
 }
