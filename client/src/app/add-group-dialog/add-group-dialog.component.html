@@ -6,7 +6,14 @@
 			<mat-error *ngIf="name.hasError('required')">
 				Name is <strong>required</strong>
 			</mat-error>
+			<mat-error *ngFor="let error of name.errors?.validationErrors">
+				{{ error }}
+			</mat-error>
 		</mat-form-field>
+
+		<mat-error *ngIf="formControl.hasError('internalError')">
+			Something went wrong. Please try again later...
+		</mat-error>
 
 		<div>
 			<button mat-button mat-dialog-close color="accent">Cancel</button>

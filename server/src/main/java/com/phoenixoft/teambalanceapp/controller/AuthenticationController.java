@@ -28,7 +28,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping(path = "/login")
-    public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         return authenticationService.authenticateUser(authenticationRequest);
     }
 

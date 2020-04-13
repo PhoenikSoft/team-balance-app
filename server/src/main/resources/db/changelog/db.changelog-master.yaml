@@ -67,3 +67,13 @@ databaseChangeLog:
                   type: jsonb
             schemaName: public
             tableName: tbl_game
+  - changeSet:
+      id: add-group-name-unique-constraint
+      author: Yevhen Karychkovskyi
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: group-name-unique
+            schemaName: public
+            tableName: tbl_group
+            validate: true
