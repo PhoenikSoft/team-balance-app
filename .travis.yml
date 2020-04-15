@@ -1,6 +1,7 @@
 branches:
   only: 
     - master
+    - release
 services:
   - docker
 
@@ -30,6 +31,6 @@ deploy:
   bucket_name: elasticbeanstalk-eu-central-1-805957902858
   bucket_path: team-balance-app
   on:
-    branch: master
+    branch: release
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
