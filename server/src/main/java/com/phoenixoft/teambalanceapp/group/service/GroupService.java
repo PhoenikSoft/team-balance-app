@@ -107,6 +107,7 @@ public class GroupService {
         if (group.removeMember(memberToDelete)) {
             revokeGroupPrivilegesFromMember(groupId, memberToDelete);
             groupRepository.save(group);
+            userRepository.save(memberToDelete);
         }
     }
 

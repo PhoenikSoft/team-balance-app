@@ -28,8 +28,8 @@ import java.util.List;
 @Entity
 @Table(name = "tbl_game")
 @Data
-@ToString(exclude = {"players", "group"})
-@EqualsAndHashCode(exclude = {"players", "group"})
+@ToString(exclude = {"balancedTeams", "players", "group"})
+@EqualsAndHashCode(exclude = {"balancedTeams", "players", "group"})
 public class Game {
 
     @Id
@@ -58,6 +58,10 @@ public class Game {
     private Group group;
 
     public boolean removePlayer(Long playerId) {
-        return players.removeIf(player -> player.getId().equals(playerId));
+        boolean removed = players.removeIf(player -> player.getId().equals(playerId));
+        if (removed) {
+            balancedTeams = null;
+        }
+        return removed;
     }
 }
