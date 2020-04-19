@@ -100,11 +100,13 @@ public class GroupController {
     }
 
     @DeleteMapping(path = "/{groupId}/members/{userId}")
-    public void deleteMember(@PathVariable Long groupId, @PathVariable Long userId,
-                             Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    public ResponseEntity<?> deleteMember(@PathVariable Long groupId, @PathVariable Long userId,
+                                          Authentication authentication) {
+        CustomUser userDetails = (CustomUser) authentication.getPrincipal();
         groupService.checkAdminPermissions(userDetails, groupId);
         groupService.deleteMember(groupId, userId);
+        User user = userService.findById(userDetails.getId());
+        return httpUtils.addJwtToResponse(ResponseEntity.ok(), user).build();
     }
 
     @PostMapping(path = "/{groupId}/members/{userId}/addAdminPrivileges")

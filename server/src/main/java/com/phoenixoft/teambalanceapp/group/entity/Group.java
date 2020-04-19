@@ -40,11 +40,16 @@ public class Group {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<User> members = new ArrayList<>();
 
-    @OneToMany(orphanRemoval = true, mappedBy = "group")
+    @OneToMany(orphanRemoval = true, mappedBy = "group", cascade = CascadeType.PERSIST)
     private List<Game> games = new ArrayList<>();
 
     public boolean removeMember(User memberToDelete) {
+        games.forEach(game -> {
+            game.removePlayer(memberToDelete.getId());
+            memberToDelete.getGames().remove(game);
+        });
         memberToDelete.getGroups().remove(this);
+
         return members.removeIf(groupMember -> groupMember.getId().equals(memberToDelete.getId()));
     }
 
