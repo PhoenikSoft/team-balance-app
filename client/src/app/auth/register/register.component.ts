@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   formControl: FormGroup; // Validation control
 
   constructor(private authService: AuthService,
-    private router: Router, fb: FormBuilder) {
+              private router: Router, fb: FormBuilder) {
     this.buildFormValidation(fb);
   }
 
@@ -76,13 +76,24 @@ export class RegisterComponent implements OnInit {
     this.formControl = fb.group({
       firstName: fb.control('', [Validators.required, Validators.maxLength(50)]),
       lastName: fb.control('', [Validators.required, Validators.maxLength(50)]),
-      email: fb.control('', [Validators.required, Validators.maxLength(50)]),
+      email: fb.control('', [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.email
+      ]),
       password: fb.control('', [Validators.required]),
       confirmPassword: fb.control('', [Validators.required]),
-      phone: fb.control('', [Validators.required, Validators.maxLength(32)]),
-      rating: fb.control('', [Validators.required, Validators.maxLength(2)])
-    },
-      {
+      phone: fb.control('', [
+          Validators.required,
+          Validators.maxLength(9),
+          Validators.pattern('^\\d{9}$')
+      ]),
+      rating: fb.control('', [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(100)
+      ])
+    }, {
         validator: PasswordValidation.MatchPassword
       });
   }
