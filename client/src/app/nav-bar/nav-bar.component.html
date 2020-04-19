@@ -5,6 +5,7 @@
     <span class="toolbar-fill-remaining-space "></span>
 
     <span *ngIf="isUserLoggedIn">
+        <app-feedback-button></app-feedback-button>
         <span><a mat-button routerLink="/profile">Profile</a></span>
         <app-logout color="accent"></app-logout>
     </span>
