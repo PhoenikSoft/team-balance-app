@@ -77,3 +77,11 @@ databaseChangeLog:
             schemaName: public
             tableName: tbl_group
             validate: true
+  - changeSet:
+      id: create-feedback-table
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/create_feedback_table.sql
+            relativeToChangelogFile: true
+            stripComments: true

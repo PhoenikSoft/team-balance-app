@@ -1,9 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { GroupService } from '../services/group.service';
-import { MatDialog } from '@angular/material';
-import { AddGroupDialogComponent, AddGroupData } from '../add-group-dialog/add-group-dialog.component';
-import {AddedGroupProjection, AddGroupProjection, GroupsProjection} from '../services/dto/group.dto';
-import { TokenStorageService } from '../services/token-storage.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {AddGroupDialogComponent} from '../add-group-dialog/add-group-dialog.component';
+import {AddedGroupProjection, GroupsProjection} from '../services/dto/group.dto';
 
 @Component({
   selector: 'app-main-page',
@@ -14,8 +12,7 @@ export class MainPageComponent implements OnInit {
 
   @Input() groups: GroupsProjection;
 
-  constructor(private groupService: GroupService, private tokenService: TokenStorageService,
-              private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
   }
