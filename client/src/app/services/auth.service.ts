@@ -1,9 +1,9 @@
-import { EventEmitter, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { TokenStorageService } from './token-storage.service';
-import { tap } from 'rxjs/operators';
-import { environment } from './../../environments/environment';
+import {EventEmitter, Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {TokenStorageService} from './token-storage.service';
+import {tap} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class AuthService {
       email: credentials.email,
       password: credentials.password
     }, this.httpOptions)
-      .pipe(tap(_data => this.loginEvent.emit(true)));
+      .pipe(tap(() => this.loginEvent.emit(true)));
   }
 
   logout() {
@@ -39,14 +39,7 @@ export class AuthService {
     this.loginEvent.emit(false);
   }
 
-  register(user): Observable<any> {
-    return this.http.post(this.AUTH_API + 'register', {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      phone: user.phone,
-      rating: user.rating
-    }, this.httpOptions);
+  register(user) {
+    return this.http.post(this.AUTH_API + 'register', user, this.httpOptions);
   }
 }

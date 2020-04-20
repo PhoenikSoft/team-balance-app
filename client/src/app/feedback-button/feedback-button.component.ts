@@ -29,7 +29,6 @@ export class FeedbackButtonComponent implements OnInit {
                 this._snackBar.open(this.successFeedbackMsg, null, {
                     duration: 2000,
                 });
-                // TODO: Show message that feedback was successfully added
             }
         });
     }

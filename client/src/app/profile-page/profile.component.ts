@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserService } from "../services/user.service";
-import { TokenStorageService } from "../services/token-storage.service";
-import { MatDialog } from "@angular/material/dialog";
-import { UpdateDialogComponent } from "./update-dialog/update-dialog.component";
-import { UserProjection } from '../services/dto/user.dto';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../services/user.service';
+import {TokenStorageService} from '../services/token-storage.service';
+import {UserProjection} from '../services/dto/user.dto';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-profile',
@@ -14,10 +12,12 @@ import { UserProjection } from '../services/dto/user.dto';
 })
 export class ProfileComponent {
 
+  private successProfileUpdateMsg = 'Profile is updated successfully!';
+
   formControl: FormGroup; // Validation control
 
   constructor(private userService: UserService, private tokenStorageService: TokenStorageService,
-    private router: Router, fb: FormBuilder, private dialog: MatDialog) {
+              fb: FormBuilder, private snackBar: MatSnackBar) {
     this.buildFormValidation(fb);
     userService.fetch(tokenStorageService.getUser().id).subscribe(value => {
       this.formControl.setValue({
@@ -54,12 +54,9 @@ export class ProfileComponent {
     const user: UserProjection = this.formControl.value;
     user.id = this.tokenStorageService.getUser().id;
     this.userService.update(user).subscribe(
-      data => {
-        let dialogRef = this.dialog.open(UpdateDialogComponent, {
-        });
-      },
-      err => {
-        console.log(err);
+      () => this.snackBar.open(this.successProfileUpdateMsg, null, {
+        duration: 2000,
+      }), err => {
         switch (err.status) {
           case 401:
             this.formControl.setErrors({
@@ -80,9 +77,13 @@ export class ProfileComponent {
     this.formControl = fb.group({
       firstName: fb.control('', [Validators.required, Validators.maxLength(50)]),
       lastName: fb.control('', [Validators.required, Validators.maxLength(50)]),
-      email: fb.control('', [Validators.required, Validators.maxLength(50)]),
-      phone: fb.control('', [Validators.required, Validators.maxLength(32)]),
-      rating: fb.control('', [Validators.required, Validators.maxLength(2)])
+      email: fb.control({value: '', disabled: true}, [Validators.required, Validators.email]),
+      phone: fb.control('', [
+        Validators.required,
+        Validators.maxLength(9),
+        Validators.pattern('^\\d{9}$')
+      ]),
+      rating: fb.control('')
     });
   }
 }

@@ -44,13 +44,9 @@
       <mat-error *ngIf="phone.hasError( 'pattern')">Should be valid phone (9 digits)</mat-error>
     </mat-form-field>
   </div>
-  <div>
-    <mat-form-field>
-      <input matInput type="number" placeholder="Rating" formControlName="rating">
-      <mat-error *ngIf="rating.hasError('required')">Rating is <strong>required</strong></mat-error>
-      <mat-error *ngIf="rating.hasError( 'min')">Min value is 1</mat-error>
-      <mat-error *ngIf="rating.hasError( 'max')">Max value is 100</mat-error>
-    </mat-form-field>
+  <div class="rating-container">
+    <label for="rating">Rating</label>
+    <mat-slider id="rating" min="1" max="100" thumbLabel="true" formControlName="rating"></mat-slider>
   </div>
 
   <mat-error *ngIf="formControl.hasError('emailExists')">

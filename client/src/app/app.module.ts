@@ -18,7 +18,6 @@ import { authInterceptorProviders } from './auth/auth.interceptor';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { YourGroupsComponent } from './your-groups/your-groups.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { UpdateDialogComponent } from './profile-page/update-dialog/update-dialog.component';
 import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -46,7 +45,6 @@ import { FeedbackButtonComponent } from './feedback-button/feedback-button.compo
     MainPageViewComponent,
     YourGroupsComponent,
     NavBarComponent,
-    UpdateDialogComponent,
     AddGroupDialogComponent,
     MainPageComponent,
     GameViewComponent,

@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
           Validators.maxLength(9),
           Validators.pattern('^\\d{9}$')
       ]),
-      rating: fb.control('', [
+      rating: fb.control(50, [
           Validators.required,
           Validators.min(1),
           Validators.max(100)
