@@ -14,6 +14,7 @@ import {MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/mat
 import {MatTreeModule} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
     exports: [
@@ -29,7 +30,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
         MatToolbarModule,
         MatTreeModule,
         MatIconModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatSliderModule
     ],
     providers: [
         {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: true}}

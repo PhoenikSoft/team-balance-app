@@ -26,32 +26,21 @@ public class UserController {
 
     private UserService userService;
 
-    @PostMapping(consumes = "application/json")
-    public UserResponseDto save(@Valid @RequestBody UserRequestDto dto) {
-        User entity = userService.save(dto);
-        return DtoConverter.convertUser(entity);
-    }
-
     @GetMapping(path = "/{userId}")
-    public UserResponseDto get(@PathVariable Long userId) {
+    public UserResponseDto getUser(@PathVariable Long userId) {
         User entity = userService.findById(userId);
         return DtoConverter.convertUser(entity);
     }
 
     @PutMapping(path = "/{userId}")
-    public UserResponseDto update(@Valid @RequestBody UserRequestDto dto, @PathVariable Long userId) {
+    public UserResponseDto updateUser(@Valid @RequestBody UserRequestDto dto, @PathVariable Long userId) {
         User entity = userService.update(userId, dto);
         return DtoConverter.convertUser(entity);
     }
 
-//    @DeleteMapping(path = "/{userId}")
-    public void delete(@PathVariable Long userId) {
-        userService.delete(userId);
-    }
-
     @PostMapping(path = "/updatePassword")
     public void updatePassword(@RequestBody @Valid UpdatePasswordRequestDto dto,
-                                            Authentication authentication) {
+                               Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
         userService.updatePassword(dto, user);
     }

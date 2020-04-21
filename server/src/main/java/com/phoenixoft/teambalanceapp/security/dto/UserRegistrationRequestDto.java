@@ -9,15 +9,18 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Data
 public class UserRegistrationRequestDto {
 
     @NotBlank(message = "{user.blank.firstName}")
+    @Size(max = 50)
     private String firstName;
 
     @NotBlank(message = "{user.blank.lastName}")
+    @Size(max = 50)
     private String lastName;
 
     @NotBlank(message = "{user.blank.password}")
@@ -25,6 +28,7 @@ public class UserRegistrationRequestDto {
 
     @Email(message = "{email.invalid}")
     @NotBlank(message = "{user.blank.email}")
+    @Size(max = 50)
     private String email;
 
     @NotBlank(message = "{user.blank.phone}")
@@ -32,7 +36,7 @@ public class UserRegistrationRequestDto {
     private String phone;
 
     @NotNull(message = "{user.null.rating}")
-    @Max(99)
+    @Max(100)
     @Min(1)
     private BigDecimal rating;
 
