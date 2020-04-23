@@ -18,7 +18,6 @@ import { authInterceptorProviders } from './auth/auth.interceptor';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { YourGroupsComponent } from './your-groups/your-groups.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { UpdateDialogComponent } from './profile-page/update-dialog/update-dialog.component';
 import { AddGroupDialogComponent } from './add-group-dialog/add-group-dialog.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -27,6 +26,8 @@ import { GameDetailsComponent } from './game-details/game-details.component';
 import { BalancedTeamsTableComponent } from './balanced-teams-table/balanced-teams-table.component';
 import { AddPlayerDialogComponent } from './add-player-dialog/add-player-dialog.component';
 import { AddPlayerDialogViewComponent } from './add-player-dialog-view/add-player-dialog-view.component';
+import { AddFeedbackDialogComponent } from './add-feedback-dialog/add-feedback-dialog.component';
+import { FeedbackButtonComponent } from './feedback-button/feedback-button.component';
 
 
 @NgModule({
@@ -44,14 +45,15 @@ import { AddPlayerDialogViewComponent } from './add-player-dialog-view/add-playe
     MainPageViewComponent,
     YourGroupsComponent,
     NavBarComponent,
-    UpdateDialogComponent,
     AddGroupDialogComponent,
     MainPageComponent,
     GameViewComponent,
     GameDetailsComponent,
     BalancedTeamsTableComponent,
     AddPlayerDialogComponent,
-    AddPlayerDialogViewComponent
+    AddPlayerDialogViewComponent,
+    AddFeedbackDialogComponent,
+    FeedbackButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import { AddPlayerDialogViewComponent } from './add-player-dialog-view/add-playe
     AddGameDialogComponent,
     AddGroupDialogComponent,
     AddPlayerDialogComponent,
-    AddPlayerDialogViewComponent
+    AddPlayerDialogViewComponent,
+    AddFeedbackDialogComponent
   ]
 })
 export class AppModule { }

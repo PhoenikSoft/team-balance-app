@@ -4,23 +4,24 @@
 <form [formGroup]="formControl" (ngSubmit)="register()">
   <div>
     <mat-form-field>
-      <input matInput placeholder="First Name" formControlName="firstName">
+      <input matInput placeholder="First Name" formControlName="firstName" maxlength="50">
       <mat-error *ngIf="firstName.hasError('required')">First name is <strong>required</strong></mat-error>
-<!--      <mat-error *ngIf="firstName.hasError( 'maxlength')">You have more than 50 characters</mat-error>-->
+      <mat-error *ngIf="firstName.hasError( 'maxlength')">You have more than 50 characters</mat-error>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
-      <input matInput placeholder="Last Name" formControlName="lastName">
+      <input matInput placeholder="Last Name" formControlName="lastName" maxlength="50">
       <mat-error *ngIf="lastName.hasError('required')">Last name is <strong>required</strong></mat-error>
-<!--      <mat-error *ngIf="firstName.hasError( 'maxlength')">You have more than 50 characters</mat-error>-->
+      <mat-error *ngIf="lastName.hasError( 'maxlength')">You have more than 50 characters</mat-error>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
-      <input matInput placeholder="E-mail" formControlName="email">
+      <input matInput placeholder="E-mail" formControlName="email" maxlength="50">
       <mat-error *ngIf="email.hasError('required')">Email is <strong>required</strong></mat-error>
-<!--      <mat-error *ngIf="firstName.hasError( 'maxlength')">You have more than 50 characters</mat-error>-->
+      <mat-error *ngIf="email.hasError( 'maxlength')">You have more than 50 characters</mat-error>
+      <mat-error *ngIf="email.hasError( 'email')">Should be valid email</mat-error>
     </mat-form-field>
   </div>
   <div>
@@ -37,17 +38,15 @@
   </div>
   <div>
     <mat-form-field>
-      <input matInput placeholder="Phone number" formControlName="phone">
+      <input matInput placeholder="Phone number" formControlName="phone" maxlength="9">
       <mat-error *ngIf="phone.hasError('required')">Phone number is <strong>required</strong></mat-error>
-<!--      <mat-error *ngIf="firstName.hasError( 'maxlength')">You have more than 32 characters</mat-error>-->
+      <mat-error *ngIf="phone.hasError( 'maxlength')">You have more than 9 characters</mat-error>
+      <mat-error *ngIf="phone.hasError( 'pattern')">Should be valid phone (9 digits)</mat-error>
     </mat-form-field>
   </div>
-  <div>
-    <mat-form-field>
-      <input matInput type="number" placeholder="Rating" formControlName="rating">
-      <mat-error *ngIf="rating.hasError('required')">Rating is <strong>required</strong></mat-error>
-<!--      <mat-error *ngIf="firstName.hasError( 'maxlength')">Max value is 100</mat-error>-->
-    </mat-form-field>
+  <div class="rating-container">
+    <label for="rating">Rating</label>
+    <mat-slider id="rating" min="1" max="100" thumbLabel="true" formControlName="rating"></mat-slider>
   </div>
 
   <mat-error *ngIf="formControl.hasError('emailExists')">
