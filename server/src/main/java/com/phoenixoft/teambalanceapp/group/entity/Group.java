@@ -53,6 +53,10 @@ public class Group {
         return members.removeIf(groupMember -> groupMember.getId().equals(memberToDelete.getId()));
     }
 
+    public boolean removeGame(Game gameToRemove) {
+        return this.getGames().remove(gameToRemove);
+    }
+
     public Optional<User> findMember(Long memberId) {
         return members.stream().filter(member -> member.getId().equals(memberId)).findFirst();
     }
