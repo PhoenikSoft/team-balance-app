@@ -55,14 +55,14 @@ import { FeedbackButtonComponent } from './feedback-button/feedback-button.compo
     AddFeedbackDialogComponent,
     FeedbackButtonComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    ClipboardModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        ClipboardModule
+    ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent],
   entryComponents: [

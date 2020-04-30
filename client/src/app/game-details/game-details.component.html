@@ -11,8 +11,10 @@
   <mat-card-content>
     <mat-nav-list>
       <mat-list-item *ngFor="let player of game.players">
-        <span class="list-item"><b>{{player.rating}}</b> | {{ player.firstName }} {{ player.lastName }}</span>
-        <button mat-raised-button color="warn" (click)="removePlayer(player)">Delete</button>
+        <span mat-line class="list-item"><b>{{player.rating}}</b> | {{ player.firstName }} {{ player.lastName }}</span>
+        <button mat-raised-button color="warn" (click)="removePlayer(player)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </mat-list-item>
     </mat-nav-list>
   </mat-card-content>

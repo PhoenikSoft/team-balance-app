@@ -51,6 +51,7 @@ public class GameService {
         Group group = groupService.findById(groupId);
         Game gameForDelete = group.findGame(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
+        group.removeGame(gameForDelete);
         gameRepository.deleteById(gameForDelete.getId());
     }
 

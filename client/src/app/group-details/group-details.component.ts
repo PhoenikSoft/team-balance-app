@@ -37,7 +37,9 @@ export class GroupDetailsComponent implements OnInit {
         err => console.error('Cannot remove member', err));
   }
 
-  async removeGame(game: GameProjection) {
+  async removeGame(game: GameProjection, e: Event) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
     return this.groupService.removeGame(this.group.id, game.id).toPromise()
       .then(() => this.group.games = this.group.games.filter(g => g.id !== game.id),
         err => console.error('Cannot remove game', err));
