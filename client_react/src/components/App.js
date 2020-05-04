@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../_helpers';
 import SignIn from './SignInComponent';
+import SignUp from './SignUpComponent';
 
 const App = () => (
     <div>
@@ -13,6 +14,9 @@ const App = () => (
                 </Route>
                 <Route path='/login'>
                     <SignIn />
+                </Route>
+                <Route path='/register'>
+                    <SignUp />
                 </Route>
                 <Route path='/home'>
                     <div>HOME</div>

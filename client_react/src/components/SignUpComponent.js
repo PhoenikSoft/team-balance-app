@@ -1,16 +1,18 @@
 import { connect } from 'react-redux';
+
 import { userActions } from '../actions';
-import SignIn from './SignIn';
+import SignUp from './SignUp';
+
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLoginClick: e => {
+        onRegisterClick: e => {
             e.preventDefault();
             return (email, password) => {
                 dispatch(userActions.login(email, password));
-            }
+            };
         }
     }
 };
 
-export default connect(null, mapDispatchToProps)(SignIn)
+export default connect(null, mapDispatchToProps)(SignUp)

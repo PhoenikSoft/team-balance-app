@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ onLoginClick }) {
+export default function SignIn({ onLoginClick,onRegisterClick }) {
   const classes = useStyles();
 
   const [inputs, setInputs] = useState({
@@ -93,15 +93,14 @@ export default function SignIn({ onLoginClick }) {
             color="primary"
             className={classes.submit}
             onClick={e => {
-              e.preventDefault();
-              onLoginClick(email, password)
-            }} //TODO check if form valid
+              onLoginClick(e)(email, password);
+            }} 
           >
             Sign In
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
