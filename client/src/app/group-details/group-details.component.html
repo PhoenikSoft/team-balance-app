@@ -1,37 +1,43 @@
 <h2>{{ group.name }} group</h2>
 <div>
-	<button *ngIf="isAdmin" mat-raised-button color="primary" ngxClipboard [cbContent]="addMemberUri">Copy group link to
-		the clipboard</button>
+  <button *ngIf="isAdmin" mat-raised-button color="primary" ngxClipboard [cbContent]="addMemberUri">Copy group link to
+    the clipboard
+  </button>
 </div>
 
 <mat-card class="members-section">
-	<mat-card-header>
-		<mat-card-title>Members</mat-card-title>
-	</mat-card-header>
-	<mat-card-content>
-		<mat-nav-list>
-			<mat-list-item *ngFor="let member of group.members">
-				<span class="list-item">{{ member.firstName }} {{ member.lastName }}</span>
-				<button *ngIf="isAdmin && notCurrentUser(member)" mat-raised-button color="warn"
-					(click)="removeMember(member)">Delete</button>
-			</mat-list-item>
-		</mat-nav-list>
-	</mat-card-content>
+  <mat-card-header>
+    <mat-card-title>Members</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let member of group.members">
+        <span mat-line class="list-item">{{ member.firstName }} {{ member.lastName }}</span>
+        <button *ngIf="isAdmin && notCurrentUser(member)" mat-raised-button color="warn"
+                (click)="removeMember(member)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-card-content>
 </mat-card>
-
 <mat-card class="games-section">
-	<mat-card-header>
-		<mat-card-title>Games</mat-card-title>
-	</mat-card-header>
-	<mat-card-content>
-		<mat-nav-list>
-			<a mat-list-item *ngFor="let game of group.games" [routerLink]="['games', game.id]">
+  <mat-card-header>
+    <mat-card-title>Games</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let game of group.games" [routerLink]="['games', game.id]">
 
-				<span class="list-item">{{ game.name }}</span>
-				<button *ngIf="isAdmin" mat-raised-button color="warn" (click)="removeGame(game)">Delete</button>
-			</a>
-		</mat-nav-list>
+        <span mat-line class="list-item">{{ game.name }}</span>
 
-		<button *ngIf="isAdmin" mat-raised-button color="primary" (click)="openAddGameDialog()">Add new game</button>
-	</mat-card-content>
+        <button mat-icon-button *ngIf="isAdmin" mat-raised-button color="warn" (click)="removeGame(game, $event)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </mat-list-item>
+    </mat-nav-list>
+
+    <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="openAddGameDialog()">Add new game</button>
+  </mat-card-content>
 </mat-card>

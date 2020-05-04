@@ -127,7 +127,10 @@ public class GameServiceTest implements TestData {
         Group mockGroup = mockGroup(groupId);
         long gameId1 = 2L;
         long gameId2 = 3L;
-        mockGroup.setGames(Arrays.asList(mockGame(gameId1), mockGame(gameId2)));
+        ArrayList<Game> games = new ArrayList<>();
+        games.add(mockGame(gameId1));
+        games.add(mockGame(gameId2));
+        mockGroup.setGames(games);
         when(groupService.findById(groupId)).thenReturn(mockGroup);
 
         gameService.delete(groupId, gameId1);
