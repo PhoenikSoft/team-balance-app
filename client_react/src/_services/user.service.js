@@ -2,10 +2,12 @@ import config from '../config';
 //import { authHeader } from '../_helpers';
 
 export const userService = {
-    login
+    login,
+    register
 };
 
 const LOGIN_URL = '/api/auth/login';
+const REGISTER_URL = '/api/auth/register';
 
 function login(email, password) {
     const requestOptions = {
@@ -26,6 +28,21 @@ function login(email, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+}
+
+function register(input) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input)
+    };
+
+    return fetch(`${config.apiUrl}${REGISTER_URL}`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            localStorage.setItem('user', JSON.stringify(user));
+            return user;
+        });
 }
 
 function handleResponse(response) {

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { debounce } from 'lodash';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
+import PhoneInput from './PhoneInput'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -32,8 +34,87 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+export default function SignUp({ onRegisterClick, isErrorForm }) {
     const classes = useStyles();
+
+    const [inputs, setInputs] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        confirmPassword: '',
+        password: '',
+        rating: 50
+    });
+
+    const [errors, setErrors] = useState({
+        passwordError: false,
+        emailError: false,
+        phoneError: false,
+        lastNameError: false,
+        firstNameError: false
+    })
+
+    function handleChange(e) {
+        const { name, value } = e.target;
+        if (!value) {
+            setErrors(errors => ({ ...errors, [`${name}Error`]: true }));
+            setInputs(inputs => ({ ...inputs, [name]: value }));
+
+        } else {
+            setErrors(errors => ({ ...errors, [`${name}Error`]: false }));
+            setInputs(inputs => ({ ...inputs, [name]: value }));
+        }
+
+    }
+
+    function handleRatingChange(e, newValue) {
+        setInputs(inputs => ({ ...inputs, rating: newValue }));
+    }
+
+    const debouncedHandleRatingChange = debounce(handleRatingChange, 500);
+
+    function handlePhoneChange(newPhone) {
+
+        if (newPhone.length !== 12) {
+            setErrors(errors => ({ ...errors, phoneError: true }));
+        } else {
+            setErrors(errors => ({ ...errors, phoneError: false }));
+        };
+        setInputs(inputs => ({ ...inputs, phone: newPhone }));
+    }
+
+    function handlePasswordChange(e) {
+        const { value } = e.target;
+        if (!value) {
+            setErrors(errors => ({ ...errors, passwordError: true }));
+            handleChange(e);
+            return;
+        };
+        if (value === inputs.confirmPassword || value === inputs.password) {
+            setErrors(errors => ({ ...errors, passwordError: false }));
+        } else {
+            setErrors(errors => ({ ...errors, passwordError: true }));
+        };
+        handleChange(e);
+    }
+
+    function handleEmailChange(e) {
+
+        const { value } = e.target;
+        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (value.match(emailRegex)) {
+            setInputs(inputs => ({ ...inputs, email: value }));
+            setErrors(errors => ({ ...errors, emailError: false }));
+        } else {
+            setInputs(inputs => ({ ...inputs, email: value }));
+            setErrors(errors => ({ ...errors, emailError: true }));
+        }
+    }
+
+    function isSubmitDisabled() {
+        return Object.values(errors).some(error => error) || Object.values(inputs).some(error => !error)
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -45,7 +126,7 @@ export default function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign up
         </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} >
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -57,6 +138,8 @@ export default function SignUp() {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                onChange={handleChange}
+                                error={errors.firstNameError}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -68,6 +151,8 @@ export default function SignUp() {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                onChange={handleChange}
+                                error={errors.lastNameError}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -79,21 +164,19 @@ export default function SignUp() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={handleEmailChange}
+                                error={inputs.emailError}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <PhoneInput
+                                error={errors.phoneError}
+                                onChange={handlePhoneChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="phone"
-                                label="Phone number"
-                                name="phone"
-                                autoComplete="phone"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
+                                error={errors.passwordError}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -102,10 +185,12 @@ export default function SignUp() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                onChange={handlePasswordChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                error={errors.passwordError}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -114,19 +199,27 @@ export default function SignUp() {
                                 type="password"
                                 id="confirmPassword"
                                 autoComplete="current-password"
+                                onChange={handlePasswordChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                           <Slider/>
+                            <Typography>Rating</Typography>
+                            <Slider
+                                name="rating"
+                                onChange={debouncedHandleRatingChange}
+                            />
                         </Grid>
                     </Grid>
                     <Button
+                        disabled={isSubmitDisabled()}
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                    >
+                        onClick={e => {
+                            onRegisterClick(e)(inputs);
+                        }}>
                         Sign Up
           </Button>
                     <Grid container justify="flex-end">

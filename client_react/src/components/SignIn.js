@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ onLoginClick,onRegisterClick }) {
+export default function SignIn({ onLoginClick }) {
   const classes = useStyles();
 
   const [inputs, setInputs] = useState({

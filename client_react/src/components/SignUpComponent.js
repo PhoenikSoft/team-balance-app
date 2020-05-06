@@ -8,8 +8,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onRegisterClick: e => {
             e.preventDefault();
-            return (email, password) => {
-                dispatch(userActions.login(email, password));
+            return (inputs) => {
+                dispatch(userActions.register(inputs));
             };
         }
     }
