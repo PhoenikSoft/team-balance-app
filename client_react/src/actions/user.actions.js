@@ -5,6 +5,7 @@ import { userService } from '../_services';
 
 export const userActions = {
     login,
+    logout,
     register
 };
 
@@ -14,7 +15,7 @@ function login(username, password) {
 
         userService.login(username, password)
             .then(
-                user => { 
+                user => {
                     dispatch(success(user));
                     history.push('/home');
                 },
@@ -32,11 +33,11 @@ function login(username, password) {
 
 function register(inputs) {
     return dispatch => {
-        dispatch(request({ username:inputs.email }));
+        dispatch(request({ username: inputs.email }));
 
         userService.register(inputs)
             .then(
-                user => { 
+                user => {
                     dispatch(success(user));
                     history.push('/home');
                 },
@@ -50,4 +51,9 @@ function register(inputs) {
     function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
     function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
+}
+
+function logout() {
+    userService.logout();
+    history.push('/login');
 }

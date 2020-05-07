@@ -1,5 +1,5 @@
 import React from 'react';
-import TopBar from './TopBar';
+import TopBar from './TopBarComponent';
 
 export default function HomeView() {
     return (<React.Fragment>

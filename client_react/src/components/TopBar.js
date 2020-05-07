@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({onLogoutClick}) {
     const classes = useStyles();
 
     return (
@@ -82,7 +82,7 @@ export default function PrimarySearchAppBar() {
                             <Button variant="contained" color="primary" startIcon={<AccountCircle />}>
                                 Profile
                             </Button>
-                            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />}>
+                            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={onLogoutClick}>
                                 Logout
                             </Button>
                         </div>
@@ -92,7 +92,7 @@ export default function PrimarySearchAppBar() {
                         <div className={classes.spacingMobile}>
                             <FeedbackOutlinedIcon fontSize="large"/>
                             <AccountCircle fontSize="large"/>
-                            <ExitToAppIcon fontSize="large" color="secondary"/>
+                            <ExitToAppIcon fontSize="large" color="secondary" onClick={onLogoutClick}/>
                         </div>
                     </div>
 

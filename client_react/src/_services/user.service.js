@@ -3,6 +3,7 @@ import config from '../config';
 
 export const userService = {
     login,
+    logout,
     register
 };
 
