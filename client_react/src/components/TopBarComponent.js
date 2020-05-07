@@ -6,8 +6,10 @@ const mapDispatchToProps = dispatch => {
     return {
         onLogoutClick: e => {
             userActions.logout();
-        },
-        onFeedbackClick: e =>  {}
+        }/*,
+        onFeedbackClick: e =>  {
+            userActions.triggerDialog('feedBack');
+        }*/
     }
 };
 

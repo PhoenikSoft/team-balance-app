@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,6 +7,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
+import Dialog from './Dialog';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -58,9 +59,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PrimarySearchAppBar({onLogoutClick}) {
+export default function PrimarySearchAppBar({ onLogoutClick }) {
     const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
         <div className={classes.grow}>
             <AppBar position="static">
@@ -76,13 +84,15 @@ export default function PrimarySearchAppBar({onLogoutClick}) {
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <div className={classes.spacing}>
-                            <Button variant="contained" color="primary" startIcon={<FeedbackOutlinedIcon />}>
+                            <Button variant="contained" color="primary" startIcon={<FeedbackOutlinedIcon />}
+                                onClick={handleClickOpen}>
                                 Leave Feedback
                             </Button>
                             <Button variant="contained" color="primary" startIcon={<AccountCircle />}>
                                 Profile
                             </Button>
-                            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={onLogoutClick}>
+                            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />}
+                                onClick={onLogoutClick}>
                                 Logout
                             </Button>
                         </div>
@@ -90,14 +100,15 @@ export default function PrimarySearchAppBar({onLogoutClick}) {
                     </div>
                     <div className={classes.sectionMobile}>
                         <div className={classes.spacingMobile}>
-                            <FeedbackOutlinedIcon fontSize="large"/>
-                            <AccountCircle fontSize="large"/>
-                            <ExitToAppIcon fontSize="large" color="secondary" onClick={onLogoutClick}/>
+                            <FeedbackOutlinedIcon fontSize="large" onClick={handleClickOpen}/>
+                            <AccountCircle fontSize="large" />
+                            <ExitToAppIcon fontSize="large" color="secondary" onClick={onLogoutClick} />
                         </div>
                     </div>
 
                 </Toolbar>
             </AppBar>
+            <Dialog open={open} handleClose={handleClose}/>
         </div>
     );
 }

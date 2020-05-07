@@ -57,3 +57,7 @@ function logout() {
     userService.logout();
     history.push('/login');
 }
+
+// function triggerDialog(name) {
+//     return dispatch({ type: userConstants.DIALOG_TRIGGERED, name });
+// }
