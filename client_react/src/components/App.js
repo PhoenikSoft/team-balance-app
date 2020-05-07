@@ -3,6 +3,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../_helpers';
 import SignIn from './SignInComponent';
 import SignUp from './SignUpComponent';
+import Home from './Home';
 
 const App = () => (
     <div>
@@ -19,7 +20,7 @@ const App = () => (
                     <SignUp />
                 </Route>
                 <Route path='/home'>
-                    <div>HOME</div>
+                    <Home />
                 </Route>
 
                 <Redirect from="*" to="/" />
