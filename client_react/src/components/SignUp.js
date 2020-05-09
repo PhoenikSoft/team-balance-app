@@ -102,7 +102,7 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
     function handleEmailChange(e) {
 
         const { value } = e.target;
-        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const emailRegex = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
         if (value.match(emailRegex)) {
             setInputs(inputs => ({ ...inputs, email: value }));
             setErrors(errors => ({ ...errors, emailError: false }));
