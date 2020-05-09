@@ -1,16 +1,12 @@
 import config from '../config';
 import { serviceHelper, authHelper } from '../_helpers';
-//import { authHeader } from '../_helpers';
-
-const LOGIN_URL = '/api/auth/login';
-const REGISTER_URL = '/api/auth/register';
+import { apiConstants } from '../_constants';
 
 export const userService = {
     login,
     logout,
     register
 };
-
 
 function login(email, password) {
     const requestOptions = {
@@ -20,7 +16,7 @@ function login(email, password) {
         body: JSON.stringify({ email, password })
     };
 
-    return fetch(`${config.apiUrl}${LOGIN_URL}`, requestOptions)
+    return fetch(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
         .then(serviceHelper.handleResponse)
         .then(user => {
             authHelper.setCookie('jwt', user.jwt);
@@ -29,9 +25,7 @@ function login(email, password) {
 }
 
 function logout() {
-    // remove user from local storage to log user out
     serviceHelper.logout();
-
 }
 
 function register(input) {
@@ -41,7 +35,7 @@ function register(input) {
         body: JSON.stringify(input)
     };
 
-    return fetch(`${config.apiUrl}${REGISTER_URL}`, requestOptions)
+    return fetch(`${config.apiUrl}${apiConstants.REGISTER_URL}`, requestOptions)
         .then(serviceHelper.handleResponse)
         .then(user => {
             localStorage.setItem('user', JSON.stringify(user));

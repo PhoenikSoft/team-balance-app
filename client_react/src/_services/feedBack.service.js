@@ -1,13 +1,11 @@
 import config from '../config';
 import { serviceHelper } from '../_helpers';
 import { authHeader } from '../_helpers';
-
-const FEEDBACK_URL = '/api/feedbacks';
+import { apiConstants } from '../_constants';
 
 export const feedBackService = {
     leaveFeedBack
 };
-
 
 function leaveFeedBack(message) {
     const requestOptions = {
@@ -16,6 +14,6 @@ function leaveFeedBack(message) {
         body: JSON.stringify({ message })
     };
 
-    return fetch(`${config.apiUrl}${FEEDBACK_URL}`, requestOptions)
+    return fetch(`${config.apiUrl}${apiConstants.FEEDBACK_URL}`, requestOptions)
         .then(serviceHelper.handleResponse)
 };

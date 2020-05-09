@@ -1,3 +1,6 @@
+import { history } from '../_helpers';
+
+
 export const serviceHelper = {
     handleResponse,
     logout
@@ -9,10 +12,7 @@ function handleResponse(response) {
         const data = text && JSON.parse(text);
         if (!response.ok) {
             if (response.status === 401) {
-                // auto logout if 401 response returned from api
                 logout();
-                //TODO go to login page
-                //location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;
@@ -25,4 +25,5 @@ function handleResponse(response) {
 
 function logout() {
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    history.push('/login');
 }
