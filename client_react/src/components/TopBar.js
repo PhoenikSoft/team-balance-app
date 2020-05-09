@@ -7,7 +7,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
-import Dialog from './Dialog';
+import Dialog from './FeedBackDialog';
+
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -59,9 +60,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PrimarySearchAppBar({ onLogoutClick }) {
+
+export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback }) {
     const classes = useStyles();
+
     const [open, setOpen] = useState(false);
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -69,6 +73,13 @@ export default function PrimarySearchAppBar({ onLogoutClick }) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const onSubmit = text => () => {
+        submitFeedback(text);
+        handleClose();
+    };
+
+
     return (
         <div className={classes.grow}>
             <AppBar position="static">
@@ -100,7 +111,7 @@ export default function PrimarySearchAppBar({ onLogoutClick }) {
                     </div>
                     <div className={classes.sectionMobile}>
                         <div className={classes.spacingMobile}>
-                            <FeedbackOutlinedIcon fontSize="large" onClick={handleClickOpen}/>
+                            <FeedbackOutlinedIcon fontSize="large" onClick={handleClickOpen} />
                             <AccountCircle fontSize="large" />
                             <ExitToAppIcon fontSize="large" color="secondary" onClick={onLogoutClick} />
                         </div>
@@ -108,7 +119,7 @@ export default function PrimarySearchAppBar({ onLogoutClick }) {
 
                 </Toolbar>
             </AppBar>
-            <Dialog open={open} handleClose={handleClose}/>
+            <Dialog open={open} handleClose={handleClose} onSubmit={onSubmit} />
         </div>
     );
 }

@@ -1,12 +1,14 @@
 import { userConstants } from '../_constants';
 import { history } from '../_helpers';
-import { userService } from '../_services';
+import { userService, feedBackService } from '../_services';
+
 
 
 export const userActions = {
     login,
     logout,
-    register
+    register,
+    leaveFeedback
 };
 
 function login(username, password) {
@@ -58,6 +60,17 @@ function logout() {
     history.push('/login');
 }
 
-// function triggerDialog(name) {
-//     return dispatch({ type: userConstants.DIALOG_TRIGGERED, name });
-// }
+function leaveFeedback(message) {
+    const FEEDBACK_SUCCESS_TEXT = 'Feedback sent. Thank you!';
+    const FEEDBACK_ERROR_TEXT = 'Feed back was not sent';
+
+    return dispatch => {
+        //dispatch({ type: userConstants.LEAVE_FEEDBACK, message });
+
+        feedBackService.leaveFeedBack(message)
+            .then(message => dispatch({ type: userConstants.ACTION_SUCCESS, text: FEEDBACK_SUCCESS_TEXT }))
+            .catch(error => dispatch({ type: userConstants.ACTION_ERROR, text: FEEDBACK_ERROR_TEXT }))
+
+
+    }
+}

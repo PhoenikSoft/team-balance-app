@@ -4,6 +4,5 @@ import TopBar from './TopBarComponent';
 export default function HomeView() {
     return (<React.Fragment>
         <TopBar />
-
     </React.Fragment>)
 }

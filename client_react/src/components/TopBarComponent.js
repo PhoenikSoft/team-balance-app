@@ -2,15 +2,18 @@ import { connect } from 'react-redux';
 import { userActions } from '../actions';
 import TopBar from './TopBar';
 
+
+
 const mapDispatchToProps = dispatch => {
+    
     return {
         onLogoutClick: e => {
             userActions.logout();
-        }/*,
-        onFeedbackClick: e =>  {
-            userActions.triggerDialog('feedBack');
-        }*/
+        },
+        submitFeedback: text => {
+            dispatch(userActions.leaveFeedback(text));
+        }
     }
 };
 
-export default connect(null,mapDispatchToProps)(TopBar);
+export default connect(null, mapDispatchToProps)(TopBar);

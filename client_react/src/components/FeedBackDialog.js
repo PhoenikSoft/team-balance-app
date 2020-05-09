@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +7,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function FormDialog({ open, handleClose }) {
+export default function FormDialog({ open, handleClose, onSubmit }) {
+    const [feedBack, setFeedBack] = useState({})
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
@@ -22,14 +23,15 @@ export default function FormDialog({ open, handleClose }) {
                     label="Email Address"
                     type="email"
                     fullWidth
+                    onChange={e => setFeedBack(e.target.value)}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
                     Cancel
           </Button>
-                <Button onClick={handleClose} color="primary">
-                    Subscribe
+                <Button onClick={onSubmit(feedBack)} color="primary">
+                    Submit feedback
           </Button>
             </DialogActions>
         </Dialog>
