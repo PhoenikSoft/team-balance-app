@@ -76,7 +76,7 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
 
     function handlePhoneChange(newPhone) {
 
-        if (newPhone.length !== 12) {
+        if ( newPhone.length !== 13) {
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
@@ -97,6 +97,10 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
             setErrors(errors => ({ ...errors, passwordError: true }));
         };
         handleChange(e);
+    }
+
+    function removePlusFromPhoneInput(inputs) {
+        return { ...inputs, phone: inputs.phone.replace(/\+/g, '') }
     }
 
     function handleEmailChange(e) {
@@ -218,7 +222,7 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
                         color="primary"
                         className={classes.submit}
                         onClick={e => {
-                            onRegisterClick(e)(inputs);
+                            onRegisterClick(e)(removePlusFromPhoneInput(inputs));
                         }}>
                         Sign Up
           </Button>
