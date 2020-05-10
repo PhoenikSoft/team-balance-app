@@ -23,9 +23,9 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class AuthenticationController {
 
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping(path = "/login")
     public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
