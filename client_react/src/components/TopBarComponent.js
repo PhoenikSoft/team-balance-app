@@ -5,13 +5,19 @@ import TopBar from './TopBar';
 
 
 const mapDispatchToProps = dispatch => {
-    
+
     return {
         onLogoutClick: e => {
             userActions.logout();
         },
         submitFeedback: text => {
             dispatch(userActions.leaveFeedback(text));
+        },
+        onProfileClick: e => {
+            dispatch(userActions.goToProfile())
+        },
+        onAppNameClick: e => {
+            userActions.goHome();
         }
     }
 };

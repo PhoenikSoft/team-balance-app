@@ -1,6 +1,5 @@
 import config from '../config';
-import { serviceHelper } from '../_helpers';
-import { authHeader } from '../_helpers';
+import { serviceHelper,authHelper } from '../_helpers';
 import { apiConstants } from '../_constants';
 
 export const feedBackService = {
@@ -10,7 +9,7 @@ export const feedBackService = {
 function leaveFeedBack(message) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        headers: { 'Content-Type': 'application/json', ...authHelper.authHeader() },
         body: JSON.stringify({ message })
     };
 

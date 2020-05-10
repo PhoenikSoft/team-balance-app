@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import TopBar from './TopBarComponent';
+import Profile from './ProfileContainer';
 import SnackBar from './Snackbar';
 
 
@@ -14,7 +15,7 @@ export default function HomeView() {
                 <div> Groups</div>
             </Route>
             <Route exact path={`${path}/profile`}>
-                <div> Profile</div>
+                <Profile/>
             </Route>
             <Route exact path={`${path}/groups/:groupId`}>
                 <div> Some group</div>

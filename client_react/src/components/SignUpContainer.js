@@ -15,4 +15,10 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(SignUp)
+const mapStateToProps = state => {
+    return {
+        isSignUp: true
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

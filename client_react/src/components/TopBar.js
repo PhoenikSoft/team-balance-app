@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback }) {
+export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onProfileClick,onAppNameClick }) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
@@ -85,7 +85,7 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback }) {
             <AppBar position="static">
                 <Toolbar>
 
-                    <Typography className={classes.title} variant="h6" noWrap>
+                    <Typography className={classes.title} variant="h6" noWrap onClick={onAppNameClick}>
                         <div className={classes.sectionDesktop}>
                             Team Balance
                         </div>
@@ -99,7 +99,8 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback }) {
                                 onClick={handleClickOpen}>
                                 Leave Feedback
                             </Button>
-                            <Button variant="contained" color="primary" startIcon={<AccountCircle />}>
+                            <Button variant="contained" color="primary" startIcon={<AccountCircle />}
+                                onClick={onProfileClick}>
                                 Profile
                             </Button>
                             <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />}
@@ -112,7 +113,7 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback }) {
                     <div className={classes.sectionMobile}>
                         <div className={classes.spacingMobile}>
                             <FeedbackOutlinedIcon fontSize="large" onClick={handleClickOpen} />
-                            <AccountCircle fontSize="large" />
+                            <AccountCircle fontSize="large" onClick={onProfileClick} />
                             <ExitToAppIcon fontSize="large" color="secondary" onClick={onLogoutClick} />
                         </div>
                     </div>

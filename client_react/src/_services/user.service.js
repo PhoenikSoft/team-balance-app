@@ -5,14 +5,15 @@ import { apiConstants } from '../_constants';
 export const userService = {
     login,
     logout,
-    register
+    register,
+    getUser,
+    update
 };
 
 function login(email, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        //headers: config.headersDev,
         body: JSON.stringify({ email, password })
     };
 
@@ -20,6 +21,7 @@ function login(email, password) {
         .then(serviceHelper.handleResponse)
         .then(user => {
             authHelper.setCookie('jwt', user.jwt);
+            authHelper.setCookie('userId', user.userDetails.id);
             return user;
         });
 }
@@ -41,4 +43,21 @@ function register(input) {
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         });
+}
+
+function getUser(userId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', ...authHelper.authHeader() }
+    };
+
+    return fetch(`${config.apiUrl}${apiConstants.GET_USER}/${userId}`, requestOptions)
+        .then(serviceHelper.handleResponse)
+}
+
+function update(user) {
+    return fetch(
+        `${config.apiUrl}${apiConstants.GET_USER}/${authHelper.getCookie('userId')}`,
+        serviceHelper.getRequestOptions('PUT', authHelper.authHeader(), user))
+        .then(serviceHelper.handleResponse);
 }

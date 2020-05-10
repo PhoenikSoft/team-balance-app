@@ -18,9 +18,9 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
   return {
-    open: state.actions.showSnackbar,
-    text: state.actions.text,
-    success: state.actions.success
+    open: state.alerts.showSnackbar,
+    text: state.alerts.text,
+    success: state.alerts.success
   }
 };
 

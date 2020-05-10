@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../_helpers';
 import SignIn from './SignInComponent';
-import SignUp from './SignUpComponent';
+import SignUp from './SignUpContainer';
 import Home from './Home';
 
 const App = () => (

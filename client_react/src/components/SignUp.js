@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { debounce } from 'lodash';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -34,18 +33,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp({ onRegisterClick, isErrorForm }) {
+export default function SignUp({ onRegisterClick, userData, isSignUp }) {
     const classes = useStyles();
-
-    const [inputs, setInputs] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        confirmPassword: '',
-        password: '',
-        rating: 50
-    });
+    function getInitialState() {
+        return userData ? userData : {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            rating: 50,
+            confirmPassword: '',
+            password: ''
+        };
+    }
+    const [inputs, setInputs] = useState(getInitialState());
 
     const [errors, setErrors] = useState({
         passwordError: false,
@@ -69,14 +70,13 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
     }
 
     function handleRatingChange(e, newValue) {
+        console.log(1)
         setInputs(inputs => ({ ...inputs, rating: newValue }));
     }
 
-    const debouncedHandleRatingChange = debounce(handleRatingChange, 500);
-
     function handlePhoneChange(newPhone) {
 
-        if ( newPhone.length !== 13) {
+        if (newPhone.length !== 13) {
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
@@ -97,10 +97,6 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
             setErrors(errors => ({ ...errors, passwordError: true }));
         };
         handleChange(e);
-    }
-
-    function removePlusFromPhoneInput(inputs) {
-        return { ...inputs, phone: inputs.phone.replace(/\+/g, '') }
     }
 
     function handleEmailChange(e) {
@@ -124,18 +120,19 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
+                {isSignUp && <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
-                </Avatar>
+                </Avatar>}
                 <Typography component="h1" variant="h5">
-                    Sign up
-        </Typography>
+                    {isSignUp ? 'Sign up' : 'Profile'}
+                </Typography>
                 <form className={classes.form} >
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"
                                 name="firstName"
+                                value={inputs.firstName}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -148,6 +145,7 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                value={inputs.lastName}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -159,8 +157,9 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
                                 error={errors.lastNameError}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        {isSignUp && <Grid item xs={12}>
                             <TextField
+                                value={inputs.email}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -171,46 +170,49 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
                                 onChange={handleEmailChange}
                                 error={inputs.emailError}
                             />
-                        </Grid>
+                        </Grid>}
                         <Grid item xs={12}>
                             <PhoneInput
                                 error={errors.phoneError}
                                 onChange={handlePhoneChange}
+                                value={inputs.phone}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                error={errors.passwordError}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={handlePasswordChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                error={errors.passwordError}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="confirmPassword"
-                                label="Confirm password"
-                                type="password"
-                                id="confirmPassword"
-                                autoComplete="current-password"
-                                onChange={handlePasswordChange}
-                            />
-                        </Grid>
+                        {isSignUp && <>
+                            <Grid item xs={12}>
+                                <TextField
+                                    error={errors.passwordError}
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    onChange={handlePasswordChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    error={errors.passwordError}
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="confirmPassword"
+                                    label="Confirm password"
+                                    type="password"
+                                    id="confirmPassword"
+                                    autoComplete="current-password"
+                                    onChange={handlePasswordChange}
+                                />
+                            </Grid> </>}
                         <Grid item xs={12}>
                             <Typography>Rating</Typography>
                             <Slider
                                 name="rating"
-                                onChange={debouncedHandleRatingChange}
+                                onChange={handleRatingChange}
+                                value={inputs.rating}
                             />
                         </Grid>
                     </Grid>
@@ -222,17 +224,17 @@ export default function SignUp({ onRegisterClick, isErrorForm }) {
                         color="primary"
                         className={classes.submit}
                         onClick={e => {
-                            onRegisterClick(e)(removePlusFromPhoneInput(inputs));
+                            onRegisterClick(e)(inputs);
                         }}>
-                        Sign Up
-          </Button>
-                    <Grid container justify="flex-end">
+                        {isSignUp ? 'Sign Up' : 'Update'}
+                    </Button>
+                    {isSignUp && <Grid container justify="flex-end">
                         <Grid item>
                             <Link href="/login" variant="body2">
                                 Already have an account? Sign in
-              </Link>
+                            </Link>
                         </Grid>
-                    </Grid>
+                    </Grid>}
                 </form>
             </div>
             <Box mt={5}>

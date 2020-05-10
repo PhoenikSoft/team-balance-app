@@ -1,9 +1,9 @@
-import { userConstants } from '../_constants';
+import { alertConstants } from '../_constants';
 
 export const appActions = {
     closeSnackbar
 };
 
 function closeSnackbar() {
-    return dispatch => dispatch({ type: userConstants.CLOSE_SNACKBAR })};
+    return dispatch => dispatch({ type: alertConstants.CLOSE_SNACKBAR })};
 ;

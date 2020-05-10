@@ -1,20 +1,20 @@
-import { userConstants } from '../_constants';
+import { alertConstants } from '../_constants';
 
-export function actions(state = {}, action) {
+export function alerts(state = {}, action) {
     switch (action.type) {
-        case userConstants.ACTION_SUCCESS:
+        case alertConstants.ALERT_SUCCESS:
             return {
                 showSnackbar: true,
                 text: action.text,
                 success: true
             }
-        case userConstants.ACTION_ERROR:
+        case alertConstants.ALERT_ERROR:
             return {
                 showSnackbar: true,
                 text: action.text,
                 success: false
             }
-        case userConstants.CLOSE_SNACKBAR:
+        case alertConstants.CLOSE_SNACKBAR:
             return {
                 showSnackbar: false
             }

@@ -1,14 +1,15 @@
-import { userConstants } from '../_constants';
-import { history } from '../_helpers';
+import { userConstants, alertConstants } from '../_constants';
+import { history, authHelper, serviceHelper } from '../_helpers';
 import { userService, feedBackService } from '../_services';
-
-
 
 export const userActions = {
     login,
     logout,
     register,
-    leaveFeedback
+    leaveFeedback,
+    goToProfile,
+    update,
+    goHome
 };
 
 function login(username, password) {
@@ -45,7 +46,6 @@ function register(inputs) {
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    //dispatch(alertActions.error(error.toString()));
                 }
             );
     };
@@ -55,22 +55,43 @@ function register(inputs) {
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
 
+function update(inputs) {
+    return dispatch => {
+        userService.update(inputs)
+            .then(() => dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.USER_UPDATE_SUCCESS_TEXT }))
+            .catch(() => serviceHelper.actionsErrorHandler(dispatch))
+    }
+}
+
+
 function logout() {
-    userService.logout();
-    history.push('/login');
+    authHelper.logout();
 }
 
 function leaveFeedback(message) {
-    const FEEDBACK_SUCCESS_TEXT = 'Feedback sent. Thank you!';
-    const FEEDBACK_ERROR_TEXT = 'Feed back was not sent';
 
     return dispatch => {
-        //dispatch({ type: userConstants.LEAVE_FEEDBACK, message });
-
         feedBackService.leaveFeedBack(message)
-            .then(message => dispatch({ type: userConstants.ACTION_SUCCESS, text: FEEDBACK_SUCCESS_TEXT }))
-            .catch(error => dispatch({ type: userConstants.ACTION_ERROR, text: FEEDBACK_ERROR_TEXT }))
-
+            .then(message => dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.FEEDBACK_SUCCESS_TEXT }))
+            .catch(() => serviceHelper.actionsErrorHandler(dispatch, alertConstants.FEEDBACK_ERROR_TEXT))
 
     }
 }
+
+function goToProfile() {
+    const userId = authHelper.getCookie('userId');
+    return dispatch => {
+        userService.getUser(userId)
+            .then(fetchedUser => {
+                dispatch({ type: userConstants.USER_FETCHED, fetchedUser });
+                history.push('/home/profile');
+            })
+            .catch(() => serviceHelper.actionsErrorHandler(dispatch))
+    }
+}
+
+function goHome() {
+    history.push('/home');
+}
+
+

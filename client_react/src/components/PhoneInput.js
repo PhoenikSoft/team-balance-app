@@ -2,9 +2,10 @@ import React from 'react';
 import MuiPhoneNumber from "material-ui-phone-number"
 
 
-export default function ({ onChange, error }) {
+export default function ({ onChange, error, value }) {
     return (
         <MuiPhoneNumber
+            value={value ? value : ''}
             error={error}
             variant="outlined"
             required
