@@ -4,13 +4,11 @@ import { history } from '../_helpers';
 import SignIn from './SignInComponent';
 import SignUp from './SignUpComponent';
 import Home from './Home';
-import SnackBar from './Snackbar';
 
 const App = () => (
     <div>
         <Router history={history}>
             <Switch>
-
                 <Route exact path="/">
                     <Redirect to="/login" />
                 </Route>
@@ -22,7 +20,6 @@ const App = () => (
                 </Route>
                 <Route path='/home'>
                     <Home />
-                    <SnackBar />
                 </Route>
                 <Redirect from="*" to="/" />
             </Switch>
