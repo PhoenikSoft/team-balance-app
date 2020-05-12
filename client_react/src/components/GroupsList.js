@@ -14,7 +14,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
 import CancelIcon from '@material-ui/icons/Cancel';
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,20 +40,8 @@ function generate(groups, element) {
     );
 }
 
-export default function GroupsList({ groups, onEditSubmit }) {
+export default function GroupsList({ groups, onEditSubmit, isGroupAdmin, onGroupDelete, onGroupAddClick }) {
     const classes = useStyles();
-
-    //const [, setGroups] = React.useState(groups);
-
-    //const getGroupName = groupId => groups.filter(group => group.id === groupId).name;
-    // const setGroupName = (groupId, name) => groups.map(group => {
-    //     if (group.id === groupId) {
-    //         group.name = name;
-    //         return group;
-    //     } else {
-    //         return group;
-    //     };
-    // });
 
     return (
         <div className={classes.root}>
@@ -63,6 +52,10 @@ export default function GroupsList({ groups, onEditSubmit }) {
                         <List dense={false}>
                             {generate(groups, <GroupsListItem />)}
                         </List>
+                        <IconButton onClick={onGroupAddClick}
+                            aria-label="add group">
+                            <AddCircleOutlineOutlinedIcon />
+                        </IconButton>
                     </div>
                 </Grid>
             </Grid>
@@ -85,17 +78,22 @@ export default function GroupsList({ groups, onEditSubmit }) {
 
                     {edit[groupId]
                         ? <><IconButton onClick={() => onEditSubmit(groupId, edit[groupId])}
-                            edge="end" aria-label="submit group name">
+                            aria-label="submit group name">
                             <CheckIcon />
                         </IconButton>
                             <IconButton onClick={() => setEdit({})}
-                                edge="end" aria-label="edit group">
+                                aria-label="edit group">
                                 <CancelIcon />
                             </IconButton>
                         </>
                         : <IconButton onClick={() => setEdit({ [groupId]: groupName })}
-                            edge="end" aria-label="edit group">
+                            aria-label="edit group">
                             <EditIcon />
+                        </IconButton>}
+                    {isGroupAdmin(groupId) &&
+                        <IconButton onClick={() => onGroupDelete(groupId)}
+                            aria-label="edit group">
+                            <DeleteIcon />
                         </IconButton>}
 
                 </ListItemSecondaryAction>

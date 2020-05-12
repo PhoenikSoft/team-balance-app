@@ -1,11 +1,16 @@
-import {history} from './history';
+import jwtDecode from 'jwt-decode'
+import { history } from './history';
+import { func } from 'prop-types';
 
 export const authHelper = {
     authHeader,
     setCookie,
     getCookie,
-    logout
+    logout,
+    isGroupAdmin
 }
+
+
 
 function authHeader() {
     // return authorization header with jwt token
@@ -38,33 +43,38 @@ function setCookie(name, value, options = {}) {
     options = {
         path: '/',
         ...options
-      };
-    
-      if (options.expires instanceof Date) {
+    };
+
+    if (options.expires instanceof Date) {
         options.expires = options.expires.toUTCString();
-      }
-    
-      let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-    
-      for (let optionKey in options) {
+    }
+
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
         updatedCookie += "; " + optionKey;
         let optionValue = options[optionKey];
         if (optionValue !== true) {
-          updatedCookie += "=" + optionValue;
+            updatedCookie += "=" + optionValue;
         }
-      }
-    
-      document.cookie = updatedCookie;
+    }
+
+    document.cookie = updatedCookie;
 }
 
 function deleteCookie(name) {
     setCookie(name, "", {
-      'max-age': -1
+        'max-age': -1
     })
-  }
+}
 
-  function logout() {
+function logout() {
     deleteCookie('userId');
     deleteCookie('jwt');
     history.push('/login');
+}
+
+function isGroupAdmin(groupId) {
+    const decodedJwt = jwtDecode(getCookie('jwt'));
+    return decodedJwt.roles.includes(`ADMIN_ROLE_${groupId}`)
 }

@@ -7,6 +7,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+
+//TODO create an abstaction
+/* 
+<DialogContainer>
+actual form ....
+</DialogContainer>
+*/
+
 export default function FormDialog({ open, handleClose, onSubmit }) {
     const [feedBack, setFeedBack] = useState({})
     return (
