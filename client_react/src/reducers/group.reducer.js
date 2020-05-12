@@ -1,0 +1,24 @@
+import { groupConstants } from '../_constants';
+
+export function groups(state = {}, action) {
+    switch (action.type) {
+        case groupConstants.ADD_GROUP:
+            return [...state, action.group];
+        case groupConstants.GET_ALL_GROUPS:
+            return action.groups;
+        case groupConstants.DELETE_GROUP:
+            return state.filter(group => group.groupId === action.groupId);
+        case groupConstants.GROUP_FETCHED:
+            return state.filter(group => group.groupId !== action.groupId);
+        case groupConstants.UPDATE_GROUP:
+            return state.map(group => {
+                if (group.groupId !== action.groupId) {
+                    return group;
+                } else {
+                    return action.group;
+                };
+            });
+        default:
+            return state
+    };
+};

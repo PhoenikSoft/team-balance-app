@@ -1,13 +1,18 @@
 import { connect } from 'react-redux';
-import { userActions } from '../actions';
+import { userActions, groupActions } from '../actions';
+import { history } from '../_helpers';
 import SignIn from './SignIn';
 
 const mapDispatchToProps = dispatch => {
     return {
         onLoginClick: e => {
             e.preventDefault();
-            return (email, password) => {
-                dispatch(userActions.login(email, password));
+            return async (email, password) => {
+                await dispatch(userActions.login(email, password));
+                // finished here. TODO use userId to query groups
+                //await dispatch(groupActions.getGroups());
+                history.push('/home');
+
             }
         }
     }

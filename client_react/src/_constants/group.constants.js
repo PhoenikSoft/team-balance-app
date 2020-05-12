@@ -1,0 +1,13 @@
+export const groupConstants = {
+    GET_ALL_GROUPS: 'GET_ALL_GROUPS',
+    UPDATE_GROUP: 'UPDATE_GROUP',
+    DELETE_GROUP: 'DELETE_GROUP',
+    CHECK_ACCESS: 'CHECK_ACCESS',
+    ADD_GROUP: 'ADD_GROUP',
+    GROUP_FETCHED: 'GROUP_FETCHED',
+    ACCESS_DENIED: 'ACCESS_DENIED',
+
+    ACCESS_DENIED_TEXT: 'Group is not available for you'
+
+
+}

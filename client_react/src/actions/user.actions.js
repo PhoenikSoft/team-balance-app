@@ -16,15 +16,13 @@ function login(username, password) {
     return dispatch => {
         dispatch(request({ username }));
 
-        userService.login(username, password)
+        return userService.login(username, password)
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/home');
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    //dispatch(alertActions.error(error.toString()));
                 }
             );
     };

@@ -10,20 +10,19 @@ export const userService = {
     update
 };
 
-function login(email, password) {
+async function login(email, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
     };
 
-    return fetch(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
-        .then(serviceHelper.handleResponse)
-        .then(user => {
-            authHelper.setCookie('jwt', user.jwt);
-            authHelper.setCookie('userId', user.userDetails.id);
-            return user;
-        });
+    //return
+    const res = await fetch(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
+    const user = await serviceHelper.handleResponse(res)
+    authHelper.setCookie('jwt', user.jwt);
+    authHelper.setCookie('userId', user.userDetails.id);
+    return user;
 }
 
 function logout() {
