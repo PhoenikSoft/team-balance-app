@@ -11,7 +11,8 @@ export const groupService = {
 }
 
 function getGroups(groupId) {
-    const getUrl = () => `${config.apiUrl}${apiConstants.GROUPS}${groupId ? '/' + groupId : ''}`;
+    const userId = authHelper.getCookie('userId');
+    const getUrl = () => `${config.apiUrl}${apiConstants.GROUPS(userId)}${groupId ? '/' + groupId : ''}`;
     return fetch(
         getUrl(),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))

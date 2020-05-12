@@ -16,7 +16,8 @@ function handleResponse(response) {
                 authHelper.logout();
             }
 
-            const error = (data && data.message) || response.statusText;
+            const error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
+                && data.errors.name.toString()) || response.statusText;
             return Promise.reject(error);
         }
 

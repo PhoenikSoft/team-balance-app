@@ -9,8 +9,7 @@ const mapDispatchToProps = dispatch => {
             e.preventDefault();
             return async (email, password) => {
                 await dispatch(userActions.login(email, password));
-                // finished here. TODO use userId to query groups
-                //await dispatch(groupActions.getGroups());
+                await dispatch(groupActions.getGroups());
                 history.push('/home');
 
             }

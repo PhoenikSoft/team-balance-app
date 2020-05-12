@@ -6,8 +6,8 @@ import GroupsList from './GroupsList';
 
 const mapDispatchToProps = dispatch => {
     return {
-        onEditSubmit: e => {
-            dispatch(groupActions.updateGroup(e.target.value));
+        onEditSubmit: (groupdId, value) => {
+            dispatch(groupActions.updateGroup(groupdId, value));
         },
         onGroupDelete: e => {
             dispatch(groupActions.deleteGroup(e.target.value));
@@ -21,7 +21,6 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
     return {
         groups: state.groups
-    
     };
 };
 

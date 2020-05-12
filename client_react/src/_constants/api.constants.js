@@ -5,7 +5,7 @@ export const apiConstants = {
 
     FEEDBACK_URL: '/api/feedbacks',
 
-    GROUPS: '/api/groups',
+    GROUPS: userId => `/api/groups?userId=${userId}`,
     GROUP_ACTION: groupId => `/api/groups/${groupId}`,
     ACCESS_CHECK: groupId => `/api/groups/${groupId}/accessChecks`
 

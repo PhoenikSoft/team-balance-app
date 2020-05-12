@@ -12,17 +12,17 @@ export const groupActions = {
 
 function getGroups() {
     return dispatch => {
-        groupService.getGroups()
-            .then(groups => dispatch({ type: groupConstants.GET_ALL_GROUPS }, groups))
+        return groupService.getGroups()
+            .then(res => dispatch({ type: groupConstants.GET_ALL_GROUPS, groups: res.groups }))
             .catch(() => serviceHelper.actionsErrorHandler(dispatch));
     };
 };
 
-function updateGroup(groupId) {
+function updateGroup(groupId, name) {
     return dispatch => {
-        groupService.updateGroup(groupId)
-            .then(group => dispatch({ type: groupConstants.UPDATE_GROUP }, group))
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch));
+        groupService.updateGroup(groupId, { name })
+            .then(group => dispatch({ type: groupConstants.UPDATE_GROUP, group }))
+            .catch(e => serviceHelper.actionsErrorHandler(dispatch, e));
     };
 };
 

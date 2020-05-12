@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import TopBar from './TopBarComponent';
 import Profile from './ProfileContainer';
 import SnackBar from './Snackbar';
+import GroupsList from './GroupsListContainer';
 
 
 export default function HomeView() {
@@ -12,10 +13,10 @@ export default function HomeView() {
         <TopBar />
         <Switch>
             <Route exact path={path}>
-                <div> Groups</div>
+                <GroupsList />
             </Route>
             <Route exact path={`${path}/profile`}>
-                <Profile/>
+                <Profile />
             </Route>
             <Route exact path={`${path}/groups/:groupId`}>
                 <div> Some group</div>
