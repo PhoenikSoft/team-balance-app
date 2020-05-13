@@ -70,7 +70,6 @@ export default function SignUp({ onRegisterClick, userData, isSignUp }) {
     }
 
     function handleRatingChange(e, newValue) {
-        console.log(1)
         setInputs(inputs => ({ ...inputs, rating: newValue }));
     }
 

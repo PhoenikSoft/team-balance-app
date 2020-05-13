@@ -3,7 +3,7 @@ import { groupConstants } from '../_constants';
 export function groups(state = {}, action) {
     switch (action.type) {
         case groupConstants.ADD_GROUP:
-            return [...state, action.group];
+            return [...state, { ...action.group, isCreatedByCurrentUser: true }];
         case groupConstants.GET_ALL_GROUPS:
             return action.groups;
         case groupConstants.DELETE_GROUP:
@@ -15,7 +15,7 @@ export function groups(state = {}, action) {
                 if (group.id !== action.group.id) {
                     return group;
                 } else {
-                    return action.group;
+                    return { ...action.group, isCreatedByCurrentUser: true };
                 };
             });
         default:

@@ -20,9 +20,10 @@ function getGroups(groupId) {
 };
 
 function saveGroup(name) {
+    const userId = authHelper.getCookie('userId');
     return fetch(
-        `${config.apiUrl}${apiConstants.GROUPS}`,
-        serviceHelper.getRequestOptions('POST', authHelper.authHeader(), name))
+        `${config.apiUrl}${apiConstants.GROUPS(userId)}`,
+        serviceHelper.getRequestOptions('POST', authHelper.authHeader(), {name}))
         .then(serviceHelper.handleResponse);
 };
 

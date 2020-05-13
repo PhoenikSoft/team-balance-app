@@ -37,8 +37,10 @@ function deleteGroup(groupId) {
 function saveGroup(group) {
     return dispatch => {
         groupService.saveGroup(group)
-            .then(() => dispatch({ type: groupConstants.ADD_GROUP, group }))
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch));
+            .then((group) => dispatch({ type: groupConstants.ADD_GROUP, ...group }))
+            .catch((e) => {
+                debugger
+                serviceHelper.actionsErrorHandler(dispatch,e)});
     };
 };
 

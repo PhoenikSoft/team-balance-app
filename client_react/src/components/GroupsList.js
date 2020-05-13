@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import FolderIcon from '@material-ui/icons/Folder';
 import CheckIcon from '@material-ui/icons/Check';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
 import CancelIcon from '@material-ui/icons/Cancel';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import AddGroupDialog from './AddGroudDialog';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
     title: {
         margin: theme.spacing(4, 0, 2),
     },
+    addButton: {
+        marginTop: '20px',
+        cursor: 'pointer'
+    }
 }));
 
 function generate(groups, element) {
@@ -40,26 +43,43 @@ function generate(groups, element) {
     );
 }
 
-export default function GroupsList({ groups, onEditSubmit, isGroupAdmin, onGroupDelete, onGroupAddClick }) {
+export default function GroupsList({ groups, onEditSubmit, isGroupAdmin, onGroupDelete, onGroupAdd, isGroupCreatedByCurrentUser }) {
     const classes = useStyles();
-
+    const [groupdDialogOpened, setAddGroupDialog] = useState(false);
     return (
         <div className={classes.root}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
+            <Grid container spacing={6}>
+                <Grid item xs={12} md={12}>
                     <Typography variant="h6" className={classes.title}>Your groups</Typography>
                     <div className={classes.demo}>
                         <List dense={false}>
                             {generate(groups, <GroupsListItem />)}
+                            <ListItem>
+                                <ListItemSecondaryAction
+                                    className={classes.addButton}
+                                    onClick={e => setAddGroupDialog(true)}>
+                                    <Typography variant="button" >Add group</Typography>
+                                    <IconButton edge="end" aria-label="add group">
+                                        <AddCircleOutlineOutlinedIcon
+                                            color="secondary"
+                                            fontSize="large"
+                                        />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
                         </List>
-                        <IconButton onClick={onGroupAddClick}
-                            aria-label="add group">
-                            <AddCircleOutlineOutlinedIcon />
-                        </IconButton>
                     </div>
                 </Grid>
-            </Grid>
-        </div>
+            </Grid >
+            <AddGroupDialog
+                open={groupdDialogOpened}
+                handleClose={e => setAddGroupDialog(false)}
+                onSubmit={name => () => {
+                    onGroupAdd(name);
+                    setAddGroupDialog(false);
+                }}
+            />
+        </div >
     );
 
     function GroupsListItem({ groupId, groupName }) {
@@ -90,7 +110,7 @@ export default function GroupsList({ groups, onEditSubmit, isGroupAdmin, onGroup
                             aria-label="edit group">
                             <EditIcon />
                         </IconButton>}
-                    {isGroupAdmin(groupId) &&
+                    {(isGroupAdmin(groupId) || isGroupCreatedByCurrentUser(groupId)) &&
                         <IconButton onClick={() => onGroupDelete(groupId)}
                             aria-label="edit group">
                             <DeleteIcon />
