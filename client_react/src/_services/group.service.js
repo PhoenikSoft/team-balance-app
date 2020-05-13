@@ -13,7 +13,7 @@ export const groupService = {
 function getGroups(groupId) {
     const userId = authHelper.getCookie('userId');
     const getUrl = () => `${config.apiUrl}${apiConstants.GROUPS(userId)}${groupId ? '/' + groupId : ''}`;
-    return fetch(
+    return global.fetchWithLoader(
         getUrl(),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
@@ -21,28 +21,28 @@ function getGroups(groupId) {
 
 function saveGroup(name) {
     const userId = authHelper.getCookie('userId');
-    return fetch(
+    return global.fetchWithLoader(
         `${config.apiUrl}${apiConstants.GROUPS(userId)}`,
         serviceHelper.getRequestOptions('POST', authHelper.authHeader(), {name}))
         .then(serviceHelper.handleResponse);
 };
 
 function updateGroup(groupId, name) {
-    return fetch(
+    return global.fetchWithLoader(
         `${config.apiUrl}${apiConstants.GROUP_ACTION(groupId)}`,
         serviceHelper.getRequestOptions('PUT', authHelper.authHeader(), name))
         .then(serviceHelper.handleResponse);
 };
 
 function deleteGroup(groupId) {
-    return fetch(
+    return global.fetchWithLoader(
         `${config.apiUrl}${apiConstants.GROUP_ACTION(groupId)}`,
         serviceHelper.getRequestOptions('DELETE', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 };
 
 function checkAccess(groupId) {
-    return fetch(
+    return global.fetchWithLoader(
         `${config.apiUrl}${apiConstants.ACCESS_CHECK(groupId)}`,
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);

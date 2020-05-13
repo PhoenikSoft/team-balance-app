@@ -1,6 +1,6 @@
 import { alertConstants } from '../_constants';
 
-export function alerts(state = {}, action) {
+export function alerts(state = { showSnackbar: false, loading: false }, action) {
     switch (action.type) {
         case alertConstants.ALERT_SUCCESS:
             return {
@@ -17,6 +17,14 @@ export function alerts(state = {}, action) {
         case alertConstants.CLOSE_SNACKBAR:
             return {
                 showSnackbar: false
+            }
+        case alertConstants.LOADING_STARTED:
+            return {
+                loading: true
+            }
+        case alertConstants.LOADING_FINISHED:
+            return {
+                loading: false
             }
         default:
             return state

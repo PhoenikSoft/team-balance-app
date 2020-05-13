@@ -4,6 +4,7 @@ import { history } from '../_helpers';
 import SignIn from './SignInComponent';
 import SignUp from './SignUpContainer';
 import Home from './Home';
+import Loader from './Spinner';
 
 const App = () => (
     <div>
@@ -23,6 +24,7 @@ const App = () => (
                 </Route>
                 <Redirect from="*" to="/" />
             </Switch>
+            <Loader />
         </Router>
     </div >
 );

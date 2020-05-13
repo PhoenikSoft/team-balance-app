@@ -13,6 +13,6 @@ function leaveFeedBack(message) {
         body: JSON.stringify({ message })
     };
 
-    return fetch(`${config.apiUrl}${apiConstants.FEEDBACK_URL}`, requestOptions)
+    return global.fetchWithLoader(`${config.apiUrl}${apiConstants.FEEDBACK_URL}`, requestOptions)
         .then(serviceHelper.handleResponse)
 };
