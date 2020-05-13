@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
-import PhoneInput from './PhoneInput'
+import PhoneInput from './PhoneInput';
+import { userActions } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,10 +34,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp({ onRegisterClick, userData, isSignUp }) {
+export default function SignUp({ onRegisterClick, userData, isSignUp, fetchUser }) {
     const classes = useStyles();
+    const [inputs, setInputs] = useState(getInitialState());
+
+    useEffect(() => {
+        fetchUser().then(user => {
+            setInputs(user);
+        });
+    }, []);
+
     function getInitialState() {
-        return userData ? userData : {
+        return {
             firstName: '',
             lastName: '',
             email: '',
@@ -46,7 +55,6 @@ export default function SignUp({ onRegisterClick, userData, isSignUp }) {
             password: ''
         };
     }
-    const [inputs, setInputs] = useState(getInitialState());
 
     const [errors, setErrors] = useState({
         passwordError: false,

@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import Dialog from './FeedBackDialog';
+import { userActions } from '../actions';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,10 +63,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onProfileClick,onAppNameClick }) {
+export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onAppNameClick }) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
+    const onProfileClick = userActions.goToProfile;
 
     const handleClickOpen = () => {
         setOpen(true);

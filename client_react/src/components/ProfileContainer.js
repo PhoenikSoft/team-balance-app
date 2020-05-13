@@ -11,13 +11,14 @@ const mapDispatchToProps = dispatch => {
             return (inputs) => {
                 dispatch(userActions.update(inputs));
             };
-        }
+        },
+        fetchUser: async () => await dispatch(userActions.getCurrentUser()),
+
     }
 };
 
 const mapStateToProps = state => {
     return {
-        userData: state.userData.fetchedUser,
         isSignUp: false
     };
 };

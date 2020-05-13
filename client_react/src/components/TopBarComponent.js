@@ -13,9 +13,6 @@ const mapDispatchToProps = dispatch => {
         submitFeedback: text => {
             dispatch(userActions.leaveFeedback(text));
         },
-        onProfileClick: e => {
-            dispatch(userActions.goToProfile())
-        },
         onAppNameClick: e => {
             userActions.goHome();
         }

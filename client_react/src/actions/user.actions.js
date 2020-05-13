@@ -9,7 +9,8 @@ export const userActions = {
     leaveFeedback,
     goToProfile,
     update,
-    goHome
+    goHome,
+    getCurrentUser
 };
 
 function login(username, password) {
@@ -76,16 +77,20 @@ function leaveFeedback(message) {
     }
 }
 
-function goToProfile() {
+function getCurrentUser() {
     const userId = authHelper.getCookie('userId');
     return dispatch => {
-        userService.getUser(userId)
+        return userService.getUser(userId)
             .then(fetchedUser => {
                 dispatch({ type: userConstants.USER_FETCHED, fetchedUser });
-                history.push('/home/profile');
+                return fetchedUser;
             })
             .catch(() => serviceHelper.actionsErrorHandler(dispatch))
     }
+}
+
+function goToProfile() {
+    history.push('/home/profile');
 }
 
 function goHome() {

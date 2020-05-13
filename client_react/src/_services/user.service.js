@@ -18,7 +18,7 @@ async function login(email, password) {
     };
 
     //return
-    const res = await global.global.fetchWithLoaderWithLoader(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
+    const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
     const user = await serviceHelper.handleResponse(res)
     authHelper.setCookie('jwt', user.jwt);
     authHelper.setCookie('userId', user.userDetails.id);
