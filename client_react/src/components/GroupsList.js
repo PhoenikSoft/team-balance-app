@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -17,6 +17,10 @@ import AddGroupDialog from './AddGroudDialog';
 
 
 const useStyles = makeStyles((theme) => ({
+    rootContainer: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
     root: {
         flexGrow: 1,
         maxWidth: 752,
@@ -43,50 +47,65 @@ function generate(groups, element) {
     );
 }
 
-export default function GroupsList({ groups, onEditSubmit, isGroupAdmin, onGroupDelete, onGroupAdd, isGroupCreatedByCurrentUser }) {
+// this component uses global state to render gruops
+export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditSubmit, isGroupAdmin, onGroupDelete,
+    onGroupAdd, isGroupCreatedByCurrentUser, goToGroupPage }) {
+    let groups = groupsFromGlobalState;
     const classes = useStyles();
     const [groupdDialogOpened, setAddGroupDialog] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const action = await fetchGroups();
+            groups = action.groups;
+        };
+        fetchData();
+    }, []);
+
+
     return (
-        <div className={classes.root}>
-            <Grid container spacing={6}>
-                <Grid item xs={12} md={12}>
-                    <Typography variant="h6" className={classes.title}>Your groups</Typography>
-                    <div className={classes.demo}>
-                        <List dense={false}>
-                            {generate(groups, <GroupsListItem />)}
-                            <ListItem>
-                                <ListItemSecondaryAction
-                                    className={classes.addButton}
-                                    onClick={e => setAddGroupDialog(true)}>
-                                    <Typography variant="button" >Add group</Typography>
-                                    <IconButton edge="end" aria-label="add group">
-                                        <AddCircleOutlineOutlinedIcon
-                                            color="secondary"
-                                            fontSize="large"
-                                        />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        </List>
-                    </div>
-                </Grid>
-            </Grid >
-            <AddGroupDialog
-                open={groupdDialogOpened}
-                handleClose={e => setAddGroupDialog(false)}
-                onSubmit={name => () => {
-                    onGroupAdd(name);
-                    setAddGroupDialog(false);
-                }}
-            />
-        </div >
+        <div className={classes.rootContainer}>
+            <div className={classes.root}>
+                <Grid container spacing={6}>
+                    <Grid item xs={12} md={12}>
+                        <Typography variant="h6" className={classes.title}>Your groups</Typography>
+                        <div className={classes.demo}>
+                            <List dense={false}>
+                                {generate(groups, <GroupsListItem />)}
+                                <ListItem button>
+                                    <ListItemSecondaryAction 
+                                        className={classes.addButton}
+                                        onClick={e => setAddGroupDialog(true)}>
+                                        <Typography button variant="button" >Add group</Typography>
+                                        <IconButton edge="end" aria-label="add group">
+                                            <AddCircleOutlineOutlinedIcon
+                                                color="secondary"
+                                                fontSize="large"
+                                            />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            </List>
+                        </div>
+                    </Grid>
+                </Grid >
+                <AddGroupDialog
+                    open={groupdDialogOpened}
+                    handleClose={e => setAddGroupDialog(false)}
+                    onSubmit={name => () => {
+                        onGroupAdd(name);
+                        setAddGroupDialog(false);
+                    }}
+                />
+            </div >
+        </div>
     );
 
     function GroupsListItem({ groupId, groupName }) {
         const [edit, setEdit] = React.useState({});
 
         return (
-            <ListItem>
+            <ListItem button onClick={e => goToGroupPage(groupId)}>
                 {edit[groupId]
                     ? <TextField
                         value={edit[groupId]}

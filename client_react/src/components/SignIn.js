@@ -93,8 +93,8 @@ export default function SignIn({ onLoginClick }) {
             color="primary"
             className={classes.submit}
             onClick={e => {
-              //onLoginClick(e)(email, password);
-              onLoginClick(e)('dev@dev.com', 'dev');
+              onLoginClick(e)(email, password);
+              //onLoginClick(e)('dev@dev.com', 'dev');
             }} 
           >
             Sign In

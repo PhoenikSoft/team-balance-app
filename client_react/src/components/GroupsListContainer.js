@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { authHelper } from '../_helpers'
+import { authHelper, navigation } from '../_helpers'
 
 import { groupActions } from '../actions';
 import GroupsList from './GroupsList';
@@ -17,13 +17,16 @@ const mapDispatchToProps = dispatch => {
             dispatch(groupActions.saveGroup(value));
         },
         isGroupAdmin: authHelper.isGroupAdmin,
+        fetchGroups: async () => await dispatch(groupActions.getGroups()),
+        goToGroupPage: navigation.goToGroupView
+
 
     }
 };
 
 const mapStateToProps = state => {
     return {
-        groups: state.groups,
+        groupsFromGlobalState: state.groups,
         isGroupCreatedByCurrentUser: groupId => state.groups.find(group => group.id === groupId).isCreatedByCurrentUser
     };
 };

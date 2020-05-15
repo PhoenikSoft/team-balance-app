@@ -37,11 +37,11 @@ function register(inputs) {
     return dispatch => {
         dispatch(request({ username: inputs.email }));
 
-        userService.register(inputs)
+        return userService.register(inputs)
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/home');
+                    goHome();
                 },
                 error => {
                     dispatch(failure(error.toString()));

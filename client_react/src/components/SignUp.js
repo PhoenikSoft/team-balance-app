@@ -12,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
 import PhoneInput from './PhoneInput';
-import { userActions } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -34,14 +33,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp({ onRegisterClick, userData, isSignUp, fetchUser }) {
+export default function SignUp({ onRegisterClick, isSignUp, fetchUser }) {
     const classes = useStyles();
     const [inputs, setInputs] = useState(getInitialState());
 
     useEffect(() => {
-        fetchUser().then(user => {
+        if (isSignUp) {
+            return
+        }
+        const fetchData = async () => {
+            const user = await fetchUser();
             setInputs(user);
-        });
+        };
+        fetchData();
     }, []);
 
     function getInitialState() {

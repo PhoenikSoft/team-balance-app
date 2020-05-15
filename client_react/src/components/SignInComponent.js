@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import { userActions, groupActions } from '../actions';
-import { history } from '../_helpers';
+import { userActions } from '../actions';
 import SignIn from './SignIn';
 
 const mapDispatchToProps = dispatch => {
@@ -9,8 +8,7 @@ const mapDispatchToProps = dispatch => {
             e.preventDefault();
             return async (email, password) => {
                 await dispatch(userActions.login(email, password));
-                await dispatch(groupActions.getGroups());
-                history.push('/home');
+                userActions.goHome();
 
             }
         }

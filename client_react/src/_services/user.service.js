@@ -17,7 +17,6 @@ async function login(email, password) {
         body: JSON.stringify({ email, password })
     };
 
-    //return
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
     const user = await serviceHelper.handleResponse(res)
     authHelper.setCookie('jwt', user.jwt);
@@ -29,19 +28,19 @@ function logout() {
     serviceHelper.logout();
 }
 
-function register(input) {
+// TODO BE must return token
+async function register(input) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(input)
     };
 
-    return global.fetchWithLoader(`${config.apiUrl}${apiConstants.REGISTER_URL}`, requestOptions)
-        .then(serviceHelper.handleResponse)
-        .then(user => {
-            localStorage.setItem('user', JSON.stringify(user));
-            return user;
-        });
+    const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.REGISTER_URL}`, requestOptions)
+    const user = await serviceHelper.handleResponse(res);
+    authHelper.setCookie('jwt', user.jwt);
+    authHelper.setCookie('userId', user.userDetails.id);
+    return user;
 }
 
 function getUser(userId) {

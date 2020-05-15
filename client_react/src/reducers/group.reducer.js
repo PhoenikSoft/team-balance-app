@@ -1,6 +1,6 @@
 import { groupConstants } from '../_constants';
 
-export function groups(state = {}, action) {
+export function groups(state = [], action) {
     switch (action.type) {
         case groupConstants.ADD_GROUP:
             return [...state, { ...action.group, isCreatedByCurrentUser: true }];

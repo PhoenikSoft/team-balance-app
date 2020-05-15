@@ -38,8 +38,7 @@ function saveGroup(group) {
     return dispatch => {
         groupService.saveGroup(group)
             .then((group) => dispatch({ type: groupConstants.ADD_GROUP, ...group }))
-            .catch((e) => {
-                debugger
+            .catch(e => {
                 serviceHelper.actionsErrorHandler(dispatch,e)});
     };
 };
