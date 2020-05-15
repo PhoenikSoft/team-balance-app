@@ -73,7 +73,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                             <List dense={false}>
                                 {generate(groups, <GroupsListItem />)}
                                 <ListItem button>
-                                    <ListItemSecondaryAction 
+                                    <ListItemSecondaryAction
                                         className={classes.addButton}
                                         onClick={e => setAddGroupDialog(true)}>
                                         <Typography button variant="button" >Add group</Typography>
@@ -105,7 +105,9 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
         const [edit, setEdit] = React.useState({});
 
         return (
-            <ListItem button onClick={e => goToGroupPage(groupId)}>
+            <ListItem button onClick={e => {
+                !edit[groupId] && goToGroupPage(groupId)
+            }}>
                 {edit[groupId]
                     ? <TextField
                         value={edit[groupId]}
