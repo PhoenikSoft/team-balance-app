@@ -13,8 +13,8 @@ export const groupActions = {
 function getGroups() {
     return dispatch => {
         return groupService.getGroups()
-            .then(res => dispatch({ type: groupConstants.GET_ALL_GROUPS, groups: res.groups }))
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch));
+            .then(res => dispatch({ type: groupConstants.ALL_GROUPS_FETCHED, groups: res.groups }))
+            .catch(serviceHelper.actionsErrorHandler);
     };
 };
 
@@ -22,7 +22,7 @@ function updateGroup(groupId, name) {
     return dispatch => {
         groupService.updateGroup(groupId, { name })
             .then(group => dispatch({ type: groupConstants.UPDATE_GROUP, group }))
-            .catch(e => serviceHelper.actionsErrorHandler(dispatch, e));
+            .catch(serviceHelper.actionsErrorHandler);
     };
 };
 
@@ -30,7 +30,7 @@ function deleteGroup(groupId) {
     return dispatch => {
         groupService.deleteGroup(groupId)
             .then(() => dispatch({ type: groupConstants.DELETE_GROUP, groupId }))
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch));
+            .catch(serviceHelper.actionsErrorHandler);
     };
 };
 
@@ -38,8 +38,7 @@ function saveGroup(group) {
     return dispatch => {
         groupService.saveGroup(group)
             .then((group) => dispatch({ type: groupConstants.ADD_GROUP, ...group }))
-            .catch(e => {
-                serviceHelper.actionsErrorHandler(dispatch,e)});
+            .catch(serviceHelper.actionsErrorHandler);
     };
 };
 
@@ -53,10 +52,10 @@ async function goToGroup(groupId) {
             } else {
                 dispatch({ type: groupConstants.ACCESS_DENIED });
                 history.push('/home');
-                serviceHelper.actionsErrorHandler(dispatch, groupConstants.ACCESS_DENIED_TEXT);
+                serviceHelper.actionsErrorHandler(groupConstants.ACCESS_DENIED_TEXT);
             };
         } catch (e) {
-            serviceHelper.actionsErrorHandler(dispatch)
+            serviceHelper.actionsErrorHandler()
         };
     };
 };

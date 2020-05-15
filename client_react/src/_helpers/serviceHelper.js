@@ -1,5 +1,6 @@
 import { authHelper } from '../_helpers';
 import { alertConstants } from '../_constants';
+import { store } from '../index';
 
 
 export const serviceHelper = {
@@ -25,8 +26,8 @@ function handleResponse(response) {
     });
 };
 
-function actionsErrorHandler(dispatch, errorText = alertConstants.DEFAULT_ERROR_TEXT) {
-    dispatch({ type: alertConstants.ALERT_ERROR, text: errorText });
+function actionsErrorHandler(errorText = alertConstants.DEFAULT_ERROR_TEXT) {
+    store.dispatch({ type: alertConstants.ALERT_ERROR, text: errorText });
 };
 
 function getRequestOptions(method, headers = {}, body) {

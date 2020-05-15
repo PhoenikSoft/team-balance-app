@@ -28,7 +28,7 @@ global.fetchWithLoader = (...args) => {
     });
 }
 
-const store = createStore(
+export const store = createStore(
     createRootReducer(history),
     {},
     composedEnhancers

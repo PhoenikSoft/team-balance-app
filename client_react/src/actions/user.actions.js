@@ -58,7 +58,7 @@ function update(inputs) {
     return dispatch => {
         userService.update(inputs)
             .then(() => dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.USER_UPDATE_SUCCESS_TEXT }))
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch))
+            .catch(() => serviceHelper.actionsErrorHandler())
     }
 }
 
@@ -72,7 +72,7 @@ function leaveFeedback(message) {
     return dispatch => {
         feedBackService.leaveFeedBack(message)
             .then(message => dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.FEEDBACK_SUCCESS_TEXT }))
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch, alertConstants.FEEDBACK_ERROR_TEXT))
+            .catch(() => serviceHelper.actionsErrorHandler(alertConstants.FEEDBACK_ERROR_TEXT))
 
     }
 }
@@ -85,7 +85,7 @@ function getCurrentUser() {
                 dispatch({ type: userConstants.USER_FETCHED, fetchedUser });
                 return fetchedUser;
             })
-            .catch(() => serviceHelper.actionsErrorHandler(dispatch))
+            .catch(() => serviceHelper.actionsErrorHandler())
     }
 }
 
