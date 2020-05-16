@@ -4,17 +4,25 @@ import { apiConstants } from '../_constants';
 
 export const groupService = {
     getGroups,
+    getGroup,
     saveGroup,
     updateGroup,
     deleteGroup,
     checkAccess
 }
 
-function getGroups(groupId) {
+function getGroups() {
     const userId = authHelper.getCookie('userId');
-    const getUrl = () => `${config.apiUrl}${apiConstants.GROUPS(userId)}${groupId ? '/' + groupId : ''}`;
+    const getUrl = () => `${config.apiUrl}${apiConstants.GROUPS(userId)}`;
     return global.fetchWithLoader(
         getUrl(),
+        serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
+        .then(serviceHelper.handleResponse);
+};
+
+function getGroup(groupId) {
+    return global.fetchWithLoader(
+        `${config.apiUrl}${apiConstants.GROUP_ACTION(groupId)}`,
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 };
@@ -45,5 +53,6 @@ function checkAccess(groupId) {
     return global.fetchWithLoader(
         `${config.apiUrl}${apiConstants.ACCESS_CHECK(groupId)}`,
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
-        .then(serviceHelper.handleResponse);
+        .then(serviceHelper.handleResponse)
+        .then(res=>res.canAccess);
 };

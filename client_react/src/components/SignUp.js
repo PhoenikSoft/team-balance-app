@@ -38,15 +38,13 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser }) {
     const [inputs, setInputs] = useState(getInitialState());
 
     useEffect(() => {
-        if (isSignUp) {
-            return
-        }
+        if (isSignUp) { return }
         const fetchData = async () => {
             const user = await fetchUser();
             setInputs(user);
         };
         fetchData();
-    }, []);
+    }, [isSignUp,fetchUser]);
 
     function getInitialState() {
         return {

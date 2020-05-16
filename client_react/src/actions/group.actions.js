@@ -4,6 +4,7 @@ import { groupService } from '../_services';
 
 export const groupActions = {
     getGroups,
+    getGroup,
     updateGroup,
     deleteGroup,
     saveGroup,
@@ -11,10 +12,25 @@ export const groupActions = {
 };
 
 function getGroups() {
-    return dispatch => {
-        return groupService.getGroups()
-            .then(res => dispatch({ type: groupConstants.ALL_GROUPS_FETCHED, groups: res.groups }))
-            .catch(serviceHelper.actionsErrorHandler);
+    return async dispatch => {
+        try {
+            const res = await groupService.getGroups();
+            return dispatch({ type: groupConstants.GROUP_FETCHED, groups: res.groups });
+        } catch (e) {
+            serviceHelper.actionsErrorHandler()
+        }
+    };
+};
+
+function getGroup(groupId) {
+    return async dispatch => {
+        try {
+            const group = await groupService.getGroup(groupId);
+            return dispatch({ type: groupConstants.GROUP_FETCHED, groups: [group] });
+
+        } catch (e) {
+            serviceHelper.actionsErrorHandler()
+        }
     };
 };
 

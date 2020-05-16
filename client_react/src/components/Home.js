@@ -4,6 +4,7 @@ import TopBar from './TopBarComponent';
 import Profile from './ProfileContainer';
 import SnackBar from './Snackbar';
 import GroupsList from './GroupsListContainer';
+import GroupPage from './GroupPageContainer';
 
 
 export default function HomeView() {
@@ -19,7 +20,7 @@ export default function HomeView() {
                 <Profile />
             </Route>
             <Route exact path={`${path}/groups/:groupId`}>
-                <div> Some group</div>
+                <GroupPage />
             </Route>
             <Route exact path={`${path}/groups/:groupId/games/:gameId`}>
                 <div> Some game</div>

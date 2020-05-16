@@ -1,3 +1,5 @@
+import config from '../config';
+
 export const apiConstants = {
     LOGIN_URL: '/api/auth/login',
     REGISTER_URL: '/api/auth/register',
@@ -8,6 +10,11 @@ export const apiConstants = {
     GROUPS: userId => `/api/groups?userId=${userId}`,
     GROUP_ACTION: groupId => `/api/groups/${groupId}`,
     ACCESS_CHECK: groupId => `/api/groups/${groupId}/accessChecks`,
+
+    GET_MEMBERS: groupId => `api/groups/${groupId}/members`,
+    MEMBER: (groupId, memberId) => `/api/groups/${groupId}/members/${memberId}`,
+    ADD_MEMBER_BY_REF: ref => `/api/groups/refs/${ref}/members`,
+    ADD_MEMBER_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
 
     GAMES: groupId => `api/groups/${groupId}/games`,
     GET_GAME: (groupId, gameId) => `api/groups/${groupId}/games/${gameId}`,
@@ -20,3 +27,5 @@ export const apiConstants = {
     PLAYERS_BATCH: (groupId, gameId) => `api/groups/${groupId}/games/${gameId}/playersBatch`
 
 }
+
+export const constructUrl = url => `${config.apiUrl}${url}`;

@@ -1,4 +1,4 @@
-import { authHelper } from '../_helpers';
+import { authHelper } from '.';
 import { alertConstants } from '../_constants';
 import { store } from '../index';
 

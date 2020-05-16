@@ -47,7 +47,7 @@ function generate(groups, element) {
     );
 }
 
-// this component uses global state to render gruops
+// this component uses global state to render groups
 export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditSubmit, isGroupAdmin, onGroupDelete,
     onGroupAdd, isGroupCreatedByCurrentUser, goToGroupPage }) {
     let groups = groupsFromGlobalState;

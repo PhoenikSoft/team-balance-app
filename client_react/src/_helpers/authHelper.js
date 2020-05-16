@@ -1,6 +1,5 @@
 import jwtDecode from 'jwt-decode'
 import { history } from './history';
-import { func } from 'prop-types';
 
 export const authHelper = {
     authHeader,
