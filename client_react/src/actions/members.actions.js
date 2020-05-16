@@ -3,9 +3,9 @@ import { serviceHelper } from '../_helpers';
 import { membersService } from '../_services';
 
 
-const deleteMember = userId => dispatch =>
-    membersService.deleteMember(userId)
-        .then(member => dispatch({ type: memberConstants.DELETE_MEMBER, member }))
+const deleteMember = (userId, groupId) => dispatch =>
+    membersService.deleteMember(userId, groupId)
+        .then(() => dispatch({ type: memberConstants.DELETE_MEMBER, memberId: userId }))
         .catch(serviceHelper.actionsErrorHandler);
 
 const copyLinkToClipBoard = groupRef => {

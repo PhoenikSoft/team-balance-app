@@ -1,4 +1,4 @@
-import { groupConstants } from '../_constants';
+import { groupConstants, memberConstants, gameConstants } from '../_constants';
 
 export function groups(state = [], action) {
     switch (action.type) {
@@ -16,6 +16,14 @@ export function groups(state = [], action) {
                     return { ...action.group, isCreatedByCurrentUser: true };
                 };
             });
+
+
+        case memberConstants.DELETE_MEMBER:
+            const newMembersList = state[0].members.filter(member => member.id !== action.memberId);
+            return [{ ...state[0], members: newMembersList }];
+        case gameConstants.GAME_DELETED:
+            const newGamesList = state[0].games.filter(game => game.id !== action.gameId);
+            return [{ ...state[0], games: newGamesList }];
         default:
             return state
     };

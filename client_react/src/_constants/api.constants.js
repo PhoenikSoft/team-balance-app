@@ -16,15 +16,15 @@ export const apiConstants = {
     ADD_MEMBER_BY_REF: ref => `/api/groups/refs/${ref}/members`,
     ADD_MEMBER_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
 
-    GAMES: groupId => `api/groups/${groupId}/games`,
-    GET_GAME: (groupId, gameId) => `api/groups/${groupId}/games/${gameId}`,
+    GAMES: groupId => `/api/groups/${groupId}/games`,
+    GAME: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}`,
 
-    GENERATE_BALANCED_TEAMS: (groupId, gameId) => `api/groups/${groupId}/games/${gameId}/balancedTeams`,
-    GET_PLAYERS: (groupId, gameId) => `api/groups/${groupId}/games/${gameId}/players`,
+    GENERATE_BALANCED_TEAMS: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/balancedTeams`,
+    GET_PLAYERS: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/players`,
 
-    PLAYER: (groupId, gameId, playerId) => `api/groups/${groupId}/games/${gameId}/players/${playerId}`,
+    PLAYER: (groupId, gameId, playerId) => `/api/groups/${groupId}/games/${gameId}/players/${playerId}`,
 
-    PLAYERS_BATCH: (groupId, gameId) => `api/groups/${groupId}/games/${gameId}/playersBatch`
+    PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`
 
 }
 

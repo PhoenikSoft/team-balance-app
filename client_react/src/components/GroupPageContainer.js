@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { authHelper, navigation, selectorHelpers, urlParserHelper } from '../_helpers';
 import { groupService } from '../_services'
 
-import { groupActions } from '../actions';
+import { groupActions, membersActions,gamesActions } from '../actions';
 
 
 const mapDispatchToProps = dispatch => {
@@ -16,6 +16,12 @@ const mapDispatchToProps = dispatch => {
             } else {
                 alert('permission denied')
             }
+        },
+        deleteMember: (userId, groupId) => {
+            dispatch(membersActions.deleteMember(userId, groupId));
+        },
+        deleteGame: (gameId, groupId) => {
+            dispatch(gamesActions.deleteGame(gameId, groupId));
         }
     }
 }
