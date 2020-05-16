@@ -1,5 +1,5 @@
 export const gameConstants = {
-    ADD_GAME: 'ADD_GAME',
+    GAME_ADDED: 'GAME_ADDED',
     GAME_UPDATED: 'GAME_UPDATED',
     GAME_DELETED: 'GAME_DELETED'
 };

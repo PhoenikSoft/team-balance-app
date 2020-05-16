@@ -1,8 +1,9 @@
 import { serviceHelper, authHelper } from '../_helpers';
-import { apiConstants,constructUrl } from '../_constants';
+import { apiConstants, constructUrl } from '../_constants';
 
 export const gamesService = {
-    deleteGame
+    deleteGame,
+    addGame
 }
 
 function deleteGame(gameId, groupId) {
@@ -11,3 +12,10 @@ function deleteGame(gameId, groupId) {
         serviceHelper.getRequestOptions('DELETE', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 };
+
+function addGame(game, groupId) {
+    return global.fetchWithLoader(
+        constructUrl(apiConstants.GAMES(groupId)),
+        serviceHelper.getRequestOptions('POST', authHelper.authHeader(), game))
+        .then(serviceHelper.handleResponse);
+}

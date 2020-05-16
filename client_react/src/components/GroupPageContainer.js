@@ -1,9 +1,9 @@
 import GroupPage from './GroupPage';
 import { connect } from 'react-redux';
 import { authHelper, navigation, selectorHelpers, urlParserHelper } from '../_helpers';
-import { groupService } from '../_services'
+import { groupService, gamesService } from '../_services'
 
-import { groupActions, membersActions,gamesActions } from '../actions';
+import { groupActions, membersActions, gamesActions } from '../actions';
 
 
 const mapDispatchToProps = dispatch => {
@@ -22,6 +22,12 @@ const mapDispatchToProps = dispatch => {
         },
         deleteGame: (gameId, groupId) => {
             dispatch(gamesActions.deleteGame(gameId, groupId));
+        },
+        copyLink: ref => {
+            membersActions.copyLinkToClipBoard(ref);
+        },
+        addGame: (game, groupId) => {
+            dispatch(gamesActions.addGame(game, groupId));
         }
     }
 }

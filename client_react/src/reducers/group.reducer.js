@@ -24,6 +24,9 @@ export function groups(state = [], action) {
         case gameConstants.GAME_DELETED:
             const newGamesList = state[0].games.filter(game => game.id !== action.gameId);
             return [{ ...state[0], games: newGamesList }];
+        case gameConstants.GAME_ADDED:
+            return [{ ...state[0], games: [...state[0].games, action.game] }];
+
         default:
             return state
     };
