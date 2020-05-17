@@ -29,7 +29,9 @@ export default function GroupPage({ groupFromGlobalState, fetchGroup, deleteMemb
     useEffect(() => {
         const fetch = async () => {
             const action = await fetchGroup();
-            group = action.groups;
+            if(action){
+                group = action.groups;
+            };
         };
         fetch();
     }, []);

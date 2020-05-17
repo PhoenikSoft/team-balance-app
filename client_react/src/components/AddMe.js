@@ -4,7 +4,6 @@ import { membersActions } from '../actions';
 
 const REF_REGEX = /\w{20}/;
 
-
 const isAdded = async () => {
     const ref = document.URL.match(REF_REGEX);
     return await membersActions.addMemberByRef(ref[0]);
@@ -15,14 +14,8 @@ const mapDispatchToProps = async dispatch => {
     }
 }
 
-const mapStateToProps = state => {
-    return {}
+function Addme() {
+    return <div> </div>
 }
 
-function Addme({ }) {
-    return <div>
-
-    </div>
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Addme);
+export default connect(null, mapDispatchToProps)(Addme);

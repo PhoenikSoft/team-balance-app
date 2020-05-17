@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { userActions } from '../actions';
+import { navigation } from '../_helpers';
 import TopBar from './TopBar';
 
 
@@ -14,7 +15,7 @@ const mapDispatchToProps = dispatch => {
             dispatch(userActions.leaveFeedback(text));
         },
         onAppNameClick: e => {
-            userActions.goHome();
+            navigation.goHome();
         }
     }
 };

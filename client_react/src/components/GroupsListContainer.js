@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import { authHelper, navigation } from '../_helpers'
+import { authHelper, navigation,serviceHelper } from '../_helpers'
+import { groupService } from '../_services'
 
 import { groupActions } from '../actions';
 import GroupsList from './GroupsList';
@@ -18,7 +19,15 @@ const mapDispatchToProps = dispatch => {
         },
         isGroupAdmin: authHelper.isGroupAdmin,
         fetchGroups: async () => await dispatch(groupActions.getGroups()),
-        goToGroupPage: navigation.goToGroupView
+        goToGroupPage: async groupId => {
+            const access = await groupService.checkAccess(groupId);
+            if (access) {
+                navigation.goToGroupView(groupId)
+            } else {
+                navigation.goHome();
+                serviceHelper.actionsErrorHandler(`You don't have access to this group`)
+            };
+        }
 
 
     }

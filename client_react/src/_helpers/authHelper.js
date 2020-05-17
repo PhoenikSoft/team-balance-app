@@ -75,5 +75,5 @@ function logout() {
 
 function isGroupAdmin(groupId) {
     const decodedJwt = jwtDecode(getCookie('jwt'));
-    return decodedJwt.roles.includes(`ADMIN_ROLE_${groupId}`)
+    return decodedJwt.roles.includes(`"ADMIN_ROLE_${groupId}"`)
 }

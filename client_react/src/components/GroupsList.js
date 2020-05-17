@@ -76,7 +76,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                                     <ListItemSecondaryAction
                                         className={classes.addButton}
                                         onClick={e => setAddGroupDialog(true)}>
-                                        <Typography  variant="button" >Add group</Typography>
+                                        <Typography variant="button" >Add group</Typography>
                                         <IconButton edge="end" aria-label="add group">
                                             <AddCircleOutlineOutlinedIcon
                                                 color="secondary"
@@ -115,29 +115,27 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                     />
                     : <ListItemText primary={groupName} value={groupName} />}
 
-                <ListItemSecondaryAction>
-
-                    {edit[groupId]
-                        ? <><IconButton onClick={() => onEditSubmit(groupId, edit[groupId])}
-                            aria-label="submit group name">
-                            <CheckIcon />
-                        </IconButton>
-                            <IconButton onClick={() => setEdit({})}
-                                aria-label="edit group">
-                                <CancelIcon />
+                {(isGroupAdmin(groupId) || isGroupCreatedByCurrentUser(groupId)) &&
+                    <ListItemSecondaryAction>
+                        {edit[groupId]
+                            ? <><IconButton onClick={() => onEditSubmit(groupId, edit[groupId])}
+                                aria-label="submit group name">
+                                <CheckIcon />
                             </IconButton>
-                        </>
-                        : <IconButton onClick={() => setEdit({ [groupId]: groupName })}
-                            aria-label="edit group">
-                            <EditIcon />
-                        </IconButton>}
-                    {(isGroupAdmin(groupId) || isGroupCreatedByCurrentUser(groupId)) &&
+                                <IconButton onClick={() => setEdit({})}
+                                    aria-label="edit group">
+                                    <CancelIcon />
+                                </IconButton>
+                            </>
+                            : <IconButton onClick={() => setEdit({ [groupId]: groupName })}
+                                aria-label="edit group">
+                                <EditIcon />
+                            </IconButton>}
                         <IconButton onClick={() => onGroupDelete(groupId)}
                             aria-label="edit group">
                             <DeleteIcon />
-                        </IconButton>}
-
-                </ListItemSecondaryAction>
+                        </IconButton>
+                    </ListItemSecondaryAction>}
             </ListItem>
         )
     }
