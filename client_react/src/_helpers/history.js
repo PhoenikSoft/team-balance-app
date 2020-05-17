@@ -9,7 +9,8 @@ export const navigation = {
     goToGroupView,
     goToProfile,
     goHome,
-    goToRefLink
+    goToRefLink,
+    goToGameView
 }
 
 function goToGroupView(groupId) {
@@ -26,4 +27,8 @@ function goHome() {
 
 function goToRefLink(ref) {
     history.push(apiConstants.ADD_MEMBER_BY_REF(ref));
+}
+
+function goToGameView(groupId, gameId) {
+    history.push(`/home/groups/${groupId}/games/${gameId}`);
 }

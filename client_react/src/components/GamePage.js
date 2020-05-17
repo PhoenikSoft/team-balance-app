@@ -4,8 +4,7 @@ import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid';
 import { authHelper } from '../_helpers';
 import Button from '@material-ui/core/Button';
-import AddGameDialog from './AddGameDialog';
-
+import AddPlayersDialog from './AddPlayersDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,19 +17,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-export default function GroupPage(
-    { groupFromGlobalState, fetchGroup, deleteMember, deleteGame, copyLink, addGame,onGameRowClick }) {
-    let group = groupFromGlobalState;
+export default function GamePage(
+    { gameFromGlobalState, fetchGame, groupId, goBack, deletePlayer, addPlayers }) {
+    let game = gameFromGlobalState;
     const classes = useStyles();
-    const [gameAddDialogOpened, setAddGameDialog] = useState(false);
-
+    //let 
+    const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
-            const action = await fetchGroup();
+            const action = await fetchGame();
             if (action) {
-                group = action.groups;
+                game = action.game;
             };
         };
         fetch();
@@ -38,34 +36,31 @@ export default function GroupPage(
 
     return (
         <div>
-            {authHelper.isGroupAdmin(group.id) && <div>
+            <div>
                 <div className={classes.spacing}>
-                    <Button variant="contained" color="primary" onClick={e => setAddGameDialog(true)}>
-                        Add Game
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={e => copyLink(group.ref)}>
-                        Copy link to clipboard
+                    <Button variant="contained" color="primary" onClick={e => goBack()}>
+                        Back to group
                     </Button>
                 </div>
-            </div>}
+            </div>
 
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <MaterialTable
                         className={classes.paper}
-                        title='Members'
-                        data={group.members}
+                        title='Playes'
+                        data={game.players}
                         columns={[
                             //{ title: 'Num', field: 'id', type: 'numeric' },
                             { title: 'Name', field: 'firstName' },
-                            { title: 'Rating', field: 'rating', type: 'numeric' },
+                            { title: 'Rating', field: 'rating', type: 'numeric' }
                         ]}
                         actions={[
-                            rowData => ({
+                            player => ({
                                 icon: 'delete',
-                                tooltip: 'Delete Member',
-                                onClick: (event, rowData) => deleteMember(rowData.id, group.id),
-                                disabled: !authHelper.isGroupAdmin(group.id) || rowData.id == authHelper.getCookie('userId')
+                                tooltip: 'Delete Player',
+                                onClick: (event, player) => deletePlayer(player.id),
+                                disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
                             })
                         ]}
                         options={{
@@ -74,7 +69,7 @@ export default function GroupPage(
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                     <MaterialTable
                         className={classes.paper}
                         onRowClick={onGameRowClick}
@@ -100,16 +95,16 @@ export default function GroupPage(
                             search: false
                         }}
                     />
-                </Grid>
+                </Grid>*/}
             </Grid>
-            <AddGameDialog
-                open={gameAddDialogOpened}
-                handleClose={e => setAddGameDialog(false)}
-                onSubmit={game => {
-                    addGame(game, group.id);
-                    setAddGameDialog(false);
+            {/* <AddPlayersDialog
+                open={addPlayersDialogOpened}
+                handleClose={e => setaddPlayersDialogOpened(false)}
+                onSubmit={players => {
+                    addPlayers(players);
+                    setaddPlayersDialogOpened(false);
                 }}
-            />
+            /> */}
         </div>
     )
 }

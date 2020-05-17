@@ -6,6 +6,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
+
+
 export default function AddGroupDialog({ open, handleClose, onSubmit }) {
     const [groupName, setGroupName] = useState({})
     return (
@@ -15,7 +17,7 @@ export default function AddGroupDialog({ open, handleClose, onSubmit }) {
                     Add Group
           </DialogContentText>
                 <TextField
-                    autoFocus
+                    autoFocus 
                     margin="dense"
                     id="groupName"
                     label="Group name"

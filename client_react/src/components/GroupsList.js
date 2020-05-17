@@ -13,7 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import CancelIcon from '@material-ui/icons/Cancel';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import AddGroupDialog from './AddGroudDialog';
+import AddGroupDialog from './AddGroupDialog';
 
 
 const useStyles = makeStyles((theme) => ({

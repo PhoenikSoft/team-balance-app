@@ -5,7 +5,7 @@ import Profile from './ProfileContainer';
 import SnackBar from './Snackbar';
 import GroupsList from './GroupsListContainer';
 import GroupPage from './GroupPageContainer';
-
+import GamePage from './GamePageContainer';
 
 
 export default function HomeView() {
@@ -24,9 +24,9 @@ export default function HomeView() {
                 <GroupPage />
             </Route>
             <Route exact path={`${path}/groups/:groupId/games/:gameId`}>
-                <div> Some game</div>
+                <GamePage />
             </Route>
-            
+
         </Switch>
         <SnackBar />
 

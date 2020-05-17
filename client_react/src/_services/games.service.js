@@ -3,7 +3,8 @@ import { apiConstants, constructUrl } from '../_constants';
 
 export const gamesService = {
     deleteGame,
-    addGame
+    addGame,
+    getGame
 }
 
 function deleteGame(gameId, groupId) {
@@ -17,5 +18,12 @@ function addGame(game, groupId) {
     return global.fetchWithLoader(
         constructUrl(apiConstants.GAMES(groupId)),
         serviceHelper.getRequestOptions('POST', authHelper.authHeader(), game))
+        .then(serviceHelper.handleResponse);
+}
+
+function getGame(gameId, groupId) {
+    return global.fetchWithLoader(
+        constructUrl(apiConstants.GAME(groupId, gameId)),
+        serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }

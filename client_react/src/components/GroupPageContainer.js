@@ -1,14 +1,15 @@
 import GroupPage from './GroupPage';
 import { connect } from 'react-redux';
-import { serviceHelper, navigation, urlParserHelper, } from '../_helpers';
-import { groupService } from '../_services'
+import { navigation, urlParserHelper } from '../_helpers';
 
 import { groupActions, membersActions, gamesActions } from '../actions';
+import selector from '../selectors';
 
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchGroup: async () => {
+        // OPTIMIZATION: don't fetch if group is in state already
+        fetchGroup: () => {
             const groupId = urlParserHelper.getGroupId()
             return dispatch(groupActions.getGroup(groupId));
         },
@@ -23,22 +24,18 @@ const mapDispatchToProps = dispatch => {
         },
         addGame: (game, groupId) => {
             dispatch(gamesActions.addGame(game, groupId));
-        }
+        },
+
     }
 }
 
 const mapStateToProps = state => {
-    function getGroup() {
-        const groupId = urlParserHelper.getGroupId()
-        const group = state.groups.find(group => group.id == groupId);
-        if (group) {
-            return group;
-        } else {
-            return {};
-        };
-    };
+    const groupFromGlobalState = selector.getGroup(urlParserHelper.getGroupId());
     return {
-        groupFromGlobalState: getGroup()
+        groupFromGlobalState,
+        onGameRowClick: (e, game) => {
+            navigation.goToGameView(groupFromGlobalState.id, game.id);
+        }
     };
 };
 

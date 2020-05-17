@@ -22,6 +22,7 @@ function getGroups() {
     };
 };
 
+// TODO add permission denied snackbar when BE is ready
 function getGroup(groupId) {
     return async dispatch => {
         try {

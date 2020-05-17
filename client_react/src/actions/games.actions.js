@@ -13,7 +13,14 @@ const addGame = (gameId, groupId) => dispatch =>
         .then(game => dispatch({ type: gameConstants.GAME_ADDED, game }))
         .catch(serviceHelper.actionsErrorHandler);
 
+// TODO add permission denied snackbar when BE is ready
+const getGame = (groupId, gameId) => dispatch =>
+    gamesService.getGame(gameId, groupId)
+        .then(game => dispatch({ type: gameConstants.GAME_FETCHED, game }))
+        .catch(serviceHelper.actionsErrorHandler);
+
 export const gamesActions = {
     deleteGame,
-    addGame
+    addGame,
+    getGame
 };
