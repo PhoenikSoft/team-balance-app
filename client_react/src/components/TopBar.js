@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import Dialog from './FeedBackDialog';
-import { userActions } from '../actions';
+import { navigation } from '../_helpers';
 
 
 
@@ -67,7 +67,7 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onA
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const onProfileClick = userActions.goToProfile;
+    const onProfileClick = navigation.goToProfile;
 
     const handleClickOpen = () => {
         setOpen(true);

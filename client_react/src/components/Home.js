@@ -7,6 +7,7 @@ import GroupsList from './GroupsListContainer';
 import GroupPage from './GroupPageContainer';
 
 
+
 export default function HomeView() {
     let { path } = useRouteMatch();
 
@@ -25,6 +26,7 @@ export default function HomeView() {
             <Route exact path={`${path}/groups/:groupId/games/:gameId`}>
                 <div> Some game</div>
             </Route>
+            
         </Switch>
         <SnackBar />
 

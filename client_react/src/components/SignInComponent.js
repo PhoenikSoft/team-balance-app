@@ -6,10 +6,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onLoginClick: e => {
             e.preventDefault();
-            return async (email, password) => {
-                await dispatch(userActions.login(email, password));
-                userActions.goHome();
-
+            return (email, password) => {
+                dispatch(userActions.login(email, password));
             }
         }
     }

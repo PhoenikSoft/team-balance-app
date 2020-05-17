@@ -1,15 +1,14 @@
 import { userConstants, alertConstants } from '../_constants';
-import { history, authHelper, serviceHelper } from '../_helpers';
+import { navigation, authHelper, serviceHelper } from '../_helpers';
 import { userService, feedBackService } from '../_services';
+import { store } from '../index';
 
 export const userActions = {
     login,
     logout,
     register,
     leaveFeedback,
-    goToProfile,
     update,
-    goHome,
     getCurrentUser
 };
 
@@ -21,6 +20,12 @@ function login(username, password) {
             .then(
                 user => {
                     dispatch(success(user));
+                    const refLink = store.getState().userData.refLink;
+                    if (refLink) {
+                        navigation.goToRefLink(refLink);
+                    } else {
+                        navigation.goHome();
+                    }
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -41,7 +46,12 @@ function register(inputs) {
             .then(
                 user => {
                     dispatch(success(user));
-                    goHome();
+                    const refLink = store.getState().userData.refLink;
+                    if (refLink) {
+                        navigation.goToRefLink(refLink);
+                    } else {
+                        navigation.goHome();
+                    };
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -89,12 +99,6 @@ function getCurrentUser() {
     }
 }
 
-function goToProfile() {
-    history.push('/home/profile');
-}
 
-function goHome() {
-    history.push('/home');
-}
 
 

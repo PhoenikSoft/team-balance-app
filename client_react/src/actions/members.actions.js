@@ -1,5 +1,5 @@
-import { memberConstants, apiConstants } from '../_constants';
-import { serviceHelper } from '../_helpers';
+import { memberConstants, apiConstants, groupConstants, userConstants } from '../_constants';
+import { serviceHelper, history, navigation } from '../_helpers';
 import { membersService } from '../_services';
 import config from '../config';
 
@@ -10,9 +10,23 @@ const deleteMember = (userId, groupId) => dispatch =>
         .catch(serviceHelper.actionsErrorHandler);
 
 const copyLinkToClipBoard = groupRef => {
-    const refLink = config.apiUrl + apiConstants.ADD_MEMBER_BY_REF(groupRef);
+    const refLink = document.location.origin + apiConstants.ADD_MEMBER_BY_REF(groupRef);
     performCopy(refLink);
 }
+
+const addMemberByRef = refLink => dispatch => {
+    return membersService.addMemberByRef(refLink)
+        // group with new member is returned from server
+        .then(group => {
+            dispatch({ type: groupConstants.GROUP_FETCHED, groups: [group] });
+            navigation.goToGroupView(group.id);
+            return true;
+        })
+        .catch(error => {
+            dispatch({ type: userConstants.SAVE_REF_LINK, refLink });
+            return false;
+        });
+};
 
 function performCopy(text) {
     var dummy = document.createElement("textarea");
@@ -30,5 +44,6 @@ function performCopy(text) {
 
 export const membersActions = {
     deleteMember,
-    copyLinkToClipBoard
+    copyLinkToClipBoard,
+    addMemberByRef
 };

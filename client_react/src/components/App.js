@@ -5,6 +5,7 @@ import SignIn from './SignInComponent';
 import SignUp from './SignUpContainer';
 import Home from './Home';
 import Loader from './Spinner';
+import AddMe from './AddMe';
 
 const App = () => (
     <div>
@@ -21,6 +22,9 @@ const App = () => (
                 </Route>
                 <Route path='/home'>
                     <Home />
+                </Route>
+                <Route exact path='/api/groups/refs/:ref/members'>
+                    <AddMe />
                 </Route>
                 <Redirect from="*" to="/" />
             </Switch>

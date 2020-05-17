@@ -10,7 +10,9 @@ import createRootReducer from './reducers';
 import App from './components/App';
 import { alertConstants } from './_constants';
 
-export const history = History.createBrowserHistory()
+export const history = History.createBrowserHistory();
+
+
 
 const enhancers = []
 const middleware = [thunk, routerMiddleware(history)];

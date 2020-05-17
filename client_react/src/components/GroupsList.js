@@ -76,7 +76,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                                     <ListItemSecondaryAction
                                         className={classes.addButton}
                                         onClick={e => setAddGroupDialog(true)}>
-                                        <Typography button variant="button" >Add group</Typography>
+                                        <Typography  variant="button" >Add group</Typography>
                                         <IconButton edge="end" aria-label="add group">
                                             <AddCircleOutlineOutlinedIcon
                                                 color="secondary"

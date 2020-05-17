@@ -6,6 +6,10 @@ export function userData(state = {}, action) {
             return {
                 fetchedUser: action.fetchedUser
             };
+        case userConstants.SAVE_REF_LINK:
+            return { ...state, refLink: action.refLink };
+        case userConstants.DELETE_REF_LINK:
+            return { ...state, refLink: null };
         default:
             return state
     }
