@@ -12,8 +12,13 @@ const deletePlayer = (groupId, gameId, playerId) => dispatch =>
         .then(newPlayersList => dispatch({ type: playersCosntants.PLAYER_DELETED, newPlayersList }))
         .catch(serviceHelper.actionsErrorHandler);
 
+const balanceTeams = (gameId, groupId, ) => dispatch =>
+    playersService.balanceTeams(gameId, groupId)
+        .then(balancedTeams => dispatch({ type: playersCosntants.TEAM_BALANCED, balancedTeams, gameId }))
+        .catch(serviceHelper.actionsErrorHandler);
 
 export const playersActions = {
     addPlayers,
-    deletePlayer
+    deletePlayer,
+    balanceTeams
 };

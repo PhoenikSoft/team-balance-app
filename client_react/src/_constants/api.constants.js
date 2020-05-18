@@ -24,7 +24,7 @@ export const apiConstants = {
 
     PLAYER: (groupId, gameId, playerId) => `/api/groups/${groupId}/games/${gameId}/players/${playerId}`,
 
-    PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`
+    PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
 
 }
 
