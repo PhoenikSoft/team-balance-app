@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => {
             return dispatch(gamesActions.getGame(groupId, gameId));
         },
         goBack: e => {
-
+            navigation.goToGroupView(groupId);
         },
         addPlayers: players => {
             dispatch(playersActions.addPlayers(groupId, gameId, players));

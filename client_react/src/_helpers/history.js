@@ -10,7 +10,12 @@ export const navigation = {
     goToProfile,
     goHome,
     goToRefLink,
-    goToGameView
+    goToGameView,
+    goBack
+}
+
+function goBack(){
+    history.goBack();
 }
 
 function goToGroupView(groupId) {
