@@ -8,7 +8,6 @@ import { membersService } from '../_services';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId }) {
+export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId, defaultPlayers }) {
     const classes = useStyles();
     const [checked, setChecked] = useState([]);
     const [players, setPlayers] = useState([]);
@@ -43,24 +42,23 @@ export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId 
         setChecked(newChecked);
     };
 
-    const getCheckedMembers = () => {
-        return players.filter(players => checked.indexOf(players.id) > -1);
-    };
-
     useEffect(() => {
         const fetchMembers = async () => {
+            const playersId = defaultPlayers.map(player => player.id);
             const members = await membersService.getMembers(groupId);
-            setPlayers(members);
+            const membersToAdd = members.filter(member => playersId.indexOf(member.id) < 0);
+            setPlayers(membersToAdd);
         };
-        fetchMembers();
-    }, []);
+
+        defaultPlayers && fetchMembers();
+    }, [defaultPlayers]);
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Add Group
-          </DialogContentText>
+                </DialogContentText>
                 <List className={classes.root}>
                     {players.map((player) => {
                         const labelId = `checkbox-list-label-${player.id}`;
@@ -76,11 +74,6 @@ export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId 
                                     />
                                 </ListItemIcon>
                                 <ListItemText id={labelId} primary={`${player.firstName} ${player.lastName}`} />
-                                <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="comments">
-                                        <CommentIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
                             </ListItem>
                         );
                     })}
@@ -90,7 +83,10 @@ export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId 
                 <Button onClick={handleClose} color="primary">
                     Cancel
           </Button>
-                <Button onClick={onSubmit(getCheckedMembers())} color="primary">
+                <Button onClick={e => {
+                    setChecked([]);
+                    onSubmit(checked)
+                }} color="primary">
                     Add Members
           </Button>
             </DialogActions>

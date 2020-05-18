@@ -41,6 +41,9 @@ export default function GamePage(
                     <Button variant="contained" color="primary" onClick={e => goBack()}>
                         Back to group
                     </Button>
+                    <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
+                        Add members
+                    </Button>
                 </div>
             </div>
 
@@ -97,14 +100,16 @@ export default function GamePage(
                     />
                 </Grid>*/}
             </Grid>
-            {/* <AddPlayersDialog
+            <AddPlayersDialog
+                defaultPlayers={game.players || []}
+                groupId={groupId}
                 open={addPlayersDialogOpened}
                 handleClose={e => setaddPlayersDialogOpened(false)}
                 onSubmit={players => {
                     addPlayers(players);
                     setaddPlayersDialogOpened(false);
                 }}
-            /> */}
+            />
         </div>
     )
 }

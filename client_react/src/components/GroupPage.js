@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function GroupPage(
-    { groupFromGlobalState, fetchGroup, deleteMember, deleteGame, copyLink, addGame,onGameRowClick }) {
+    { groupFromGlobalState, fetchGroup, deleteMember, deleteGame, copyLink, addGame, onGameRowClick }) {
     let group = groupFromGlobalState;
     const classes = useStyles();
     const [gameAddDialogOpened, setAddGameDialog] = useState(false);

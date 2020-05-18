@@ -11,7 +11,7 @@ export const apiConstants = {
     GROUP_ACTION: groupId => `/api/groups/${groupId}`,
     ACCESS_CHECK: groupId => `/api/groups/${groupId}/accessChecks`,
 
-    GET_MEMBERS: groupId => `api/groups/${groupId}/members`,
+    GET_MEMBERS: groupId => `/api/groups/${groupId}/members`,
     MEMBER: (groupId, memberId) => `/api/groups/${groupId}/members/${memberId}`,
     ADD_MEMBER_BY_REF: ref => `/api/groups/refs/${ref}/members`,
     ADD_MEMBER_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
