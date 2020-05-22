@@ -3,10 +3,9 @@
   "version": "0.0.0",
   "description": "Redux Todos example",
   "scripts": {
-    "start": "babel-node devServer.js",
-    "start_test": "webpack-dev-server --open",
+    "build": "react-scripts build",
     "lint": "eslint src",
-    "start_react": "react-scripts start"
+    "start": "react-scripts start"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,26 @@
-This is a manual on how to start up a dev version of a client.
+## Configuration
+
+In `client_react\src\config.js` set `prod_url` and `dev_url` variables to production and dev BE url respectively.
+
+## dev version start up
 
 * Install [Node v9.4.0](https://nodejs.org/download/release/v9.4.0/)
-* Run `npm i`
-* Run `npm run start_react`
+* Execute commands
+```
+npm i
+npm run start
+```
 
-Note: client side will query http://localhost:8080. To change a host go to `client_react\src\config.js` and change `apiUrl` property, rerun the app.
+Open browser on http://localhost:3000.
+
+## build and serve at production
+
+* Install [Node v9.4.0](https://nodejs.org/download/release/v9.4.0/)
+* Execute commands
+```
+npm run build
+npm install -g serve
+serve -s build
+```
+
+The app will be up and running at http://localhost:5000, to change the default port see [doc](https://create-react-app.dev/docs/deployment/#static-server)
