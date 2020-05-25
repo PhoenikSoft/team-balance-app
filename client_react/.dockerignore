@@ -1,8 +1,5 @@
-.project
-.settings
 node_modules
-dist
+build
 .dockerignore
 Dockerfile
-Dockerfile.ci
 Dockerfile.dev
