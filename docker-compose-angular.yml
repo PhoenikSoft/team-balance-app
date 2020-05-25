@@ -10,27 +10,18 @@ services:
     depends_on:
       - postgres
     build:
+      dockerfile: Dockerfile.dev
       context: ./server
-    environment:
-      - PGHOST=postgres
     ports:
       - '8080:8080'
+    environment:
+      - PGHOST=postgres
   client:
     build:
-      context: ./client_react
+      dockerfile: Dockerfile.dev
+      context: ./client
     volumes:
       - '/app/node_modules'
-      - './client_react:/app'
+      - './client:/app'
     ports:
-      - '5000:5000'
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-  nginx:
-    depends_on:
-      - api
-      - client
-    restart: always
-    build:
-      context: ./nginx
-    ports:
-    - '80:80'
+      - '4200:4200'
