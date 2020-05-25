@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GamePage(
-    { gameFromGlobalState, fetchGame, groupId, goBack, deletePlayer, addPlayers,balanceTeams }) {
+    { gameFromGlobalState, fetchGame, groupId, goBack, deletePlayer, addPlayers, balanceTeams }) {
     let game = gameFromGlobalState;
     const classes = useStyles();
 
@@ -35,7 +35,7 @@ export default function GamePage(
             const action = await fetchGame();
             if (action) {
                 game = action.game;
-                game.balancedTeams && setIsTeamBalanced(true);
+                //game.balancedTeams && setIsTeamBalanced(true);
             };
         };
         fetch();
@@ -79,14 +79,17 @@ export default function GamePage(
                         }}
                     />
                     <div className={classes.spacing}>
-                    <Button variant="contained" color="primary" onClick={e => balanceTeams()}>
-                        Balance teams
+                        <Button variant="contained" color="primary" onClick={e => {
+                            //setIsTeamBalanced(true);
+                            balanceTeams();
+                        }}>
+                            Balance teams
                     </Button>
-                    
-                </div>
+
+                    </div>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {isTeamBalanced && generateTeamTables(game.balancedTeams.teams)}
+                    {game.balancedTeams && generateTeamTables(game.balancedTeams.teams)}
                 </Grid>
             </Grid>
 

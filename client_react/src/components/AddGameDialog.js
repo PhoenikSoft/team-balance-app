@@ -9,13 +9,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
+    KeyboardDateTimePicker
 } from '@material-ui/pickers';
 
 export default function AddGroupDialog({ open, handleClose, onSubmit }) {
     const [gameName, setGameName] = useState({});
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+    const [selectedDate, setSelectedDate] = React.useState(new Date());
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -36,28 +35,15 @@ export default function AddGroupDialog({ open, handleClose, onSubmit }) {
                     onChange={e => setGameName(e.target.value)}
                 />
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
+                    <KeyboardDateTimePicker
                         variant="inline"
-                        format="yyyy-MM-dd"
-                        margin="normal"
-                        id="date-picker-inline"
-                        label="Date picker inline"
+                        ampm={false}
+                        label="With keyboard"
                         value={selectedDate}
                         onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-                    <KeyboardTimePicker
-                        margin="normal"
-                        id="time-picker"
-                        label="Time picker"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change time',
-                        }}
+                        onError={console.log}
+                        disablePast
+                        format="yyyy/MM/dd HH:mm"
                     />
                 </MuiPickersUtilsProvider>
             </DialogContent>
