@@ -25,15 +25,18 @@ export default function AddGroupDialog({ open, handleClose, onSubmit }) {
                 <DialogContentText>
                     Add Group
           </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="groupName"
-                    label="Game name"
-                    type="text"
-                    fullWidth
-                    onChange={e => setGameName(e.target.value)}
-                />
+                <form autoComplete="off">
+                    <TextField
+
+                        autoFocus
+                        margin="dense"
+                        id="groupName"
+                        label="Game name"
+                        type="text"
+                        fullWidth
+                        onChange={e => setGameName(e.target.value)}
+                    />
+                </form>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDateTimePicker
                         variant="inline"

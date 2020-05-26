@@ -74,6 +74,10 @@ function logout() {
 }
 
 function isGroupAdmin(groupId) {
+    const jwt = getCookie('jwt');
+    if (!jwt) {
+        return false;
+    };
     const decodedJwt = jwtDecode(getCookie('jwt'));
     return decodedJwt.roles.includes(`"ADMIN_ROLE_${groupId}"`)
 }
