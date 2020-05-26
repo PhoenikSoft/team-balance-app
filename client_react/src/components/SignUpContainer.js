@@ -17,8 +17,9 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        isSignUp: true
+        isSignUp: true,
+        error: state.authentication.error
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

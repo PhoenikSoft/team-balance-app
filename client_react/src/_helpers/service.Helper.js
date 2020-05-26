@@ -13,12 +13,13 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            if (response.status === 401) {
+            // TODO remove response.url.includes('register') when /register error will return smth other that 401
+            if (response.status === 401 && !response.url.includes('register')) {
                 authHelper.logout();
             }
 
             const error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
-                && data.errors.name.toString()) || response.statusText;
+                && data.errors.name.toString()) || data.msg || response.statusText;
             return Promise.reject(error);
         }
 

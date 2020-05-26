@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp({ onRegisterClick, isSignUp, fetchUser }) {
+export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) {
     const classes = useStyles();
     const [inputs, setInputs] = useState(getInitialState());
 
@@ -44,7 +44,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser }) {
             setInputs(user);
         };
         fetchData();
-    }, [isSignUp,fetchUser]);
+    }, [isSignUp, fetchUser]);
 
     function getInitialState() {
         return {
@@ -237,6 +237,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser }) {
                         }}>
                         {isSignUp ? 'Sign Up' : 'Update'}
                     </Button>
+
                     {isSignUp && <Grid container justify="flex-end">
                         <Grid item>
                             <Link href="/login" variant="body2">
@@ -244,6 +245,8 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser }) {
                             </Link>
                         </Grid>
                     </Grid>}
+                    {error && <Typography color="error">{error}</Typography>}
+
                 </form>
             </div>
             <Box mt={5}>

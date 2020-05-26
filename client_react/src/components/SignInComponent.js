@@ -13,4 +13,10 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(SignIn)
+const mapStateToProps = state => {
+    return {
+        error: state.authentication.error
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
