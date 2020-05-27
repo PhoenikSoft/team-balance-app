@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class EmailExistsException extends ServiceException {
 
     public EmailExistsException(String message) {
-        super(message, HttpStatus.UNAUTHORIZED);
+        super(message, HttpStatus.CONFLICT);
     }
 
 }
