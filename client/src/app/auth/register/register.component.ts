@@ -85,8 +85,7 @@ export class RegisterComponent implements OnInit {
       confirmPassword: fb.control('', [Validators.required]),
       phone: fb.control('', [
           Validators.required,
-          Validators.maxLength(9),
-          Validators.pattern('^\\d{9}$')
+          Validators.pattern('^\\+?\\d{12}$')
       ]),
       rating: fb.control(50, [
           Validators.required,

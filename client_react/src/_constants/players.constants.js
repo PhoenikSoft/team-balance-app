@@ -1,0 +1,5 @@
+export const playersCosntants = {
+    PLAYER_DELETED:'PLAYER_DELETED',
+    PLAYER_ADDED: 'PLAYER_ADDED',
+    TEAM_BALANCED: 'TEAM_BALANCED'
+}

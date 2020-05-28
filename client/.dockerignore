@@ -1,3 +1,8 @@
-node_modules
 .project
 .settings
+node_modules
+dist
+.dockerignore
+Dockerfile
+Dockerfile.ci
+Dockerfile.dev
