@@ -25,10 +25,7 @@ export default function GamePage(
     const classes = useStyles();
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
-    const [isTeamBalanced, setIsTeamBalanced] = useState(false);
-
-
-
+    //const [isTeamBalanced, setIsTeamBalanced] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {

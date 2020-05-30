@@ -19,7 +19,7 @@ function handleResponse(response) {
             }
 
             const error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
-                && data.errors.name.toString()) || data.msg || response.statusText;
+                && data.errors.name.toString()) || data.message || data.msg || response.statusText;
             return Promise.reject(error);
         }
 
