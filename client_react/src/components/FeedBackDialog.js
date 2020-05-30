@@ -20,11 +20,14 @@ export default function FormDialog({ open, handleClose, onSubmit }) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [feedBack, setFeedBack] = useState({});
     const rows = fullScreen ? '' : '10';
+    const rowsMax = fullScreen ? '': 10;
     return (
         <Dialog open={open}
             fullScreen={fullScreen}
             onClose={handleClose}
             scroll='paper'
+            maxWidth='sm'
+            fullWidth
             aria-labelledby="form-dialog-title">
             <DialogContent>
                 <TextField
@@ -33,7 +36,7 @@ export default function FormDialog({ open, handleClose, onSubmit }) {
                     margin="normal"
                     label="Feedback"
                     fullWidth
-                    rowsMax={10}
+                    rowsMax={rowsMax}
                     rows={rows}
                     onChange={e => setFeedBack(e.target.value)}
                 />
