@@ -29,7 +29,7 @@ function handleResponse(response) {
 
 // call this function in catch or elsewhere to show error snack bar
 function actionsErrorHandler(errorText) {
-    if (typeof errorText !== 'string') {
+    if (!errorText || typeof errorText !== 'string') {
         errorText = alertConstants.DEFAULT_ERROR_TEXT;
     };
     store.dispatch({ type: alertConstants.ALERT_ERROR, text: errorText });
