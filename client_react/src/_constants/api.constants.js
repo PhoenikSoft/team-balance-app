@@ -25,7 +25,10 @@ export const apiConstants = {
     PLAYER: (groupId, gameId, playerId) => `/api/groups/${groupId}/games/${gameId}/players/${playerId}`,
 
     PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
+}
 
+export const routingConstants = {
+    ADD_MEMBER_BY_REF: ref => `/addMe/${ref}`
 }
 
 export const constructUrl = url => `${config.apiUrl}${url}`;

@@ -1,7 +1,6 @@
-import { memberConstants, apiConstants, groupConstants, userConstants } from '../_constants';
-import { serviceHelper, history, navigation } from '../_helpers';
+import { memberConstants, routingConstants, groupConstants, userConstants, alertConstants } from '../_constants';
+import { serviceHelper, navigation } from '../_helpers';
 import { membersService } from '../_services';
-import config from '../config';
 
 
 const deleteMember = (userId, groupId) => dispatch =>
@@ -10,7 +9,7 @@ const deleteMember = (userId, groupId) => dispatch =>
         .catch(serviceHelper.actionsErrorHandler);
 
 const copyLinkToClipBoard = groupRef => {
-    const refLink = document.location.origin + apiConstants.ADD_MEMBER_BY_REF(groupRef);
+    const refLink = document.location.origin + routingConstants.ADD_MEMBER_BY_REF(groupRef);
     performCopy(refLink);
 }
 
@@ -20,11 +19,15 @@ const addMemberByRef = refLink => dispatch => {
         .then(group => {
             dispatch({ type: groupConstants.GROUP_FETCHED, groups: [group] });
             navigation.goToGroupView(group.id);
-            return true;
         })
         .catch(error => {
-            dispatch({ type: userConstants.SAVE_REF_LINK, refLink });
-            return false;
+            if (error.includes('User not found for email')) {
+                //TODO find a better solution
+                setTimeout(() => { dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.USER_ALREADY_IN_GROUP }) }, 2000)
+                navigation.goHome();
+            } else {
+                dispatch({ type: userConstants.SAVE_REF_LINK, refLink });
+            }
         });
 };
 
