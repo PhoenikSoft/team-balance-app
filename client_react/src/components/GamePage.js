@@ -93,9 +93,17 @@ export default function GamePage(
                 />
 
             </Grid>
-            <Grid item xs={12} sm={6}>
-                {game.balancedTeams && generateTeamTables(game.balancedTeams.teams, classes.toolbar)}
-            </Grid>
+
+            {game.balancedTeams
+                ? <Grid item xs={12} sm={6}>{generateTeamTables(game.balancedTeams.teams, classes.toolbar)}</Grid>
+                : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
+                    <Grid item >
+                        <h6 className="MuiTypography-root MuiTypography-h6">
+                            Push button below to balance teams!
+                        </h6>
+                    </Grid>
+                </Grid>}
+
             <Grid item xs={12} sm={12}>
                 <Button variant="contained" color="secondary" onClick={e => {
                     balanceTeams();
