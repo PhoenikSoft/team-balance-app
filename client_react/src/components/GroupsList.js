@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(4, 0, 2),
     },
     addButton: {
-        marginTop: '20px',
-        cursor: 'pointer'
+        //cursor: 'pointer',
+        marginRight: '26px'
     }
 }));
 
@@ -72,23 +73,25 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                         <div className={classes.demo}>
                             <List dense={false}>
                                 {generate(groups, <GroupsListItem />)}
-                                <ListItem button>
-                                    <ListItemSecondaryAction
-                                        className={classes.addButton}
-                                        onClick={e => setAddGroupDialog(true)}>
-                                        <Typography variant="button" >Add group</Typography>
-                                        <IconButton edge="end" aria-label="add group">
-                                            <AddCircleOutlineOutlinedIcon
-                                                color="secondary"
-                                                fontSize="large"
-                                            />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
                             </List>
                         </div>
                     </Grid>
                 </Grid >
+                <Grid container justify="flex-end">
+                    <Grid item >
+                        <div
+                            className={classes.addButton}
+                            onClick={e => setAddGroupDialog(true)}>
+                            <Button
+                                endIcon={<AddCircleOutlineOutlinedIcon
+                                    color="secondary"
+                                    fontSize="large"
+                                />}>
+                                Add group
+                            </Button>
+                        </div>
+                    </Grid>
+                </Grid>
                 <AddGroupDialog
                     open={groupdDialogOpened}
                     handleClose={e => setAddGroupDialog(false)}

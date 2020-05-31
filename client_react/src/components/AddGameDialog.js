@@ -13,7 +13,7 @@ import {
 } from '@material-ui/pickers';
 
 export default function AddGroupDialog({ open, handleClose, onSubmit }) {
-    const [gameName, setGameName] = useState({});
+    const [gameName, setGameName] = useState('');
     const [selectedDate, setSelectedDate] = React.useState(new Date());
 
     const handleDateChange = (date) => {
@@ -27,7 +27,6 @@ export default function AddGroupDialog({ open, handleClose, onSubmit }) {
           </DialogContentText>
                 <form autoComplete="off">
                     <TextField
-
                         autoFocus
                         margin="dense"
                         id="groupName"
@@ -60,7 +59,9 @@ export default function AddGroupDialog({ open, handleClose, onSubmit }) {
                         name: gameName,
                         startDateTime: selectedDate.toISOString()
                     });
-                }} color="primary">
+                }}
+                    disabled={!gameName}
+                    color="primary">
                     Add Game
           </Button>
             </DialogActions>

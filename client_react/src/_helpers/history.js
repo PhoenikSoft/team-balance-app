@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history';
-import { apiConstants } from '../_constants';
+import { routingConstants } from '../_constants';
 
 
 export const history = createBrowserHistory();
@@ -14,7 +14,7 @@ export const navigation = {
     goBack
 }
 
-function goBack(){
+function goBack() {
     history.goBack();
 }
 
@@ -31,7 +31,7 @@ function goHome() {
 }
 
 function goToRefLink(ref) {
-    history.push(apiConstants.ADD_MEMBER_BY_REF(ref));
+    history.push(routingConstants.ADD_MEMBER_BY_REF(ref));
 }
 
 function goToGameView(groupId, gameId) {

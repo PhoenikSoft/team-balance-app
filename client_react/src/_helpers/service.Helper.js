@@ -13,13 +13,12 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            // TODO remove response.url.includes('register') when /register error will return smth other that 401
-            if (response.status === 401 && !response.url.includes('register')) {
+            if (response.status === 401) {
                 authHelper.logout();
-            }
+            };
 
             const error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
-                && data.errors.name.toString()) || data.msg || response.statusText;
+                && data.errors.name.toString()) || data.message || data.msg || response.statusText;
             return Promise.reject(error);
         }
 
@@ -29,7 +28,7 @@ function handleResponse(response) {
 
 // call this function in catch or elsewhere to show error snack bar
 function actionsErrorHandler(errorText) {
-    if (typeof errorText !== 'string') {
+    if (!errorText || typeof errorText !== 'string') {
         errorText = alertConstants.DEFAULT_ERROR_TEXT;
     };
     store.dispatch({ type: alertConstants.ALERT_ERROR, text: errorText });
