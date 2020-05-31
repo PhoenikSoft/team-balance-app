@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
+    },
+    buttonsBar: {
+        paddingTop: '22px'
     }
 }));
 
@@ -24,7 +27,6 @@ export default function GroupPage(
     let group = groupFromGlobalState;
     const classes = useStyles();
     const [gameAddDialogOpened, setAddGameDialog] = useState(false);
-
 
     useEffect(() => {
         const fetch = async () => {
@@ -38,18 +40,28 @@ export default function GroupPage(
 
     return (
         <div>
-            {authHelper.isGroupAdmin(group.id) && <div>
-                <div className={classes.spacing}>
-                    <Button variant="contained" color="primary" onClick={e => setAddGameDialog(true)}>
-                        Add Game
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={e => copyLink(group.ref)}>
-                        Copy link to clipboard
-                    </Button>
-                </div>
-            </div>}
+            <Grid container spacing={3} >
+                {authHelper.isGroupAdmin(group.id) && <Grid item xs={12} sm={12}>
+                    <Grid
+                        className={classes.buttonsBar}
+                        container
+                        justify="flex-start"
+                        spacing={3}>
+                        <Grid item>
+                            <Button variant="contained" color="primary" onClick={e => setAddGameDialog(true)}>
+                                Add Game
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="primary" onClick={e => copyLink(group.ref)}>
+                                Copy link to clipboard
+                            </Button>
+                        </Grid>
 
-            <Grid container spacing={3}>
+                    </Grid>
+                </Grid>
+                }
+
                 <Grid item xs={12} sm={6}>
                     <MaterialTable
                         className={classes.paper}

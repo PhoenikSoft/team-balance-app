@@ -16,6 +16,17 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
+    },
+    buttonsBar: {
+        paddingTop: '22px'
+    },
+    toolbar: {
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop: '8px',
+        whiteSpac: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
     }
 }));
 
@@ -25,115 +36,143 @@ export default function GamePage(
     const classes = useStyles();
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
-    //const [isTeamBalanced, setIsTeamBalanced] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
             const action = await fetchGame();
             if (action) {
                 game = action.game;
-                //game.balancedTeams && setIsTeamBalanced(true);
             };
         };
         fetch();
     }, []);
 
-    return (
-        <div>
-            <div>
-                <div className={classes.spacing}>
-                    <Button variant="contained" color="primary" onClick={e => goBack()}>
-                        Back to group
+    return (<>
+        <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+                <Grid
+                    className={classes.buttonsBar}
+                    container
+                    justify="flex-start"
+                    spacing={3}>
+                    <Grid item>
+                        <Button variant="contained" color="primary" onClick={e => goBack()}>
+                            Back to group
                     </Button>
-                    <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
-                        Add members
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
+                            Add members
                     </Button>
-                </div>
-            </div>
+                    </Grid>
 
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                    <MaterialTable
-                        className={classes.paper}
-                        title='Players'
-                        data={game.players}
-                        columns={[
-                            //{ title: 'Num', field: 'id', type: 'numeric' },
-                            { title: 'Name', field: 'firstName' },
-                            { title: 'Rating', field: 'rating', type: 'numeric' }
-                        ]}
-                        actions={[
-                            player => ({
-                                icon: 'delete',
-                                tooltip: 'Delete Player',
-                                onClick: (event, player) => deletePlayer(player.id),
-                                disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
-                            })
-                        ]}
-                        options={{
-                            actionsColumnIndex: -1,
-                            search: false
-                        }}
-                    />
-                    <div className={classes.spacing}>
-                        <Button variant="contained" color="primary" onClick={e => {
-                            //setIsTeamBalanced(true);
-                            balanceTeams();
-                        }}>
-                            Balance teams
-                    </Button>
-
-                    </div>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    {game.balancedTeams && generateTeamTables(game.balancedTeams.teams)}
                 </Grid>
             </Grid>
+            <Grid item xs={12} sm={6}>
+                <MaterialTable
+                    className={classes.paper}
+                    title='Players'
+                    data={game.players}
+                    columns={[
+                        //{ title: 'Num', field: 'id', type: 'numeric' },
+                        { title: 'Name', field: 'firstName' },
+                        { title: 'Rating', field: 'rating', type: 'numeric' }
+                    ]}
+                    actions={[
+                        player => ({
+                            icon: 'delete',
+                            tooltip: 'Delete Player',
+                            onClick: (event, player) => deletePlayer(player.id),
+                            disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
+                        })
+                    ]}
+                    options={{
+                        actionsColumnIndex: -1,
+                        search: false
+                    }}
+                />
 
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                {game.balancedTeams && generateTeamTables(game.balancedTeams.teams, classes.toolbar)}
+            </Grid>
+            <Grid item xs={12} sm={12}>
+                <Button variant="contained" color="secondary" onClick={e => {
+                    balanceTeams();
+                }}>
+                    Balance teams
+                </Button>
+            </Grid>
+        </Grid>
 
-            <AddPlayersDialog
-                defaultPlayers={game.players || []}
-                groupId={groupId}
-                open={addPlayersDialogOpened}
-                handleClose={e => setaddPlayersDialogOpened(false)}
-                onSubmit={players => {
-                    addPlayers(players);
-                    setaddPlayersDialogOpened(false);
-                }}
-            />
-        </div>
+        <AddPlayersDialog
+            defaultPlayers={game.players || []}
+            groupId={groupId}
+            open={addPlayersDialogOpened}
+            handleClose={e => setaddPlayersDialogOpened(false)}
+            onSubmit={players => {
+                addPlayers(players);
+                setaddPlayersDialogOpened(false);
+            }}
+        />
+    </>
     )
 }
 
 // TODO move into separate file
-function generateTeamTables(balancedTeams) {
+function generateTeamTables(balancedTeams, toolbarClass) {
     let index = 1;
-    return <div>
-        <Typography variant="h6" >Balanced teams</Typography>
+    return < Grid >
+        <Grid container justify="center">
+            <Typography variant="h6" >Balanced teams</Typography>
+        </Grid>
+        {/* Dummy table used to show just column titles */}
+        <MaterialTable
+            data={[]}
+            columns={[
+                { title: 'First Name', field: 'firstName' },
+                { title: 'Last Name', field: 'lastName' },
+                { title: 'Rating', field: 'rating' }
+            ]}
+            options={{
+                search: false,
+                paging: false,
+                showTitle: false,
+                showEmptyDataSourceMessage: false,
+                toolbar: false
+            }}
+        />
         {balancedTeams.map(team =>
             React.cloneElement(<TeamTable />, {
-                key: team.id,
                 team,
-                index: index++
+                index: index++,
+                key: index,
+                toolbarClass
             }))}
-    </div>
-
+    </Grid>
 }
 
-function TeamTable({ team, index }) {
-    return (< Grid  >
+function TeamTable({ team, index, toolbarClass }) {
+    return (
         <MaterialTable
             title={`Team ${index}`}
             data={team.players}
             columns={[
                 { title: 'First Name', field: 'firstName' },
-                { title: 'Last Name', field: 'lastName' }
+                { title: 'Last Name', field: 'lastName' },
+                { title: 'Rating', field: 'rating' }
             ]}
             options={{
                 search: false,
                 paging: false,
-                header: index === 1
+                header: false
             }}
-        />
-    </Grid >)
+            components={{
+                Toolbar: props => <div className={toolbarClass}>
+                    <h6
+                        className="MuiTypography-root MuiTypography-h6">
+                        {props.title}</h6>
+                </div>
+            }}
+        />)
 }

@@ -12,7 +12,7 @@ const App = () => (
         <Router history={history}>
             <Switch>
                 <Route exact path="/">
-                    <Redirect to="/login" />
+                    <Redirect to="/home" />
                 </Route>
                 <Route path='/login'>
                     <SignIn />
