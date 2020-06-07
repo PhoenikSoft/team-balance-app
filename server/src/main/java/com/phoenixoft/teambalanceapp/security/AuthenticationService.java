@@ -43,4 +43,12 @@ public class AuthenticationService {
                 .build();
     }
 
+    public AuthenticationResponse authenticateUserAfterRegistration(User user) {
+        return AuthenticationResponse.builder()
+                .userDetails(AuthUserDetails.of(user))
+                .jwt(jwtTokenUtil.generateToken(user))
+                .build();
+
+    }
+
 }
