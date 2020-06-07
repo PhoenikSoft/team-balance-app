@@ -10,6 +10,9 @@ import com.phoenixoft.teambalanceapp.game.repository.GameRepository;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.GroupService;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVotesFilter;
+import com.phoenixoft.teambalanceapp.vote.service.UserVoteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,7 @@ public class GameService {
     private final GameRepository gameRepository;
     private final GroupService groupService;
     private final TeamBalancer teamBalancer;
+    private final UserVoteService userVoteService;
 
     public Game save(Long groupId, GameRequestDto dto) {
         Group group = groupService.findById(groupId);
@@ -96,5 +100,9 @@ public class GameService {
         gameRepository.save(game);
 
         return teams;
+    }
+
+    public List<UserVote> getGameVotes(Long gameId, Long voterId) {
+        return userVoteService.getVotesByFilter(UserVotesFilter.builder().gameId(gameId).voterId(voterId).build());
     }
 }

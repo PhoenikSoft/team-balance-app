@@ -11,10 +11,17 @@ import com.phoenixoft.teambalanceapp.game.entity.VoteStatus;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVotesFilter;
+import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteForUserFieldSpecification;
+import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteGameFieldSpecification;
 import com.phoenixoft.teambalanceapp.vote.repository.UserVoteRepository;
+import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteVoterFieldSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +40,13 @@ public class UserVoteService {
         userVote.setVote(userVoteRequest.getVote().getValue());
 
         userVoteRepository.save(userVote);
+    }
+
+    public List<UserVote> getVotesByFilter(UserVotesFilter filter) {
+        Specification<UserVote> userVotesSpecification = new UserVoteForUserFieldSpecification(filter)
+                .and(new UserVoteVoterFieldSpecification(filter))
+                .and(new UserVoteGameFieldSpecification(filter));
+        return userVoteRepository.findAll(userVotesSpecification);
     }
 
     private DbFetchedUserVoteFields validateSaveVoteRequest(UserVoteRequestDto userVoteRequest) {

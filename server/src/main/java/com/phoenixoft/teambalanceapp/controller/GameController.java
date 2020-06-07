@@ -4,13 +4,16 @@ import com.phoenixoft.teambalanceapp.controller.dto.AddPlayersRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.service.GameService;
 import com.phoenixoft.teambalanceapp.group.service.GroupService;
+import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.util.DtoConverter;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -107,5 +110,12 @@ public class GameController {
     public BalancedTeamsResponseDto generateBalancedTeams(@PathVariable Long groupId, @PathVariable Long gameId) {
         List<Team> teams = gameService.generateBalancedTeams(groupId, gameId);
         return BalancedTeamsResponseDto.of(teams);
+    }
+
+    @GetMapping(path = "/{gameId}/votes")
+    public List<GameUserVoteResponseDto> getMyVotes(@PathVariable Long gameId, Authentication authentication) {
+        CustomUser userDetails = (CustomUser) authentication.getPrincipal();
+        List<UserVote> gameVotes = gameService.getGameVotes(gameId, userDetails.getId());
+        return gameVotes.stream().map(DtoConverter::convertGameUserVote).collect(Collectors.toList());
     }
 }

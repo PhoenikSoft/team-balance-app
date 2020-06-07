@@ -4,6 +4,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.FeedbackResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.PlayerResponseDto;
@@ -13,6 +14,7 @@ import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -82,5 +84,13 @@ public class DtoConverter {
         dto.setId(feedback.getId());
         dto.setMessage(feedback.getMessage());
         return dto;
+    }
+
+    public static GameUserVoteResponseDto convertGameUserVote(UserVote entity) {
+        return GameUserVoteResponseDto.builder()
+                .id(entity.getId())
+                .forUserId(entity.getForUser().getId())
+                .vote(entity.getVote())
+                .build();
     }
 }
