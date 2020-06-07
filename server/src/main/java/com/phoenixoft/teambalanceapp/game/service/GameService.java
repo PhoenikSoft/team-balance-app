@@ -33,7 +33,7 @@ public class GameService {
         return gameRepository.save(newGame);
     }
 
-    public Game findGame(Long groupId, Long gameId) {
+    public Game findGameInGroup(Long groupId, Long gameId) {
         Group group = groupService.findById(groupId);
         return group.findGame(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
@@ -56,21 +56,21 @@ public class GameService {
     }
 
     public List<User> getGamePlayers(Long groupId, Long gameId) {
-        return findGame(groupId, gameId).getPlayers();
+        return findGameInGroup(groupId, gameId).getPlayers();
     }
 
     public Game addPlayerToGame(Long groupId, Long gameId, Long userId) {
         Group group = groupService.findById(groupId);
         User newPlayer = group.findMember(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + userId));
-        Game game = findGame(groupId, gameId);
+        Game game = findGameInGroup(groupId, gameId);
         game.getPlayers().add(newPlayer);
         return gameRepository.save(game);
     }
 
     public Game addPlayersToGame(Long groupId, Long gameId, AddPlayersRequestDto addPlayersRequestDto) {
         Group group = groupService.findById(groupId);
-        Game game = findGame(groupId, gameId);
+        Game game = findGameInGroup(groupId, gameId);
         for (Long playerId : addPlayersRequestDto.getPlayers()) {
             User newPlayer = group.findMember(playerId)
                     .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + playerId));
@@ -80,7 +80,7 @@ public class GameService {
     }
 
     public Game deletePlayerFromGame(Long groupId, Long gameId, Long userId) {
-        Game game = findGame(groupId, gameId);
+        Game game = findGameInGroup(groupId, gameId);
         if (game.removePlayer(userId)) {
             game.setBalancedTeams(null);
             game = gameRepository.save(game);
@@ -89,7 +89,7 @@ public class GameService {
     }
 
     public List<Team> generateBalancedTeams(Long groupId, Long gameId) {
-        Game game = findGame(groupId, gameId);
+        Game game = findGameInGroup(groupId, gameId);
         List<Team> teams = teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()));
 
         game.setBalancedTeams(new BalancedTeams(teams));

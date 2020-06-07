@@ -85,3 +85,42 @@ databaseChangeLog:
             path: changes/create_feedback_table.sql
             relativeToChangelogFile: true
             stripComments: true
+  - changeSet:
+      id:  modify-user-rating-type
+      author:  Yevhen Karychkovskyi
+      changes:
+        - modifyDataType:
+            columnName:  rating
+            newDataType:  smallint
+            schemaName:  public
+            tableName:  tbl_user
+
+  - changeSet:
+      id: create-user-votes-table
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/create_user_votes_table.sql
+            relativeToChangelogFile: true
+            stripComments: true
+  - changeSet:
+      id: add-game-vote-status-column
+      author: Yevhen Karychkovskyi
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: vote_status
+                  type: varchar(32)
+            schemaName: public
+            tableName: tbl_game
+  - changeSet:
+      id:  add-not-null-constraint-to-game-vote-status-column
+      author:  Yevhen Karychkovskyi
+      changes:
+        - addNotNullConstraint:
+            columnName:  vote_status
+            defaultNullValue:  NOT_STARTED
+            schemaName:  public
+            tableName:  tbl_game
+            validate:  true

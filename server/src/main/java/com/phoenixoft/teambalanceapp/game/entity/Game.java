@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -57,11 +59,19 @@ public class Game {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @Column(name = "vote_status")
+    @Enumerated(value = EnumType.STRING)
+    private VoteStatus voteStatus;
+
     public boolean removePlayer(Long playerId) {
         boolean removed = players.removeIf(player -> player.getId().equals(playerId));
         if (removed) {
             balancedTeams = null;
         }
         return removed;
+    }
+
+    public boolean hasPlayer(Long playerId) {
+        return this.players.stream().anyMatch(player -> player.getId().equals(playerId));
     }
 }

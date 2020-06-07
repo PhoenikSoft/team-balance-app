@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class GameServiceTest implements TestData {
         mockGroup.setGames(Collections.singletonList(mockGame(gameId)));
         when(groupService.findById(groupId)).thenReturn(mockGroup);
 
-        Game game = gameService.findGame(groupId, gameId);
+        Game game = gameService.findGameInGroup(groupId, gameId);
 
         assertEquals(gameId, game.getId());
     }
@@ -86,7 +85,7 @@ public class GameServiceTest implements TestData {
         mockGroup.setGames(new ArrayList<>());
         when(groupService.findById(groupId)).thenReturn(mockGroup);
 
-        assertThrows(ResourceNotFoundException.class, () -> gameService.findGame(groupId, gameId));
+        assertThrows(ResourceNotFoundException.class, () -> gameService.findGameInGroup(groupId, gameId));
     }
 
     @Test

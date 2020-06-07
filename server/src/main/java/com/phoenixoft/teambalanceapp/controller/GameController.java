@@ -54,7 +54,7 @@ public class GameController {
 
     @GetMapping(path = "/{gameId}")
     public GameResponseDto getGame(@PathVariable Long groupId, @PathVariable Long gameId) {
-        Game entity = gameService.findGame(groupId, gameId);
+        Game entity = gameService.findGameInGroup(groupId, gameId);
         return DtoConverter.convertGame(entity);
     }
 
