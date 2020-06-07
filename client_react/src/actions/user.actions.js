@@ -41,7 +41,6 @@ function login(username, password) {
 function register(inputs) {
     return dispatch => {
         dispatch(request({ username: inputs.email }));
-
         return userService.register(inputs)
             .then(
                 user => {

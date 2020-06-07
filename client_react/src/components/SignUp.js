@@ -83,30 +83,34 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
         setInputs(inputs => ({ ...inputs, rating: newValue }));
     }
 
-    function handlePhoneChange(newPhone) {
-
-        if (newPhone.length !== 13) {
+    function handlePhoneChange(e) {
+        const input = e.target.value
+        if (input.length !== 12) {
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
         };
-        setInputs(inputs => ({ ...inputs, phone: newPhone }));
+        setInputs(inputs => ({ ...inputs, phone: input }));
     }
 
     function handlePasswordChange(e) {
-        const { value } = e.target;
-        if (!value) {
-            setErrors(errors => ({ ...errors, passwordError: true }));
-            handleChange(e);
+        const { value, name } = e.target;
+        const isPassValid = pass => pass.length > 8;
+        const setPass = () => setInputs(inputs => ({ ...inputs, [name]: value }));
+        const setError = flag => setErrors(errors => ({ ...errors, passwordError: flag }));
+        const isPasswordsMatch = () => value === inputs.confirmPassword || value === inputs.password;
+
+        if (!value || !isPassValid(value)) {
+            setError(true);
+            setPass();
             return;
         };
-        if (value === inputs.confirmPassword || value === inputs.password) {
-            setErrors(errors => ({ ...errors, passwordError: false }));
-        } else {
-            setErrors(errors => ({ ...errors, passwordError: true }));
-        };
-        handleChange(e);
-    }
+
+        isPasswordsMatch()
+            ? setError(false)
+            : setError(true);
+        setPass();
+    };
 
     function handleEmailChange(e) {
 
@@ -177,7 +181,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 name="email"
                                 autoComplete="email"
                                 onChange={handleEmailChange}
-                                error={inputs.emailError}
+                                error={errors.emailError}
                             />
                         </Grid>}
                         <Grid item xs={12}>
