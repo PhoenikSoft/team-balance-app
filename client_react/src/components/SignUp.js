@@ -12,6 +12,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
 import PhoneInput from './PhoneInput';
+import { userConstants } from '../_constants';
+
+function getErrorsText(errorsToFlags) {
+    const errorText = {
+        passwordError: userConstants.PASSWORD_ERROR,
+        emailError: userConstants.EMAIL_ERROR,
+        phoneError: userConstants.PHONE_ERROR,
+        lastNameError: userConstants.LAST_NAME_ERROR,
+        firstNameError: userConstants.FIRST_NAME_ERROR
+    };
+    const errors = [];
+    Object.keys(errorsToFlags).forEach(key => {
+        if (errorsToFlags[key]) {
+            errors.push(errorText[key]);
+        }
+    });
+    return errors;
+}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) {
     const classes = useStyles();
     const [inputs, setInputs] = useState(getInitialState());
+    const [showErrors, setShowErrors] = useState(false);
 
     useEffect(() => {
         if (isSignUp) { return }
@@ -230,14 +249,16 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                         </Grid>
                     </Grid>
                     <Button
-                        disabled={isSubmitDisabled()}
+                        //disabled={isSubmitDisabled()}
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
                         onClick={e => {
-                            onRegisterClick(e)(inputs);
+                            isSubmitDisabled()
+                                ? setShowErrors(true)
+                                : onRegisterClick(e)(inputs)
                         }}>
                         {isSignUp ? 'Sign Up' : 'Update'}
                     </Button>
@@ -250,7 +271,9 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                         </Grid>
                     </Grid>}
                     {error && <Typography color="error">{error}</Typography>}
-
+                    {showErrors && getErrorsText(errors).map(errorText => {
+                        return <Typography color='error' key={errorText}>{errorText}</Typography>
+                    })}
                 </form>
             </div>
             <Box mt={5}>
