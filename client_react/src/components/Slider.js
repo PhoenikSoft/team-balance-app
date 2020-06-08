@@ -6,7 +6,7 @@ export default function DiscreteSlider({ onChange, value }) {
     const marks = [
         {
             value: 0,
-            label: 'Begginer',
+            label: 'Beginner',
         },
         {
             value: 25,

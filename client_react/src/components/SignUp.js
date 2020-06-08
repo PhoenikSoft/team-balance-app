@@ -125,9 +125,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
             return;
         };
 
-        isPasswordsMatch()
-            ? setError(false)
-            : setError(true);
+        setError(!isPasswordsMatch());
         setPass();
     };
 
