@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ServiceException extends RuntimeException {
 
-    private String message;
+    private final String message;
 
-    private HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
 
     public ServiceException(String message, HttpStatus httpStatus, Throwable cause) {
         super(cause);

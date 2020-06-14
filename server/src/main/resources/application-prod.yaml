@@ -1,3 +1,6 @@
+spring:
+  jpa:
+    show-sql: false
 cors:
   origins:
     - http://teambalanceapp-env.eba-sdy623yp.eu-central-1.elasticbeanstalk.com

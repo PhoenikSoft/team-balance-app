@@ -2,14 +2,11 @@ package com.phoenixoft.teambalanceapp.controller;
 
 import com.phoenixoft.teambalanceapp.controller.dto.UserRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
-import com.phoenixoft.teambalanceapp.controller.dto.UserVoteRequestDto;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.security.dto.UpdatePasswordRequestDto;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.util.DtoConverter;
-import com.phoenixoft.teambalanceapp.vote.service.UserVoteService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +25,6 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final UserVoteService userVoteService;
 
     @GetMapping(path = "/{userId}")
     public UserResponseDto getUser(@PathVariable Long userId) {
@@ -47,14 +43,5 @@ public class UserController {
                                Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
         userService.updatePassword(dto, user);
-    }
-
-    @PostMapping(path = "/{userId}/gameVotes")
-    public void addVote(@PathVariable Long userId, @Valid @RequestBody UserVoteRequestDto dto,
-                        Authentication authentication) {
-        dto.setForUserId(userId);
-        CustomUser voter = (CustomUser) authentication.getPrincipal();
-        dto.setVoterId(voter.getId());
-        userVoteService.saveVote(dto);
     }
 }

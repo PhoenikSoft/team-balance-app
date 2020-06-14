@@ -10,6 +10,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+          batch_size: 10
+        order_inserts: true
   datasource:
     platform: postgres
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/teambalance
