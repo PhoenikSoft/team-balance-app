@@ -1,13 +1,12 @@
 package com.phoenixoft.teambalanceapp.controller;
 
-import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.security.AuthenticationService;
 import com.phoenixoft.teambalanceapp.security.dto.AuthenticationRequest;
 import com.phoenixoft.teambalanceapp.security.dto.AuthenticationResponse;
 import com.phoenixoft.teambalanceapp.security.dto.RestorePasswordRequestDto;
 import com.phoenixoft.teambalanceapp.security.dto.UserRegistrationRequestDto;
+import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
-import com.phoenixoft.teambalanceapp.util.DtoConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +32,9 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/register")
-    public UserResponseDto registerNewUser(@RequestBody @Valid UserRegistrationRequestDto dto) {
-        return DtoConverter.convertUser(userService.registerNewUser(dto));
+    public AuthenticationResponse registerNewUser(@RequestBody @Valid UserRegistrationRequestDto dto) {
+        User user = userService.registerNewUser(dto);
+        return authenticationService.authenticateUserAfterRegistration(user);
     }
 
     @PostMapping(path = "/reset-password")

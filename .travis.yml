@@ -1,5 +1,5 @@
 branches:
-  only: 
+  only:
     - master
     - release
 services:
@@ -27,9 +27,9 @@ deploy:
   region: eu-central-1
   app: TeamBalanceApp
   env: Teambalanceapp-env
-  bucket_name: elasticbeanstalk-eu-central-1-805957902858
+  bucket_name: elasticbeanstalk-eu-central-1-623682165123
   bucket_path: team-balance-app
   on:
-    branch: release
+    branch: master
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
