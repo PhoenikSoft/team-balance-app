@@ -1,14 +1,16 @@
 package com.phoenixoft.teambalanceapp.vote.service;
 
-import com.phoenixoft.teambalanceapp.common.exception.GameVotingNotActiveException;
 import com.phoenixoft.teambalanceapp.common.exception.IndexedServiceException;
+import com.phoenixoft.teambalanceapp.common.exception.InvalidGameVotingStatusException;
 import com.phoenixoft.teambalanceapp.common.exception.PlayersAreNotInTheSameGameException;
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
 import com.phoenixoft.teambalanceapp.common.exception.SelfVotingException;
 import com.phoenixoft.teambalanceapp.common.exception.ServiceException;
 import com.phoenixoft.teambalanceapp.common.exception.UserVoteExistsException;
+import com.phoenixoft.teambalanceapp.config.QuartzConfig;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.VoteStatus;
+import com.phoenixoft.teambalanceapp.properties.VotingProperties;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.vote.entity.LightUserVote;
@@ -19,12 +21,22 @@ import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteForUserFieldSp
 import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteGameFieldSpecification;
 import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteVoterFieldSpecification;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.Value;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.phoenixoft.teambalanceapp.vote.job.FinishGameVotingJob.GAME_ID_PARAM;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +44,8 @@ public class UserVoteService {
 
     private final UserVoteRepository userVoteRepository;
     private final UserService userService;
+    private final Scheduler scheduler;
+    private final VotingProperties votingProperties;
 
     public void saveVote(LightUserVote userVoteRequest) {
         DbFetchedUserVoteFields dbFetchedUserVoteFields = validateSaveVoteRequest(userVoteRequest);
@@ -62,6 +76,18 @@ public class UserVoteService {
         return userVoteRepository.findAll(userVotesSpecification);
     }
 
+    @SneakyThrows
+    public void scheduleFinishVotingTask(Long gameId) {
+        Instant startTimeOfTheTask = Instant.now(Clock.systemUTC())
+                .plus(Duration.ofSeconds(votingProperties.getTimeToVoteInSeconds()));
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .forJob(QuartzConfig.FINISH_GAME_VOTING_TASK_NAME, QuartzConfig.VOTING_TASKS_GROUP)
+                .startAt(Date.from(startTimeOfTheTask))
+                .usingJobData(GAME_ID_PARAM, gameId)
+                .build();
+        scheduler.scheduleJob(trigger);
+    }
+
     private DbFetchedUserVoteFields validateSaveVoteRequest(LightUserVote userVoteRequest) {
         if (userVoteRequest.getForUserId().equals(userVoteRequest.getVoterId())) {
             throw new SelfVotingException("Voter id and forUser id cannot be the same. User cannot vote for himself");
@@ -79,7 +105,7 @@ public class UserVoteService {
         }
 
         if (game.getVoteStatus() != VoteStatus.STARTED) {
-            throw new GameVotingNotActiveException("Voting hasn't started or has already finished for the game: " + game.getId());
+            throw new InvalidGameVotingStatusException("Voting hasn't started or has already finished for the game: " + game.getId());
         }
 
         // Voter was checked for game belonging earlier

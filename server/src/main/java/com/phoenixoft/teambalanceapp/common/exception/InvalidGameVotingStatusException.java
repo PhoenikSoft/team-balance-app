@@ -2,9 +2,9 @@ package com.phoenixoft.teambalanceapp.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class GameVotingNotActiveException extends ServiceException {
+public class InvalidGameVotingStatusException extends ServiceException {
 
-    public GameVotingNotActiveException(String message) {
+    public InvalidGameVotingStatusException(String message) {
         super(message, HttpStatus.BAD_REQUEST);
     }
 

@@ -139,6 +139,13 @@ public class GameController {
         userVoteService.saveVotes(lightUserVotes);
     }
 
+    @PostMapping(path = "/{gameId}/votingStarts")
+    public void startVoting(@PathVariable Long groupId, @PathVariable Long gameId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        groupService.checkAdminPermissions(userDetails, groupId);
+        gameService.startGameVoting(groupId, gameId);
+    }
+
     private LightUserVote toLightUserVote(UserGameVoteRequestDto dto, Long gameId, Authentication authentication) {
         LightUserVote lightUserVote = new LightUserVote();
         lightUserVote.setForUserId(dto.getForUserId());

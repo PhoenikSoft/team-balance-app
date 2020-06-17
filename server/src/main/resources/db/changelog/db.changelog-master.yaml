@@ -94,7 +94,6 @@ databaseChangeLog:
             newDataType:  smallint
             schemaName:  public
             tableName:  tbl_user
-
   - changeSet:
       id: create-user-votes-table
       author: Yevhen Karychkovskyi
@@ -124,3 +123,21 @@ databaseChangeLog:
             schemaName:  public
             tableName:  tbl_game
             validate:  true
+  - changeSet:
+      id: create-quartz-tables
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/create_quartz_tables.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: add-old-rating-column-to-user
+      author: Yevhen Karychkovskyi
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: prev_rating
+                  type: smallint
+            schemaName: public
+            tableName: tbl_user

@@ -47,6 +47,8 @@ public class User implements Serializable {
 
     private BigDecimal rating;
 
+    private BigDecimal prevRating;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();

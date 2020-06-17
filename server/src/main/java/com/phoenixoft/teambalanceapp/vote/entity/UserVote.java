@@ -3,6 +3,7 @@ package com.phoenixoft.teambalanceapp.vote.entity;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
@@ -20,14 +21,16 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tbl_user_votes")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserVote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_vote_gen")
     @SequenceGenerator(name = "user_vote_gen", sequenceName = "user_votes_seq", allocationSize = 1)
+    @EqualsAndHashCode.Include
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "for_user_id")
     private User forUser;
 

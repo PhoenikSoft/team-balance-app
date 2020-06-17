@@ -1,11 +1,13 @@
 package com.phoenixoft.teambalanceapp.game.service;
 
+import com.phoenixoft.teambalanceapp.common.exception.InvalidGameVotingStatusException;
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
 import com.phoenixoft.teambalanceapp.controller.dto.AddPlayersRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
+import com.phoenixoft.teambalanceapp.game.entity.VoteStatus;
 import com.phoenixoft.teambalanceapp.game.repository.GameRepository;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.GroupService;
@@ -34,6 +36,7 @@ public class GameService {
         newGame.setName(dto.getName());
         newGame.setStartDateTime(dto.getStartDateTime());
         newGame.setGroup(group);
+        newGame.setVoteStatus(VoteStatus.NOT_STARTED);
         return gameRepository.save(newGame);
     }
 
@@ -104,5 +107,17 @@ public class GameService {
 
     public List<UserVote> getGameVotes(Long gameId, Long voterId) {
         return userVoteService.getVotesByFilter(UserVotesFilter.builder().gameId(gameId).voterId(voterId).build());
+    }
+
+    public void startGameVoting(Long groupId, Long gameId) {
+        Game game = findGameInGroup(groupId, gameId);
+        if (game.getVoteStatus() != VoteStatus.NOT_STARTED) {
+            throw new InvalidGameVotingStatusException("Game voting has already started");
+        }
+
+        userVoteService.scheduleFinishVotingTask(gameId);
+
+        game.setVoteStatus(VoteStatus.STARTED);
+        gameRepository.save(game);
     }
 }
