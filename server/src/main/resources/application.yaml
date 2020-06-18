@@ -48,6 +48,6 @@ cors:
     - http://localhost:3000
 
 voting:
-  timeToVoteInSeconds: 60
+  timeToVoteInSeconds: 300
   minRating: 1
   maxRating: 100
