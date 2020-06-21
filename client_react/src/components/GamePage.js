@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         paddingTop: '8px',
         whiteSpac: 'nowrap',
         overflow: 'hidden',
@@ -129,6 +129,7 @@ export default function GamePage(
 
 // TODO move into separate file
 function generateTeamTables(balancedTeams, toolbarClass) {
+
     let index = 1;
     return < Grid >
         <Grid container justify="center">
@@ -161,6 +162,10 @@ function generateTeamTables(balancedTeams, toolbarClass) {
 }
 
 function TeamTable({ team, index, toolbarClass }) {
+    function getAvgRating(team) {
+        // TODO: BE should return rating for each player
+        return 777;
+    }
     return (
         <MaterialTable
             title={`Team ${index}`}
@@ -178,8 +183,13 @@ function TeamTable({ team, index, toolbarClass }) {
             components={{
                 Toolbar: props => <div className={toolbarClass}>
                     <h6
-                        className="MuiTypography-root MuiTypography-h6">
+                        className="MuiTypography-root MuiTypography-h6"
+                        style={{ flexGrow: '0.45' }}>
                         {props.title}</h6>
+                    <h6 className="MuiTypography-root MuiTypography-h6"
+                        style={{ paddingRight: '11px', color: 'red' }}>
+                        {getAvgRating(team)}
+                    </h6>
                 </div>
             }}
         />)
