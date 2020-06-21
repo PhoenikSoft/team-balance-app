@@ -162,10 +162,6 @@ function generateTeamTables(balancedTeams, toolbarClass) {
 }
 
 function TeamTable({ team, index, toolbarClass }) {
-    function getAvgRating(team) {
-        // TODO: BE should return rating for each player
-        return 777;
-    }
     return (
         <MaterialTable
             title={`Team ${index}`}
@@ -188,7 +184,7 @@ function TeamTable({ team, index, toolbarClass }) {
                         {props.title}</h6>
                     <h6 className="MuiTypography-root MuiTypography-h6"
                         style={{ paddingRight: '11px', color: 'red' }}>
-                        {getAvgRating(team)}
+                        {team.averageRating}
                     </h6>
                 </div>
             }}
