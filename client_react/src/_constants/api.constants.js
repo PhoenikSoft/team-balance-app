@@ -20,11 +20,15 @@ export const apiConstants = {
     GAME: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}`,
 
     GENERATE_BALANCED_TEAMS: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/balancedTeams`,
+
     GET_PLAYERS: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/players`,
-
     PLAYER: (groupId, gameId, playerId) => `/api/groups/${groupId}/games/${gameId}/players/${playerId}`,
-
     PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
+
+    MY_VOTES: gameId => `/api/groups/{groupId}/games${gameId}/votes`,
+    POST_MY_VOTES_BATCH: gameId => `/api/groups/{groupId}/games${gameId}/votesBatches`,
+    START_VOTING: gameId => `/api/groups/{groupId}/games${gameId}/votingStarts`,
+
 }
 
 export const routingConstants = {
