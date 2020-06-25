@@ -6,8 +6,8 @@ import com.phoenixoft.teambalanceapp.util.model.JwtRoles;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,16 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@AllArgsConstructor
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "tb_secret";
+    private final String SECRET_KEY;
 
     private ObjectMapper objectMapper;
+
+    public JwtUtil(@Value("${jwt_secret}") String secret_key, ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+        SECRET_KEY = secret_key;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
