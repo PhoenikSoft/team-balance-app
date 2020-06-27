@@ -23,3 +23,5 @@ cors:
   origins:
     - http://localhost:4200
     - http://localhost:3000
+
+jwt_secret: ${JWT_SECRET:TB_SECRET}

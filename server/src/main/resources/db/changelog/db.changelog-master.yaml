@@ -85,3 +85,24 @@ databaseChangeLog:
             path: changes/create_feedback_table.sql
             relativeToChangelogFile: true
             stripComments: true
+  - changeSet:
+      id: update-user-email
+      author: Andriy Kuzmin
+      changes:
+        - update:
+            schemaName: public
+            tableName: tbl_user
+            columns:
+              - column:
+                  name: email
+                  value: andriy@teambalance.com
+            where: email='andriy@q.w'
+        - update:
+            schemaName: public
+            tableName: tbl_user
+            columns:
+              - column:
+                  name: email
+                  value: eugen@teambalance.com
+            where: email='eugen@q.w'
+
