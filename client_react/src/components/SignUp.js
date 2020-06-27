@@ -12,6 +12,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
 import PhoneInput from './PhoneInput';
+import { userConstants } from '../_constants';
+
+function getErrorsText(errorsToFlags) {
+    const errorText = {
+        passwordError: userConstants.PASSWORD_ERROR,
+        emailError: userConstants.EMAIL_ERROR,
+        phoneError: userConstants.PHONE_ERROR,
+        lastNameError: userConstants.LAST_NAME_ERROR,
+        firstNameError: userConstants.FIRST_NAME_ERROR
+    };
+    const errors = [];
+    Object.keys(errorsToFlags).forEach(key => {
+        if (errorsToFlags[key]) {
+            errors.push(errorText[key]);
+        }
+    });
+    return errors;
+}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) {
     const classes = useStyles();
     const [inputs, setInputs] = useState(getInitialState());
+    const [showErrors, setShowErrors] = useState(false);
 
     useEffect(() => {
         if (isSignUp) { return }
@@ -83,30 +102,32 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
         setInputs(inputs => ({ ...inputs, rating: newValue }));
     }
 
-    function handlePhoneChange(newPhone) {
-
-        if (newPhone.length !== 13) {
+    function handlePhoneChange(e) {
+        const input = e.target.value
+        if (input.length !== 12) {
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
         };
-        setInputs(inputs => ({ ...inputs, phone: newPhone }));
+        setInputs(inputs => ({ ...inputs, phone: input }));
     }
 
     function handlePasswordChange(e) {
-        const { value } = e.target;
-        if (!value) {
-            setErrors(errors => ({ ...errors, passwordError: true }));
-            handleChange(e);
+        const { value, name } = e.target;
+        const isPassValid = pass => pass.length > 8;
+        const setPass = () => setInputs(inputs => ({ ...inputs, [name]: value }));
+        const setError = flag => setErrors(errors => ({ ...errors, passwordError: flag }));
+        const isPasswordsMatch = () => value === inputs.confirmPassword || value === inputs.password;
+
+        if (!value || !isPassValid(value)) {
+            setError(true);
+            setPass();
             return;
         };
-        if (value === inputs.confirmPassword || value === inputs.password) {
-            setErrors(errors => ({ ...errors, passwordError: false }));
-        } else {
-            setErrors(errors => ({ ...errors, passwordError: true }));
-        };
-        handleChange(e);
-    }
+
+        setError(!isPasswordsMatch());
+        setPass();
+    };
 
     function handleEmailChange(e) {
 
@@ -177,7 +198,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 name="email"
                                 autoComplete="email"
                                 onChange={handleEmailChange}
-                                error={inputs.emailError}
+                                error={errors.emailError}
                             />
                         </Grid>}
                         <Grid item xs={12}>
@@ -226,14 +247,16 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                         </Grid>
                     </Grid>
                     <Button
-                        disabled={isSubmitDisabled()}
+                        //disabled={isSubmitDisabled()}
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
                         onClick={e => {
-                            onRegisterClick(e)(inputs);
+                            isSubmitDisabled()
+                                ? setShowErrors(true)
+                                : onRegisterClick(e)(inputs)
                         }}>
                         {isSignUp ? 'Sign Up' : 'Update'}
                     </Button>
@@ -246,7 +269,9 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                         </Grid>
                     </Grid>}
                     {error && <Typography color="error">{error}</Typography>}
-
+                    {showErrors && getErrorsText(errors).map(errorText => {
+                        return <Typography color='error' key={errorText}>{errorText}</Typography>
+                    })}
                 </form>
             </div>
             <Box mt={5}>

@@ -2,7 +2,30 @@ import React, { useState } from 'react';
 import Slider from '@material-ui/core/Slider';
 
 export default function DiscreteSlider({ onChange, value }) {
-    const [localValue, setValue] = useState()
+    const [localValue, setValue] = useState();
+    const marks = [
+        {
+            value: 0,
+            label: 'Beginner',
+        },
+        {
+            value: 25,
+            label: 'Amateur',
+        },
+        {
+            value: 50,
+            label: 'Intermediate',
+        },
+        {
+            value: 75,
+            label: 'Master',
+        },
+        {
+            value: 100,
+            label: 'Star',
+        }
+    ];
+
     function getValue() {
         return typeof localValue === 'number'
             ? localValue
@@ -20,6 +43,7 @@ export default function DiscreteSlider({ onChange, value }) {
                 setValue(nv)
             }}
             onChangeCommitted={onChange}
+            marks={marks}
         />
     );
 }

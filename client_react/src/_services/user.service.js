@@ -28,7 +28,6 @@ function logout() {
     serviceHelper.logout();
 }
 
-// TODO BE must return token
 async function register(input) {
     const requestOptions = {
         method: 'POST',

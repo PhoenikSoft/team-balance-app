@@ -7,8 +7,8 @@ import com.phoenixoft.teambalanceapp.util.model.JwtRoles;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +18,17 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@AllArgsConstructor
 public class JwtUtil {
 
-    // TODO: Should be moved to ENV variables?
-    private static final String SECRET_KEY = "tb_secret";
+    private final String SECRET_KEY;
     private static final int JWT_EXPIRATION_DURATION_IN_MILLIS = 60 * 60 * 1000;
 
     private final ObjectMapper objectMapper;
+
+    public JwtUtil(@Value("${jwt_secret}") String secret_key, ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+        SECRET_KEY = secret_key;
+    }
 
     public String extractUsername(String token) {
         if (isTokenExpired(token)) {
