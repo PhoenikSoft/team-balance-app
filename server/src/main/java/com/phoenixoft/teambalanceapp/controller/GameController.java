@@ -124,13 +124,13 @@ public class GameController {
         return gameVotes.stream().map(DtoConverter::convertGameUserVote).collect(Collectors.toList());
     }
 
-    @PostMapping(path = "/{gameId}/votes")
+    @PutMapping(path = "/{gameId}/votes")
     public void addVote(@PathVariable Long gameId, @Valid @RequestBody UserGameVoteRequestDto dto,
                         Authentication authentication) {
         userVoteService.saveVote(toLightUserVote(dto, gameId, authentication));
     }
 
-    @PostMapping(path = "/{gameId}/votesBatches")
+    @PutMapping(path = "/{gameId}/votesBatches")
     public void addVotes(@PathVariable Long gameId, @Valid @RequestBody AddGameVotesRequestDto dtoList,
                          Authentication authentication) {
         List<LightUserVote> lightUserVotes = dtoList.getVotes().stream()

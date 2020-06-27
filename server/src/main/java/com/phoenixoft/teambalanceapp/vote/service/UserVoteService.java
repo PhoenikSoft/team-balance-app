@@ -6,7 +6,6 @@ import com.phoenixoft.teambalanceapp.common.exception.PlayersAreNotInTheSameGame
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
 import com.phoenixoft.teambalanceapp.common.exception.SelfVotingException;
 import com.phoenixoft.teambalanceapp.common.exception.ServiceException;
-import com.phoenixoft.teambalanceapp.common.exception.UserVoteExistsException;
 import com.phoenixoft.teambalanceapp.config.QuartzConfig;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.VoteStatus;
@@ -49,7 +48,7 @@ public class UserVoteService {
 
     public void saveVote(LightUserVote userVoteRequest) {
         DbFetchedUserVoteFields dbFetchedUserVoteFields = validateSaveVoteRequest(userVoteRequest);
-        userVoteRepository.save(createUserVote(dbFetchedUserVoteFields, userVoteRequest));
+        userVoteRepository.save(createNewOrGetUserVoteWithNewVote(dbFetchedUserVoteFields, userVoteRequest));
     }
 
     public void saveVotes(List<LightUserVote> userVoteRequests) {
@@ -63,7 +62,7 @@ public class UserVoteService {
                 throw new IndexedServiceException(i, ex);
             }
 
-            userVotes.add(createUserVote(dbFetchedUserVoteFields, userVoteRequest));
+            userVotes.add(createNewOrGetUserVoteWithNewVote(dbFetchedUserVoteFields, userVoteRequest));
         }
 
         userVoteRepository.saveAll(userVotes);
@@ -100,10 +99,6 @@ public class UserVoteService {
                         String.format("User[id=%s] isn't assigned to a game[id=%s]",
                                 voter.getId(), userVoteRequest.getGameId())));
 
-        if (userVoteRepository.existsByForUserAndVoterAndGame(forUser, voter, game)) {
-            throw new UserVoteExistsException("This vote is a duplicate and have already been sent");
-        }
-
         if (game.getVoteStatus() != VoteStatus.STARTED) {
             throw new InvalidGameVotingStatusException("Voting hasn't started or has already finished for the game: " + game.getId());
         }
@@ -117,11 +112,10 @@ public class UserVoteService {
         return DbFetchedUserVoteFields.of(forUser, voter, game);
     }
 
-    private UserVote createUserVote(DbFetchedUserVoteFields dbFetchedUserVoteFields, LightUserVote userVoteRequest) {
-        UserVote userVote = new UserVote();
-        userVote.setForUser(dbFetchedUserVoteFields.forUser);
-        userVote.setVoter(dbFetchedUserVoteFields.voter);
-        userVote.setGame(dbFetchedUserVoteFields.game);
+    private UserVote createNewOrGetUserVoteWithNewVote(DbFetchedUserVoteFields dbFetchedUserVoteFields, LightUserVote userVoteRequest) {
+        UserVote userVote = userVoteRepository.getByForUserAndVoterAndGame(
+                dbFetchedUserVoteFields.forUser, dbFetchedUserVoteFields.voter, dbFetchedUserVoteFields.game)
+                .orElse(dbFetchedUserVoteFields.toUserVote());
         userVote.setVote(userVoteRequest.getVote());
 
         return userVote;
@@ -132,5 +126,14 @@ public class UserVoteService {
         User forUser;
         User voter;
         Game game;
+
+        public UserVote toUserVote() {
+            UserVote userVote = new UserVote();
+            userVote.setForUser(forUser);
+            userVote.setVoter(voter);
+            userVote.setGame(game);
+
+            return userVote;
+        }
     }
 }
