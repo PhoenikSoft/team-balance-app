@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AllVariantTeamBalancerTest implements TestData {
 
-    private AllVariantsTeamBalancer teamBalancer = new AllVariantsTeamBalancer();
+    private final AllVariantsTeamBalancer teamBalancer = new AllVariantsTeamBalancer();
 
     @DisplayName("Should divide input list of players into balanced teams")
     @ParameterizedTest
@@ -33,7 +33,7 @@ class AllVariantTeamBalancerTest implements TestData {
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedRight) {
         List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
 
-        List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users);
+        List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users, 2);
 
         List<Long> leftIds = balancedTeams.get(0).getPlayers().stream().map(User::getId).collect(Collectors.toList());
         assertThat(leftIds).containsExactlyInAnyOrderElementsOf(expectedLeft);
@@ -47,6 +47,6 @@ class AllVariantTeamBalancerTest implements TestData {
     void testDividePlayersIntoBalancedTeams_tooSmallInputList(@ConvertWith(LongListArgumentConverter.class) List<Long> input) {
         List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
 
-        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(users));
+        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(users, 2));
     }
 }

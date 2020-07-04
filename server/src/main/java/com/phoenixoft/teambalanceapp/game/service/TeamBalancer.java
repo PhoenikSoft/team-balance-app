@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TeamBalancer {
 
-    List<Team> dividePlayersIntoBalancedTeams(List<User> players);
+    List<Team> dividePlayersIntoBalancedTeams(List<User> players, int teamsCount);
 }

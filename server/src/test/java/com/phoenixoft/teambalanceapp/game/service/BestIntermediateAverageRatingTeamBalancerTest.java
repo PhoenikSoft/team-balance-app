@@ -19,13 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
 
-    private BestIntermediateAverageRatingTeamBalancer teamBalancer = new BestIntermediateAverageRatingTeamBalancer();
+    private final BestIntermediateAverageRatingTeamBalancer teamBalancer = new BestIntermediateAverageRatingTeamBalancer();
 
     @DisplayName("Should divide input list of players into balanced teams")
     @ParameterizedTest
     @CsvSource({
-            "1:3:2,1,3,2",
-            "1:5:6:6,6:1,6,5",
             "90:75:100:85:50:45:65:65:65:20:30:25:10,100:65:45:30:10,90:65:65:20,85:75:50:25"
     })
     void testDividePlayersIntoBalancedTeams(@ConvertWith(LongListArgumentConverter.class) List<Long> input,
@@ -34,7 +32,7 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedThird) {
         List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
 
-        List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users);
+        List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users, 3);
 
         List<Long> firstIds = balancedTeams.get(0).getPlayers().stream().map(User::getId).collect(Collectors.toList());
         assertThat(firstIds).containsExactlyInAnyOrderElementsOf(expectedFirst);
@@ -50,6 +48,6 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
     void testDividePlayersIntoBalancedTeams_tooSmallInputList(@ConvertWith(LongListArgumentConverter.class) List<Long> input) {
         List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
 
-        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(users));
+        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(users, 3));
     }
 }

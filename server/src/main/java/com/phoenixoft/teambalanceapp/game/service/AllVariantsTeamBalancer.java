@@ -23,12 +23,12 @@ import static com.phoenixoft.teambalanceapp.util.AppUtils.removeElem;
 public class AllVariantsTeamBalancer implements TeamBalancer {
 
     @Override
-    public List<Team> dividePlayersIntoBalancedTeams(List<User> players) {
-        Preconditions.checkArgument(players.size() > 1, "players");
+    @Deprecated
+    public List<Team> dividePlayersIntoBalancedTeams(List<User> players, int teamsCount) {
+        Preconditions.checkArgument(players.size() >= 2, "players");
 
-        if (players.size() == 2) {
-            return Arrays.asList(Team.of(Collections.singletonList(players.get(0))),
-                    Team.of(Collections.singletonList(players.get(1))));
+        if (players.size() == teamsCount) {
+            return players.stream().map(Collections::singletonList).map(Team::of).collect(Collectors.toList());
         }
 
         List<Tuple2<Team, Team>> combinations = getAllCombinations(new ArrayList<>(), players);

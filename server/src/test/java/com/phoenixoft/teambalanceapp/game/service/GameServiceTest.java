@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -272,9 +271,9 @@ public class GameServiceTest implements TestData {
         mockGame.setPlayers(players);
         mockGroup.setGames(Collections.singletonList(mockGame));
         when(groupService.findById(groupId)).thenReturn(mockGroup);
-        when(teamBalancer.dividePlayersIntoBalancedTeams(players)).thenReturn(Collections.singletonList(Team.of(players)));
+        when(teamBalancer.dividePlayersIntoBalancedTeams(players, 1)).thenReturn(Collections.singletonList(Team.of(players)));
 
-        List<Team> teams = gameService.generateBalancedTeams(groupId, gameId);
+        List<Team> teams = gameService.generateBalancedTeams(groupId, gameId, 1);
 
         assertEquals(1, teams.size());
         assertEquals(userId, teams.get(0).getPlayers().get(0).getId());
@@ -289,6 +288,6 @@ public class GameServiceTest implements TestData {
         mockGroup.setGames(new ArrayList<>());
         when(groupService.findById(groupId)).thenReturn(mockGroup);
 
-        assertThrows(ResourceNotFoundException.class, () -> gameService.generateBalancedTeams(groupId, gameId));
+        assertThrows(ResourceNotFoundException.class, () -> gameService.generateBalancedTeams(groupId, gameId, 1));
     }
 }
