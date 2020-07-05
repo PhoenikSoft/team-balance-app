@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
 
-    private final BestIntermediateAverageRatingTeamBalancer teamBalancer = new BestIntermediateAverageRatingTeamBalancer();
+    private final BestIntermediateAverageRatingTeamBalancer teamBalancer = new BestIntermediateAverageRatingTeamBalancer(new Random(1));
 
     @DisplayName("Should divide input list of players into balanced teams")
     @ParameterizedTest

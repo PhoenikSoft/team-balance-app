@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.phoenixoft.teambalanceapp.util.AppUtils.addElem;
@@ -20,7 +21,11 @@ import static com.phoenixoft.teambalanceapp.util.AppUtils.removeElem;
 
 @Qualifier("allVariants")
 @Component
-public class AllVariantsTeamBalancer implements TeamBalancer {
+public class AllVariantsTeamBalancer extends AbstractTeamBalancer {
+
+    public AllVariantsTeamBalancer(Random random) {
+        super(random);
+    }
 
     @Override
     @Deprecated

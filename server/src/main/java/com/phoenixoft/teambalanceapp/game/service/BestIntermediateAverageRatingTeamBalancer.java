@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,7 +24,11 @@ import static com.phoenixoft.teambalanceapp.util.AppUtils.generateAllCombination
 
 @Primary
 @Component
-public class BestIntermediateAverageRatingTeamBalancer implements TeamBalancer {
+public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalancer {
+
+    public BestIntermediateAverageRatingTeamBalancer(Random random) {
+        super(random);
+    }
 
     @Override
     public List<Team> dividePlayersIntoBalancedTeams(List<User> players, int teamsCount) {
