@@ -23,6 +23,11 @@ public class Team implements Serializable {
         players.add(player);
     }
 
+    public void replacePlayer(User oldPlayer, User newPlayer) {
+        int replaceIndex = players.indexOf(oldPlayer);
+        players.set(replaceIndex, newPlayer);
+    }
+
     @JsonIgnore
     public boolean isEmpty() {
         return players.isEmpty();

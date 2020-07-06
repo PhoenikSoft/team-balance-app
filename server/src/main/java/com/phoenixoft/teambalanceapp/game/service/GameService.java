@@ -88,9 +88,11 @@ public class GameService {
         return game;
     }
 
-    public List<Team> generateBalancedTeams(Long groupId, Long gameId) {
+    public List<Team> generateBalancedTeams(Long groupId, Long gameId, int teamsCount) {
         Game game = findGame(groupId, gameId);
-        List<Team> teams = teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()));
+        List<Team> teams = game.getBalancedTeams() == null
+                ? teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()), teamsCount)
+                : teamBalancer.dividePlayersIntoBalancedTeamsWithSomeRandomness(new ArrayList<>(game.getPlayers()), teamsCount);
 
         game.setBalancedTeams(new BalancedTeams(teams));
         gameRepository.save(game);
