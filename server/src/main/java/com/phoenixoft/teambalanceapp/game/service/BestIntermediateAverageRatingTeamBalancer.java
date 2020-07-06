@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,27 +24,28 @@ import static com.phoenixoft.teambalanceapp.util.AppUtils.generateAllCombination
 
 @Primary
 @Component
-public class BestIntermediateAverageRatingTeamBalancer implements TeamBalancer {
+public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalancer {
 
-    private static final int TEAM_COUNT = 3;
+    public BestIntermediateAverageRatingTeamBalancer(Random random) {
+        super(random);
+    }
 
     @Override
-    public List<Team> dividePlayersIntoBalancedTeams(List<User> players) {
-        Preconditions.checkArgument(players.size() > 2, "players");
+    public List<Team> dividePlayersIntoBalancedTeams(List<User> players, int teamsCount) {
+        Preconditions.checkArgument(teamsCount > 1, "teamsCount");
+        Preconditions.checkArgument(players.size() >= 2 * teamsCount, "players");
 
-        if (players.size() == 3) {
-            return Arrays.asList(Team.of(Collections.singletonList(players.get(0))),
-                    Team.of(Collections.singletonList(players.get(1))),
-                    Team.of(Collections.singletonList(players.get(2))));
+        if (players.size() == teamsCount) {
+            return players.stream().map(Collections::singletonList).map(Team::of).collect(Collectors.toList());
         }
 
         List<User> sortedUsers = players.stream()
                 .sorted(Comparator.comparing(User::getRating).reversed())
                 .collect(Collectors.toList());
-        List<Team> teams = IntStream.range(0, TEAM_COUNT).mapToObj(index -> Team.of()).collect(Collectors.toList());
+        List<Team> teams = IntStream.range(0, teamsCount).mapToObj(index -> Team.of()).collect(Collectors.toList());
         Iterator<User> iterator = sortedUsers.iterator();
         while (iterator.hasNext()) {
-            List<User> nextBatch = nextBatch(iterator);
+            List<User> nextBatch = nextBatch(iterator, teamsCount);
             addPlayersToTeams(teams, nextBatch);
         }
         return teams;
@@ -104,9 +105,9 @@ public class BestIntermediateAverageRatingTeamBalancer implements TeamBalancer {
                 .divide(new BigDecimal(oldSize + 1), 2, RoundingMode.HALF_EVEN);
     }
 
-    private static List<User> nextBatch(Iterator<User> iterator) {
-        ArrayList<User> batch = new ArrayList<>(TEAM_COUNT);
-        for (int i = 0; i < TEAM_COUNT; i++) {
+    private static List<User> nextBatch(Iterator<User> iterator, int teamsCount) {
+        ArrayList<User> batch = new ArrayList<>(teamsCount);
+        for (int i = 0; i < teamsCount; i++) {
             if (!iterator.hasNext()) {
                 return batch;
             }

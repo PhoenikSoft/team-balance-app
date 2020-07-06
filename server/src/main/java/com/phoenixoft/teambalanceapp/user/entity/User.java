@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.util.RoleGenerator;
@@ -24,15 +25,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "tbl_user")
 @Data
 @ToString(exclude = {"roles", "games", "groups"})
-@EqualsAndHashCode(exclude = {"roles", "games", "groups"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
+    @EqualsAndHashCode.Include
     private Long id;
 
     private String password;
