@@ -25,9 +25,9 @@ export const apiConstants = {
     PLAYER: (groupId, gameId, playerId) => `/api/groups/${groupId}/games/${gameId}/players/${playerId}`,
     PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
 
-    MY_VOTES: gameId => `/api/groups/{groupId}/games${gameId}/votes`,
-    POST_MY_VOTES_BATCH: gameId => `/api/groups/{groupId}/games${gameId}/votesBatches`,
-    START_VOTING: gameId => `/api/groups/{groupId}/games${gameId}/votingStarts`,
+    MY_VOTES: gameId => `/api/groups/{groupId}/games/${gameId}/votes`,
+    POST_MY_VOTES_BATCH: gameId => `/api/groups/{groupId}/games/${gameId}/votesBatches`,
+    START_VOTING: (groupId,gameId) => `/api/groups/${groupId}/games/${gameId}/votingStarts`,
 
 }
 

@@ -1,7 +1,6 @@
-import { gameConstants } from '../_constants';
+import { gameConstants, alertConstants } from '../_constants';
 import { serviceHelper } from '../_helpers';
 import { gamesService } from '../_services';
-
 
 const deleteGame = (gameId, groupId) => dispatch =>
     gamesService.deleteGame(gameId, groupId)
@@ -19,8 +18,35 @@ const getGame = (groupId, gameId) => dispatch =>
         .then(game => dispatch({ type: gameConstants.GAME_FETCHED, game }))
         .catch(serviceHelper.actionsErrorHandler);
 
+const getVotes = gameId => dispatch =>
+    gamesService.getVotes(gameId)
+        .then(votes => dispatch({ type: gameConstants.VOTES_FETCHED, votes }))
+        .catch(serviceHelper.actionsErrorHandler);
+
+const sendVotes = (gameId, votes) => dispatch =>
+    gamesService.sendVotes(gameId, votes)
+        .then(() => dispatch({ type: gameConstants.VOTES_SUBMITTED, votes }))
+        .catch(serviceHelper.actionsErrorHandler);
+
+const startVoting = (groupId, gameId) => dispatch =>
+    gamesService.startVoting(groupId, gameId)
+        .then(() => {
+            dispatch({ type: gameConstants.VOTING_STARTED })
+            dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.VOTING_STARTED })
+        })
+        .catch(serviceHelper.actionsErrorHandler);
+
+const addVote = (userId, voteValue) => dispatch => {
+    const vote = { forUserId: userId, vote: voteValue };
+    dispatch({ type: gameConstants.VOTE_ADDED, vote })
+}
+
 export const gamesActions = {
     deleteGame,
     addGame,
-    getGame
+    getGame,
+    getVotes,
+    sendVotes,
+    startVoting,
+    addVote
 };
