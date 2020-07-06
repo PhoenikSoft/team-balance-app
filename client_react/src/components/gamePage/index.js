@@ -21,14 +21,16 @@ const mapDispatchToProps = dispatch => {
         deletePlayer: playerId => dispatch(playersActions.deletePlayer(getGroupId(), getGameId(), playerId)),
         balanceTeams: () => dispatch(playersActions.balanceTeams(getGameId(), getGroupId())),
         startVoting: (groupId, gameId) => dispatch(gamesActions.startVoting(groupId, gameId)),
-        sendVotes: votes => dispatch(gamesActions.sendVotes(getGameId(), votes))
+        sendVotes: votes => dispatch(gamesActions.sendVotes(getGameId(), votes)),
+        getVotes: () => dispatch(gamesActions.getVotes(getGameId()))
     }
 }
 
 const mapStateToProps = state => {
     return {
-        gameFromGlobalState: state.game,
+        game: state.game,
         groupId: getGroupId(),
+        votes: state.game.votes
     }
 }
 

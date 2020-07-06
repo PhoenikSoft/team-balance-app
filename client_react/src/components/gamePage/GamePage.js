@@ -33,8 +33,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GamePage(
-    { gameFromGlobalState, fetchGame, groupId, goBack, deletePlayer, addPlayers, balanceTeams, startVoting, sendVotes }) {
-    let game = gameFromGlobalState;
+    { game,
+        fetchGame,
+        groupId,
+        goBack,
+        deletePlayer,
+        addPlayers,
+        balanceTeams,
+        startVoting,
+        sendVotes,
+        getVotes,
+        votes }) {
     const classes = useStyles();
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
@@ -43,8 +52,9 @@ export default function GamePage(
     useEffect(() => {
         const fetch = async () => {
             const action = await fetchGame();
-            if (action) {
-                game = action.game;
+             //TODO remove this when BE send votes with game
+            if (action && action.game.voteStatus !== "NOT_STARTED") {
+                await getVotes();
             };
         };
         fetch();
@@ -116,7 +126,7 @@ export default function GamePage(
 
             {game.balancedTeams
                 ? <Grid item xs={12} sm={6}>
-                    <BalancedTeams balancedTeams={game.balancedTeams.teams} />
+                    <BalancedTeams balancedTeams={game.balancedTeams.teams} votes={votes} />
                 </Grid>
                 : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
                     <Grid item >
@@ -149,7 +159,6 @@ export default function GamePage(
                 setVoteDialogOpened(false);
             }}
         />
-
     </>
     )
 }

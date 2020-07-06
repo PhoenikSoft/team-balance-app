@@ -17,23 +17,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-export default function ({ balancedTeams,
+export default function ({ balancedTeams, votes,
     showTitle = true,
     showSlider = false,
-    showVoteResult = false,
     showTitleTable = true
 }) {
-    
 
-    function getActionsConfig() {
-        return showSlider && [
-            {
-                icon: 'save',
-                tooltip: 'Save User',
-                onClick: (event, rowData) => alert("You saved " + rowData.name)
-            }]
-    }
     let index = 1;
     return < Grid >
         {showTitle && <Grid container justify="center">
@@ -42,11 +31,7 @@ export default function ({ balancedTeams,
         {/* Dummy table used to show just column titles */}
         {showTitleTable && <MaterialTable
             data={[]}
-            columns={[
-                { title: 'First Name', field: 'firstName' },
-                { title: 'Last Name', field: 'lastName' },
-                { title: 'Rating', field: 'rating' }
-            ]}
+            columns={getColumns(votes)}
             actions={getActionsConfig()}
             options={{
                 search: false,
@@ -57,27 +42,37 @@ export default function ({ balancedTeams,
                 actionsColumnIndex: showSlider ? -1 : 0
             }}
         />}
-        {balancedTeams.map(team =>
-            React.cloneElement(<TeamTable />, {
+        {balancedTeams.map(team => {
+            // TODO refactor this when BE send votes with game 
+            team.players.map(player => {
+                if (!votes) return player;
+                const voteForPlayer = votes.find(vote => vote.forUserId === player.id);
+                if (voteForPlayer) {
+                    player.vote = voteForPlayer.vote
+                } else {
+                    delete player.vote;
+                }
+            });
+
+            return React.cloneElement(<TeamTable />, {
                 team,
                 index: index++,
                 key: index,
-                actions: getActionsConfig(),
-                showSlider
-            }))}
+                actions: getActionsConfig(showSlider),
+                showSlider,
+                votes
+            }
+            )
+        })}
     </Grid>
 }
 
-function TeamTable({ team, index, actions, showSlider }) {
+function TeamTable({ team, index, actions, showSlider, votes }) {
     const classes = useStyles();
     return <MaterialTable
         title={`Team ${index}`}
         data={team.players}
-        columns={[
-            { title: 'First Name', field: 'firstName' },
-            { title: 'Last Name', field: 'lastName' },
-            { title: 'Rating', field: 'rating' }
-        ]}
+        columns={getColumns(votes)}
         options={{
             search: false,
             paging: false,
@@ -98,4 +93,23 @@ function TeamTable({ team, index, actions, showSlider }) {
                 </div>)
         }}
     />
+};
+
+function getActionsConfig(showSlider) {
+    return showSlider && [
+        {
+            icon: 'save',
+            tooltip: 'Save User',
+            onClick: (event, rowData) => alert("You saved " + rowData.name)
+        }]
+};
+
+function getColumns(votes) {
+    const columns = [
+        { title: 'First Name', field: 'firstName' },
+        { title: 'Last Name', field: 'lastName' },
+        { title: 'Rating', field: 'rating' }
+    ];
+    votes && columns.push({ title: 'Votes', field: 'vote' });
+    return columns;
 };

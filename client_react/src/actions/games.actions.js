@@ -26,7 +26,10 @@ const getVotes = gameId => dispatch =>
 const sendVotes = (gameId, votes) => dispatch =>
     gamesService.sendVotes(gameId, votes)
         .then(() => dispatch({ type: gameConstants.VOTES_SUBMITTED, votes }))
-        .catch(serviceHelper.actionsErrorHandler);
+        .catch(e => {
+            dispatch(getVotes(gameId));
+            serviceHelper.actionsErrorHandler(e);
+        });
 
 const startVoting = (groupId, gameId) => dispatch =>
     gamesService.startVoting(groupId, gameId)
@@ -40,6 +43,8 @@ const addVote = (userId, voteValue) => dispatch => {
     const vote = { forUserId: userId, vote: voteValue };
     dispatch({ type: gameConstants.VOTE_ADDED, vote })
 }
+
+
 
 export const gamesActions = {
     deleteGame,

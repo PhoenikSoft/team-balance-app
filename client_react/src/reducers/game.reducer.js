@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { gameConstants, playersCosntants } from '../_constants';
 
-export function game(state = { votes: [] }, action) {
+export function game(state = { }, action) {
     switch (action.type) {
         case gameConstants.GAME_FETCHED:
             return action.game;
