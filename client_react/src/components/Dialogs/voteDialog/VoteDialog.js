@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import BalancedTeams from '../../gamePage/BalancedTeams';
 
-export default function ({ open, handleClose, balancedTeams, onSubmit, votes }) {
 
-    return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+export default function ({ open, handleClose, balancedTeams, onSubmit, votes }) {
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    return <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        fullScreen={fullScreen}>
         <DialogContent>
             <DialogContentText>
                 Vote for the players you played with
