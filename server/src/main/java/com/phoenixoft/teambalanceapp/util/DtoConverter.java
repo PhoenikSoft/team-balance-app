@@ -41,6 +41,7 @@ public class DtoConverter {
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
+        dto.setRating(entity.getRating());
         return dto;
     }
 
