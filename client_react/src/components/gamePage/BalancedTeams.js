@@ -4,6 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import VoteSlider from '../Dialogs/voteDialog/VoteSlider';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import { green, red } from '@material-ui/core/colors';
+
 
 const useStyles = makeStyles((theme) => ({
     spacing: {
@@ -13,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
         whiteSpac: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis'
+    },
+    arrowContainer: {
+        display: 'flex'
     }
 }));
 
@@ -62,8 +69,7 @@ export default function ({ balancedTeams, votes,
                 showSlider,
                 votes,
                 showVotes
-            }
-            )
+            })
         })}
     </Grid>
 }
@@ -111,6 +117,18 @@ function getColumns(showVotes, votes) {
         { title: 'Last Name', field: 'lastName' },
         { title: 'Rating', field: 'rating' }
     ];
-    showVotes && votes && votes.length !== 0 && columns.push({ title: 'Votes', field: 'vote' });
+    const voteColumn = {
+        field: 'vote',
+        title: 'Votes',
+        render: rowData => <div style={{ display: 'flex' }}>
+
+            {rowData.vote && (rowData.vote > rowData.rating
+                ? <div><ArrowUpwardIcon style={{ color: green[500] }} /></div>
+                : <div><ArrowDownwardIcon style={{ color: red[500] }} /></div>)}
+            <div style={{ paddingTop: '5px' }}>{rowData.vote}</div>
+        </div>
+    };
+
+    showVotes && votes && votes.length !== 0 && columns.push(voteColumn);
     return columns;
 };
