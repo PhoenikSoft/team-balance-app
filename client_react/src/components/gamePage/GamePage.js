@@ -154,7 +154,6 @@ export default function GamePage(
 
         <VoteDialog
             balancedTeams={game.balancedTeams && game.balancedTeams.teams}
-            //balancedTeams={game.players && game.players.filter(player => player.id !== authHelper.getCookie('userId'))}
             gameId={game.id}
             open={voteDialogOpened}
             handleClose={e => setVoteDialogOpened(false)}

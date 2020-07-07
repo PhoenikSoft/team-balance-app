@@ -27,6 +27,7 @@ export default function ({ open, handleClose, balancedTeams, onSubmit, votes }) 
                 showSlider={true}
                 showTitleTable={false}
                 showVotes={true}
+                showCurrentPlayer={false}
             />
 
             <DialogActions>

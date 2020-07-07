@@ -7,6 +7,7 @@ import VoteSlider from '../Dialogs/voteDialog/VoteSlider';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { green, red } from '@material-ui/core/colors';
+import { authHelper } from '../../_helpers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,8 @@ export default function ({ balancedTeams, votes,
     showTitle = true,
     showSlider = false,
     showTitleTable = true,
-    showVotes = false
+    showVotes = false,
+    showCurrentPlayer = true
 }) {
 
     let index = 1;
@@ -50,6 +52,7 @@ export default function ({ balancedTeams, votes,
             }}
         />}
         {balancedTeams.map(team => {
+            !showCurrentPlayer && (team.players = team.players.filter(player => player.id != authHelper.getCookie('userId')));
             // TODO refactor this when BE send votes with game 
             team.players.map(player => {
                 if (!votes) return player;
@@ -58,7 +61,8 @@ export default function ({ balancedTeams, votes,
                     player.vote = voteForPlayer.vote
                 } else {
                     delete player.vote;
-                }
+                };
+
             });
 
             return React.cloneElement(<TeamTable />, {
