@@ -3,7 +3,6 @@ import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import VoteSlider from '../Dialogs/voteDialog/VoteSlider';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ({ balancedTeams, votes,
     showTitle = true,
     showSlider = false,
-    showTitleTable = true
+    showTitleTable = true,
+    showVotes = false
 }) {
 
     let index = 1;
@@ -31,7 +31,7 @@ export default function ({ balancedTeams, votes,
         {/* Dummy table used to show just column titles */}
         {showTitleTable && <MaterialTable
             data={[]}
-            columns={getColumns(votes)}
+            columns={getColumns(showVotes, votes)}
             actions={getActionsConfig()}
             options={{
                 search: false,
@@ -60,19 +60,20 @@ export default function ({ balancedTeams, votes,
                 key: index,
                 actions: getActionsConfig(showSlider),
                 showSlider,
-                votes
+                votes,
+                showVotes
             }
             )
         })}
     </Grid>
 }
 
-function TeamTable({ team, index, actions, showSlider, votes }) {
+function TeamTable({ team, index, actions, showSlider, votes, showVotes }) {
     const classes = useStyles();
     return <MaterialTable
         title={`Team ${index}`}
         data={team.players}
-        columns={getColumns(votes)}
+        columns={getColumns(showVotes, votes)}
         options={{
             search: false,
             paging: false,
@@ -104,12 +105,12 @@ function getActionsConfig(showSlider) {
         }]
 };
 
-function getColumns(votes) {
+function getColumns(showVotes, votes) {
     const columns = [
         { title: 'First Name', field: 'firstName' },
         { title: 'Last Name', field: 'lastName' },
         { title: 'Rating', field: 'rating' }
     ];
-    votes && columns.push({ title: 'Votes', field: 'vote' });
+    showVotes && votes && votes.length !== 0 && columns.push({ title: 'Votes', field: 'vote' });
     return columns;
 };

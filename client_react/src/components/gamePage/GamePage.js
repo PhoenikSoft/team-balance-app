@@ -52,7 +52,7 @@ export default function GamePage(
     useEffect(() => {
         const fetch = async () => {
             const action = await fetchGame();
-             //TODO remove this when BE send votes with game
+            //TODO remove this when BE send votes with game
             if (action && action.game.voteStatus !== "NOT_STARTED") {
                 await getVotes();
             };
@@ -73,11 +73,11 @@ export default function GamePage(
                             Back to group
                     </Button>
                     </Grid>
-                    <Grid item>
+                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
                             Add members
                     </Button>
-                    </Grid>
+                    </Grid>}
 
                     {game.voteStatus === 'NOT_STARTED' && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => startVoting(groupId, game.id)}>
@@ -91,11 +91,11 @@ export default function GamePage(
                     </Button>
                     </Grid>}
 
-                    <Grid item>
+                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => balanceTeams()}>
                             Balance teams
                         </Button>
-                    </Grid>
+                    </Grid>}
 
                 </Grid>
             </Grid>
@@ -126,7 +126,11 @@ export default function GamePage(
 
             {game.balancedTeams
                 ? <Grid item xs={12} sm={6}>
-                    <BalancedTeams balancedTeams={game.balancedTeams.teams} votes={votes} />
+                    <BalancedTeams
+                        balancedTeams={game.balancedTeams.teams}
+                        votes={votes}
+                        showVotes={!voteDialogOpened}
+                    />
                 </Grid>
                 : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
                     <Grid item >

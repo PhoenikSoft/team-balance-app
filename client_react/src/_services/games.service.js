@@ -28,18 +28,7 @@ function getGame(gameId, groupId) {
     return global.fetchWithLoader(
         constructUrl(apiConstants.GAME(groupId, gameId)),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
-        .then(serviceHelper.handleResponse)
-        .then(data => {
-            if (data.balancedTeams) {
-
-                data.balancedTeams.teams.forEach(team => {
-                    team.players.map(player => {
-                        player.rating = data.players.find(subPlayer => subPlayer.id === player.id).rating
-                    })
-                })
-            }
-            return data
-        })
+        .then(serviceHelper.handleResponse);
 }
 
 function getVotes(gameId) {
