@@ -5,6 +5,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.FeedbackResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameViewResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.PlayerResponseDto;
@@ -79,6 +80,13 @@ public class DtoConverter {
                 .map(BalancedTeamsResponseDto::of)
                 .ifPresent(dto::setBalancedTeams);
         return dto;
+    }
+
+    public static GameViewResponseDto convertGameView(Game game, List<UserVote> gameVotes) {
+        List<GameUserVoteResponseDto> gameVotesDtos = gameVotes.stream()
+                .map(DtoConverter::convertGameUserVote)
+                .collect(Collectors.toList());
+        return GameViewResponseDto.of(convertGame(game), gameVotesDtos);
     }
 
     public static FeedbackResponseDto convertFeedback(Feedback feedback) {

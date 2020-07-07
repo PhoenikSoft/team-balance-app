@@ -6,6 +6,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameViewResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserGameVoteRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
@@ -65,6 +66,15 @@ public class GameController {
     public GameResponseDto getGame(@PathVariable Long groupId, @PathVariable Long gameId) {
         Game entity = gameService.findGameInGroup(groupId, gameId);
         return DtoConverter.convertGame(entity);
+    }
+
+    @GetMapping(path = "/{gameId}/views")
+    public GameViewResponseDto getGameView(@PathVariable Long groupId, @PathVariable Long gameId,
+                                           Authentication authentication) {
+        Game game = gameService.findGameInGroup(groupId, gameId);
+        CustomUser userDetails = (CustomUser) authentication.getPrincipal();
+        List<UserVote> gameVotes = gameService.getGameVotes(gameId, userDetails.getId());
+        return DtoConverter.convertGameView(game, gameVotes);
     }
 
     @PutMapping(path = "/{gameId}")
