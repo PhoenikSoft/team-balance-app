@@ -1,6 +1,5 @@
 package com.phoenixoft.teambalanceapp.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
@@ -24,11 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"password", "roles", "groups", "games"}, ignoreUnknown = true)
 @Entity
 @Table(name = "tbl_user")
 @Data
-@ToString(exclude = {"roles", "games", "groups"})
+@ToString(exclude = {"password", "roles", "games", "groups"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Serializable {
     @Id
@@ -49,15 +48,12 @@ public class User implements Serializable {
 
     private BigDecimal rating;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     private List<Group> groups = new ArrayList<>();
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
     private List<Game> games = new ArrayList<>();
 
