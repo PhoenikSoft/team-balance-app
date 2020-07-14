@@ -29,7 +29,8 @@ export default function ({ balancedTeams, votes,
     showSlider = false,
     showTitleTable = true,
     showVotes = false,
-    showCurrentPlayer = true
+    showCurrentPlayer = true,
+    showRating = true
 }) {
 
     let index = 1;
@@ -40,7 +41,7 @@ export default function ({ balancedTeams, votes,
         {/* Dummy table used to show just column titles */}
         {showTitleTable && <MaterialTable
             data={[]}
-            columns={getColumns(showVotes, votes)}
+            columns={getColumns(showVotes, showRating, votes)}
             actions={getActionsConfig()}
             options={{
                 search: false,
@@ -52,7 +53,8 @@ export default function ({ balancedTeams, votes,
             }}
         />}
         {balancedTeams.map(team => {
-            !showCurrentPlayer && (team.players = team.players.filter(player => player.id != authHelper.getCookie('userId')));
+            //!showCurrentPlayer && (team.players = team.players.filter(player => player.id != authHelper.getCookie('userId')));
+
             // TODO refactor this when BE send votes with game 
             team.players.map(player => {
                 if (!votes) return player;
@@ -66,24 +68,27 @@ export default function ({ balancedTeams, votes,
             });
 
             return React.cloneElement(<TeamTable />, {
-                team,
+                team: showCurrentPlayer
+                    ? team
+                    : { ...team, players: team.players.filter(player => player.id != authHelper.getCookie('userId')) },
                 index: index++,
                 key: index,
                 actions: getActionsConfig(showSlider),
                 showSlider,
                 votes,
-                showVotes
+                showVotes,
+                showRating
             })
         })}
     </Grid>
 }
 
-function TeamTable({ team, index, actions, showSlider, votes, showVotes }) {
+function TeamTable({ team, index, actions, showSlider, votes, showVotes, showRating }) {
     const classes = useStyles();
     return <MaterialTable
         title={`Team ${index}`}
         data={team.players}
-        columns={getColumns(showVotes, votes)}
+        columns={getColumns(showVotes, showRating, votes)}
         options={{
             search: false,
             paging: false,
@@ -115,21 +120,22 @@ function getActionsConfig(showSlider) {
         }]
 };
 
-function getColumns(showVotes, votes) {
+function getColumns(showVotes, showRating, votes) {
     const columns = [
         { title: 'First Name', field: 'firstName' },
-        { title: 'Last Name', field: 'lastName' },
-        { title: 'Rating', field: 'rating' }
+        { title: 'Last Name', field: 'lastName' }
     ];
+    showRating && columns.push({ title: 'Rating', field: 'rating' });
     const voteColumn = {
         field: 'vote',
         title: 'Votes',
         render: rowData => <div style={{ display: 'flex' }}>
-
-            {rowData.vote && (rowData.vote > rowData.rating
-                ? <div><ArrowUpwardIcon style={{ color: green[500] }} /></div>
-                : <div><ArrowDownwardIcon style={{ color: red[500] }} /></div>)}
-            <div style={{ paddingTop: '5px' }}>{rowData.vote}</div>
+            {(rowData.vote && rowData.vote !== 0) ?
+                rowData.vote > 0
+                    ? <div><ArrowUpwardIcon style={{ color: green[500] }} /></div>
+                    : <div><ArrowDownwardIcon style={{ color: red[500] }} /></div>
+                : <div />}
+            {rowData.vote !== 0 && <div style={{ paddingTop: '5px' }}>{rowData.vote}</div>}
         </div>
     };
 

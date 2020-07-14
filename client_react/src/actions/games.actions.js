@@ -44,7 +44,9 @@ const addVote = (userId, voteValue) => dispatch => {
     dispatch({ type: gameConstants.VOTE_ADDED, vote })
 }
 
-
+const flushVotes = () => dispatch => {
+    dispatch({ type: gameConstants.FLUSH_VOTES })
+}
 
 export const gamesActions = {
     deleteGame,
@@ -53,5 +55,6 @@ export const gamesActions = {
     getVotes,
     sendVotes,
     startVoting,
-    addVote
+    addVote,
+    flushVotes
 };

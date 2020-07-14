@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import BalancedTeams from '../../gamePage/BalancedTeams';
 
 
-export default function ({ open, handleClose, balancedTeams, onSubmit, votes }) {
+export default function ({ open, handleClose, flushVotes, balancedTeams, onSubmit, votes }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     return <Dialog
@@ -28,16 +28,20 @@ export default function ({ open, handleClose, balancedTeams, onSubmit, votes }) 
                 showTitleTable={false}
                 showVotes={true}
                 showCurrentPlayer={false}
+                showRating={false}
             />
 
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={() => {
+                    flushVotes();
+                    handleClose();
+                }}
+                    color="primary">
                     Cancel
                 </Button>
                 <Button onClick={() => {
                     onSubmit(votes)
                 }}
-                    //disabled={!gameName}
                     color="primary">
                     Vote
             </Button>

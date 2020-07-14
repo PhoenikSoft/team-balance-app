@@ -4,8 +4,7 @@ import { gameConstants } from '../../../_constants';
 
 const mapDispatch = dispatch => {
     return {
-        addVote: vote => dispatch(gameConstants.VOTE_ADDED, vote),
-        flushVotes: () => dispatch(gameConstants.VOTE_FLUSHED)
+        flushVotes: () => dispatch({ type: gameConstants.FLUSH_VOTES })
     }
 };
 

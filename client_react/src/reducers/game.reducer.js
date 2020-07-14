@@ -11,10 +11,12 @@ export function game(state = { }, action) {
             return { ...state, players: action.newPlayersList }
         case playersCosntants.TEAM_BALANCED:
             return { ...state, balancedTeams: action.balancedTeams }
+
         case gameConstants.VOTES_FETCHED:
-            return { ...state, votes: action.votes }
+            return { ...state, submittedVotes: action.votes }
         case gameConstants.VOTES_SUBMITTED:
-            return { ...state, votes: action.votes }
+            return { ...state, submittedVotes: [...action.votes,...state.submittedVotes ]}
+
         case gameConstants.VOTING_STARTED:
             return { ...state, voteStatus: "STARTED" }
         case gameConstants.VOTE_ADDED:
@@ -24,6 +26,7 @@ export function game(state = { }, action) {
             } else {
                 return { ...state, votes: [action.vote] };
             }
+        
         case gameConstants.FLUSH_VOTES:
             return { ...state, votes: [] }
         default:
