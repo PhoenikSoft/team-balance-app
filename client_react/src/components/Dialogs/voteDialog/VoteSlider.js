@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux';
@@ -41,10 +42,12 @@ function VoteDialog({ rating, userId, addVote, votes, submittedVotes }) {
         const min = rating - 5;
         return min <= 0 ? 0 : min;
     };
-    userId === 70 && console.log('render vote', vote)
+
+
     return <>
         <Slider
             value={rating + vote}
+            style={{ color: vote === 0 ? '#3f51b5' : (vote > 0 ? 'green' : 'red') }}
             aria-labelledby="discrete-slider"
             valueLabelDisplay="off"
             step={1}
@@ -52,11 +55,9 @@ function VoteDialog({ rating, userId, addVote, votes, submittedVotes }) {
             min={getMinOptionToVote()}
             max={getMaxOptionToVote()}
             onChange={(event, value) => {
-                console.log('onChange ', value - rating)
                 setNewVote(value - rating)
             }}
             onChangeCommitted={(event, value) => {
-                console.log('onChangeCommitted ', value - rating)
                 setNewVote(value - rating)
                 addVote(userId, value - rating);
             }}

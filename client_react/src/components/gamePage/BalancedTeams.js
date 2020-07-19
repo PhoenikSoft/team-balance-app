@@ -28,7 +28,6 @@ export default function ({ balancedTeams, votes,
     showTitle = true,
     showSlider = false,
     showTitleTable = true,
-    showVotes = false,
     showCurrentPlayer = true,
     showRating = true
 }) {
@@ -41,7 +40,7 @@ export default function ({ balancedTeams, votes,
         {/* Dummy table used to show just column titles */}
         {showTitleTable && <MaterialTable
             data={[]}
-            columns={getColumns(showVotes, showRating, votes)}
+            columns={getColumns(showRating, votes)}
             actions={getActionsConfig()}
             options={{
                 search: false,
@@ -53,8 +52,6 @@ export default function ({ balancedTeams, votes,
             }}
         />}
         {balancedTeams.map(team => {
-            //!showCurrentPlayer && (team.players = team.players.filter(player => player.id != authHelper.getCookie('userId')));
-
             // TODO refactor this when BE send votes with game 
             team.players.map(player => {
                 if (!votes) return player;
@@ -76,19 +73,18 @@ export default function ({ balancedTeams, votes,
                 actions: getActionsConfig(showSlider),
                 showSlider,
                 votes,
-                showVotes,
                 showRating
             })
         })}
     </Grid>
 }
 
-function TeamTable({ team, index, actions, showSlider, votes, showVotes, showRating }) {
+function TeamTable({ team, index, actions, showSlider, votes, showRating }) {
     const classes = useStyles();
     return <MaterialTable
         title={`Team ${index}`}
         data={team.players}
-        columns={getColumns(showVotes, showRating, votes)}
+        columns={getColumns(showRating, votes)}
         options={{
             search: false,
             paging: false,
@@ -112,15 +108,16 @@ function TeamTable({ team, index, actions, showSlider, votes, showVotes, showRat
 };
 
 function getActionsConfig(showSlider) {
-    return showSlider && [
-        {
+    return showSlider
+        ? [{
             icon: 'save',
             tooltip: 'Save User',
             onClick: (event, rowData) => alert("You saved " + rowData.name)
         }]
+        : []
 };
 
-function getColumns(showVotes, showRating, votes) {
+function getColumns(showRating, votes) {
     const columns = [
         { title: 'First Name', field: 'firstName' },
         { title: 'Last Name', field: 'lastName' }
@@ -139,6 +136,6 @@ function getColumns(showVotes, showRating, votes) {
         </div>
     };
 
-    showVotes && votes && votes.length !== 0 && columns.push(voteColumn);
+    votes && votes.length !== 0 && columns.push(voteColumn);
     return columns;
 };

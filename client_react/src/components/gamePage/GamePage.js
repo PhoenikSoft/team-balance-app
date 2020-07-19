@@ -129,7 +129,6 @@ export default function GamePage(
                     <BalancedTeams
                         balancedTeams={game.balancedTeams.teams}
                         votes={votes}
-                        showVotes={!voteDialogOpened}
                     />
                 </Grid>
                 : <Grid container item xs={12} sm={6} justify="center" alignItems="center">

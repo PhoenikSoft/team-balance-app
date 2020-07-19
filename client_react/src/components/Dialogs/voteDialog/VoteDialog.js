@@ -26,7 +26,6 @@ export default function ({ open, handleClose, flushVotes, balancedTeams, onSubmi
                 showTitle={false}
                 showSlider={true}
                 showTitleTable={false}
-                showVotes={true}
                 showCurrentPlayer={false}
                 showRating={false}
             />
