@@ -21,6 +21,20 @@ public interface TestData {
         return user;
     }
 
+    default User mockUserWithGroup(long id, Group group) {
+        User user = new User();
+        user.setId(id);
+        user.getGroups().add(group);
+        return user;
+    }
+
+    default User mockUserWithGame(long id, Game game) {
+        User user = new User();
+        user.setId(id);
+        user.getGames().add(game);
+        return user;
+    }
+
     default Group mockGroup(long id) {
         Group obj = new Group();
         obj.setId(id);
