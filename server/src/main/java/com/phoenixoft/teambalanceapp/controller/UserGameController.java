@@ -8,7 +8,6 @@ import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.service.UserGameService;
-import com.phoenixoft.teambalanceapp.group.service.UserGroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.util.DtoConverter;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserGameController {
 
-    private final UserGroupService userGroupService;
     private final UserGameService userGameService;
 
     @GetMapping(path = "/{gameId}")

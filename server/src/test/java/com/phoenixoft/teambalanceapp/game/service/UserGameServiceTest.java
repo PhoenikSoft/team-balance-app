@@ -10,7 +10,6 @@ import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.UserGroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
-import com.phoenixoft.teambalanceapp.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +19,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,9 +40,6 @@ public class UserGameServiceTest implements TestData {
 
     @Mock
     private GameRepository gameRepository;
-
-    @Mock
-    private UserService userService;
 
     @Mock
     private UserGroupService userGroupService;
@@ -73,7 +71,8 @@ public class UserGameServiceTest implements TestData {
     public void testFind() {
         long gameId = 1L;
         long userId = 2L;
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame(gameId)));
+        when(gameRepository.findById(gameId))
+                .thenReturn(Optional.of(mockGameWithGroupMember(gameId, 0L, userId)));
 
         Game game = userGameService.findGame(userId, gameId);
 
@@ -85,7 +84,6 @@ public class UserGameServiceTest implements TestData {
     public void testFind_gameNotFound() {
         long userId = 1L;
         long gameId = 2L;
-        when(userService.findById(userId)).thenReturn(mockUser(userId));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.findGame(userId, gameId));
     }
@@ -99,7 +97,8 @@ public class UserGameServiceTest implements TestData {
 
         long userId = 1L;
         long gameId = 2L;
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame(gameId)));
+        when(gameRepository.findById(gameId))
+                .thenReturn(Optional.of(mockGameWithGroupMember(gameId, 0L, userId)));
         when(gameRepository.save(any(Game.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Game game = userGameService.updateGame(userId, gameId, dto);
@@ -113,7 +112,6 @@ public class UserGameServiceTest implements TestData {
     public void testUpdate_gameNotFound() {
         long userId = 1L;
         long gameId = 2L;
-        when(userService.findById(userId)).thenReturn(mockUser(userId));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.updateGame(userId, gameId, new GameRequestDto()));
     }
@@ -126,7 +124,8 @@ public class UserGameServiceTest implements TestData {
         CustomUser customUser = new CustomUser(userId, "a", "a", Collections.EMPTY_LIST);
         Game mockGame = mockGame(gameId);
         mockGame.setGroup(mockGroup(3L));
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame));
+        when(gameRepository.findById(gameId))
+                .thenReturn(Optional.of(mockGameWithGroupMember(gameId, 0L, userId)));
 
         userGameService.deleteGame(customUser, gameId);
 
@@ -139,7 +138,6 @@ public class UserGameServiceTest implements TestData {
         long userId = 1L;
         CustomUser customUser = new CustomUser(userId, "a", "a", Collections.EMPTY_LIST);
         long gameId = 1L;
-        when(userService.findById(userId)).thenReturn(mockUser(userId));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.deleteGame(customUser, gameId));
     }
@@ -149,10 +147,10 @@ public class UserGameServiceTest implements TestData {
     public void testGetGamePlayers() {
         long currentUserId = 1L;
         long gameId = 2L;
-        Game game = mockGame(gameId);
+        Game game = mockGameWithGroupMember(gameId, 0L, currentUserId);
         long userId = 3L;
         game.setPlayers(Collections.singletonList(mockUser(userId)));
-        when(userService.findById(currentUserId)).thenReturn(mockUserWithGame(currentUserId, game));
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
 
         List<User> gamePlayers = userGameService.getGamePlayers(currentUserId, gameId);
 
@@ -165,7 +163,6 @@ public class UserGameServiceTest implements TestData {
     public void testGetGamePlayers_gameNotFound() {
         long userId = 1L;
         long gameId = 2L;
-        when(userService.findById(userId)).thenReturn(mockUser(userId));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.getGamePlayers(userId, gameId));
     }
@@ -178,11 +175,11 @@ public class UserGameServiceTest implements TestData {
         long playerId = 3L;
         long groupId = 4L;
         Group mockGroup = mockGroup(groupId);
-        mockGroup.setMembers(Collections.singletonList(mockUser(playerId)));
+        mockGroup.setMembers(Arrays.asList(mockUser(playerId), mockUser(userId)));
         Game mockGame = mockGame(gameId);
         mockGame.setGroup(mockGroup);
         mockGame.setPlayers(new ArrayList<>(1));
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame));
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
         when(gameRepository.save(any(Game.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Game game = userGameService.addPlayerToGame(userId, gameId, playerId);
@@ -201,7 +198,6 @@ public class UserGameServiceTest implements TestData {
         mockGroup.setMembers(Collections.EMPTY_LIST);
         Game game = mockGame(gameId);
         game.setGroup(mockGroup);
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, game));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.addPlayerToGame(userId, gameId, 3L));
     }
@@ -212,7 +208,6 @@ public class UserGameServiceTest implements TestData {
         long userId = 1L;
         long gameId = 2L;
         long playerId = 3L;
-        when(userService.findById(userId)).thenReturn(mockUser(userId));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.addPlayerToGame(userId, gameId, playerId));
     }
@@ -222,10 +217,10 @@ public class UserGameServiceTest implements TestData {
     public void testDeletePlayerFromGame() {
         long userId = 1L;
         long gameId = 2L;
-        Game mockGame = mockGame(gameId);
+        Game mockGame = mockGameWithGroupMember(gameId, 0L, userId);
         long playerId = 3L;
         mockGame.setPlayers(new ArrayList<>(Collections.singletonList(mockUser(playerId))));
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame));
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
         when(gameRepository.save(any(Game.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Game game = userGameService.deletePlayerFromGame(userId, gameId, playerId);
@@ -238,10 +233,10 @@ public class UserGameServiceTest implements TestData {
     public void testDeletePlayerFromGame_removeNotExistPlayer() {
         long userId = 1L;
         long gameId = 2L;
-        Game mockGame = mockGame(gameId);
+        Game mockGame = mockGameWithGroupMember(gameId, 0L, userId);
         long playerId = 3L;
         mockGame.setPlayers(new ArrayList<>(Collections.singletonList(mockUser(playerId))));
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame));
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
 
         Game game = userGameService.deletePlayerFromGame(userId, gameId, playerId + 1);
 
@@ -253,11 +248,11 @@ public class UserGameServiceTest implements TestData {
     public void testGenerateBalancedTeams() {
         long userId = 1L;
         long gameId = 2L;
-        Game mockGame = mockGame(gameId);
+        Game mockGame = mockGameWithGroupMember(gameId, 0L, userId);
         long playerId = 3L;
         List<User> players = Collections.singletonList(mockUser(playerId));
         mockGame.setPlayers(players);
-        when(userService.findById(userId)).thenReturn(mockUserWithGame(userId, mockGame));
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
         when(teamBalancer.dividePlayersIntoBalancedTeams(players, 1)).thenReturn(Collections.singletonList(Team.of(players)));
 
         List<Team> teams = userGameService.generateBalancedTeams(userId, gameId, 1);
@@ -271,7 +266,6 @@ public class UserGameServiceTest implements TestData {
     public void testGenerateBalancedTeams_gameNotFound() {
         long userId = 1L;
         long gameId = 2L;
-        when(userService.findById(userId)).thenReturn(mockUser(userId));
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.generateBalancedTeams(userId, gameId, 1));
     }

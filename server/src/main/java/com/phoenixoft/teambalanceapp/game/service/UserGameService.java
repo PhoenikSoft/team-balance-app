@@ -11,7 +11,6 @@ import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.UserGroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
-import com.phoenixoft.teambalanceapp.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,6 @@ import java.util.List;
 public class UserGameService {
 
     private final GameRepository gameRepository;
-    private final UserService userService;
     private final UserGroupService userGroupService;
     private final TeamBalancer teamBalancer;
 
@@ -37,8 +35,12 @@ public class UserGameService {
     }
 
     public Game findGame(Long userId, Long gameId) {
-        return userService.findById(userId).findGame(gameId)
+        Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
+        if (!game.getGroup().findMember(userId).isPresent()) {
+            throw new ResourceNotFoundException("Game not found: " + gameId);
+        }
+        return game;
     }
 
     public Game updateGame(Long userId, Long gameId, GameRequestDto dto) {

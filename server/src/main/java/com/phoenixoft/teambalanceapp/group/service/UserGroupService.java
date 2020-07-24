@@ -142,15 +142,6 @@ public class UserGroupService {
         roleRepository.saveAll(groupRoles);
     }
 
-    public void assignAdminRoleToUser(Long groupId, Long userId) {
-        String processingGroupAdminRole = RoleGenerator.createAdminRoleTitle(groupId);
-        Role existingAdminRole = roleRepository.findByName(processingGroupAdminRole)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin role for the group not found"));
-        User user = userService.findById(userId);
-        existingAdminRole.getUsers().add(user);
-        roleRepository.save(existingAdminRole);
-    }
-
     public void assignUserRoleToUser(Long groupId, Long userId) {
         String processingGroupUserRole = RoleGenerator.createUserRoleTitle(groupId);
         Role existingAdminRole = roleRepository.findByName(processingGroupUserRole)

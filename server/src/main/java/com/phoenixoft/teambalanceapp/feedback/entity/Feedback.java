@@ -14,12 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_feedbacks")
 @Data
-public class Feedback {
+public class Feedback implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedback_gen")
     @SequenceGenerator(name = "feedback_gen", sequenceName = "feedback_seq", allocationSize = 1)

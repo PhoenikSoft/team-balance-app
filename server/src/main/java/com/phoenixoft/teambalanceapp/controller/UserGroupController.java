@@ -115,14 +115,6 @@ public class UserGroupController {
         return httpUtils.addJwtToResponse(ResponseEntity.ok(), currentCustomUser.getId()).build();
     }
 
-    @PostMapping(path = "/{groupId}/members/{userId}/addAdminPrivileges")
-    public void assignUserToGroupAdmins(@PathVariable Long groupId, @PathVariable Long userId,
-                                        @RequestAttribute CustomUser currentCustomUser) {
-        userGroupService.findGroupById(currentCustomUser.getId(), groupId);
-        userGroupService.checkAdminPermissions(currentCustomUser, groupId);
-        userGroupService.assignAdminRoleToUser(groupId, userId);
-    }
-
     @GetMapping(path = "/{groupId}/accessChecks")
     public GroupAccessResponseDto checkAccess(@PathVariable Long groupId, @RequestAttribute CustomUser currentCustomUser) {
         return GroupAccessResponseDto.of(userGroupService.hasUserAccessToGroup(groupId, currentCustomUser));

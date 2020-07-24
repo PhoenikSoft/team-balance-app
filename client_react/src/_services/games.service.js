@@ -7,12 +7,12 @@ export const gamesService = {
     getGame
 }
 
-function deleteGame(gameId, groupId) {
+function deleteGame(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GAME(groupId, gameId)),
+        constructUrl(apiConstants.GAME(gameId)),
         serviceHelper.getRequestOptions('DELETE', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
-};
+}
 
 function addGame(game, groupId) {
     return global.fetchWithLoader(
@@ -21,9 +21,9 @@ function addGame(game, groupId) {
         .then(serviceHelper.handleResponse);
 }
 
-function getGame(gameId, groupId) {
+function getGame(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GAME(groupId, gameId)),
+        constructUrl(apiConstants.GAME(gameId)),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }

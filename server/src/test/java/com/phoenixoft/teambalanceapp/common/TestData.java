@@ -6,6 +6,7 @@ import com.phoenixoft.teambalanceapp.user.entity.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 public interface TestData {
 
@@ -42,11 +43,26 @@ public interface TestData {
         return obj;
     }
 
+    default Group mockGroupWithMember(long groupId, long memberId) {
+        Group obj = mockGroup(groupId);
+        obj.setMembers(Collections.singletonList(mockUser(memberId)));
+        return obj;
+    }
+
     default Game mockGame(long id) {
         Game obj = new Game();
         obj.setId(id);
         obj.setName("test game");
         obj.setStartDateTime(LocalDateTime.of(2019, 12, 12, 12, 0));
+        return obj;
+    }
+
+    default Game mockGameWithGroupMember(long gameId, long groupId, long memberId) {
+        Game obj = new Game();
+        obj.setId(gameId);
+        obj.setName("test game");
+        obj.setStartDateTime(LocalDateTime.of(2019, 12, 12, 12, 0));
+        obj.setGroup(mockGroupWithMember(groupId, memberId));
         return obj;
     }
 }

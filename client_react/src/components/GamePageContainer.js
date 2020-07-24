@@ -10,16 +10,16 @@ const mapDispatchToProps = dispatch => {
     return {
         // OPTIMIZATION: don't fetch if group is in state already
         fetchGame: () => {
-            return dispatch(gamesActions.getGame(getGroupId(), getGameId()));
+            return dispatch(gamesActions.getGame(getGameId()));
         },
-        goBack: e => {
+        goBack: () => {
             navigation.goToGroupView(getGroupId());
         },
         addPlayers: players => {
-            dispatch(playersActions.addPlayers(getGroupId(), getGameId(), players));
+            dispatch(playersActions.addPlayers(getGameId(), players));
         },
-        deletePlayer: playerId => dispatch(playersActions.deletePlayer(getGroupId(), getGameId(), playerId)),
-        balanceTeams: () => dispatch(playersActions.balanceTeams(getGameId(), getGroupId()))
+        deletePlayer: playerId => dispatch(playersActions.deletePlayer(getGameId(), playerId)),
+        balanceTeams: () => dispatch(playersActions.balanceTeams(getGameId()))
     }
 }
 
