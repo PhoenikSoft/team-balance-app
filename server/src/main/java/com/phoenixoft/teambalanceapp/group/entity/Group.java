@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @Table(name = "tbl_group")
 @Data
 @ToString(exclude = {"members", "games"})
-public class Group {
+public class Group implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "group_gen")
     @SequenceGenerator(name = "group_gen", sequenceName = "group_seq", allocationSize = 1)

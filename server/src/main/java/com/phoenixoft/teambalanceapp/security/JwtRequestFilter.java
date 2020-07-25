@@ -1,11 +1,11 @@
 package com.phoenixoft.teambalanceapp.security;
 
+import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,11 +20,11 @@ import java.io.IOException;
 @AllArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    private final static String USER_ATTR = "currentCustomUser";
     public static final String EXPIRED_TOKEN = "Expired token";
 
-    private CustomUserDetailsService userDetailsService;
-
-    private JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -47,15 +47,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            CustomUser customUser = this.userDetailsService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(jwt, userDetails)) {
-
+            if (jwtUtil.validateToken(jwt, customUser)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        customUser, null, customUser.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                request.setAttribute(USER_ATTR, customUser);
             }
         }
         chain.doFilter(request, response);

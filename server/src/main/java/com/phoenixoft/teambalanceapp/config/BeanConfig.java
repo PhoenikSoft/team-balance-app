@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.config;
 
 import com.google.common.collect.Lists;
+import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +48,7 @@ public class BeanConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()))
-                .ignoredParameterTypes(Authentication.class)
+                .ignoredParameterTypes(Authentication.class, CustomUser.class)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))
@@ -65,7 +66,7 @@ public class BeanConfig {
                 .build();
     }
 
-    List<SecurityReference> defaultAuth() {
+    private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];

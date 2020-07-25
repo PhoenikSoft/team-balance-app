@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @JsonIgnoreProperties(value = {"password", "roles", "groups", "games"}, ignoreUnknown = true)
@@ -74,5 +75,9 @@ public class User implements Serializable {
     public boolean isAdminInGroup(long groupId) {
         return this.roles.stream()
                 .anyMatch(role -> role.getName().equals(RoleGenerator.createAdminRoleTitle(groupId)));
+    }
+
+    public Optional<Game> findGame(Long gameId) {
+        return games.stream().filter(game -> game.getId().equals(gameId)).findFirst();
     }
 }

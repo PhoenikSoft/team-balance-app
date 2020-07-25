@@ -10,6 +10,7 @@ import com.phoenixoft.teambalanceapp.user.entity.Role;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.repository.RoleRepository;
 import com.phoenixoft.teambalanceapp.user.repository.UserRepository;
+import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.util.RoleGenerator;
 import com.phoenixoft.teambalanceapp.util.StringGenerator;
 import lombok.AllArgsConstructor;
@@ -25,16 +26,18 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class GroupService {
+public class UserGroupService {
 
     private static final int GROUP_REF_LENGTH = 20;
 
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final RoleRepository roleRepository;
     private final StringGenerator stringGenerator;
 
-    public Group save(GroupRequestDto dto, User creatorUser) {
+    public Group save(GroupRequestDto dto, Long creatorUserId) {
+        User creatorUser = userService.findById(creatorUserId);
         Group group = new Group();
         group.setName(dto.getName());
         group.getMembers().add(creatorUser);
@@ -45,34 +48,31 @@ public class GroupService {
     }
 
     public List<Group> findGroupsByUser(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId))
-                .getGroups();
+        return userService.findById(userId).getGroups();
     }
 
-    public Group findById(Long groupId) {
-        return groupRepository.findById(groupId)
+    public Group findGroupById(Long userId, Long groupId) {
+        return findGroupsByUser(userId)
+                .stream()
+                .filter(group -> group.getId().equals(groupId))
+                .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId));
     }
 
-    public Group update(Long groupId, GroupRequestDto dto) {
-        Group storedGroup = groupRepository.findById(groupId)
-                .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId));
+    public Group updateGroup(Long userId, Long groupId, GroupRequestDto dto) {
+        Group storedGroup = findGroupById(userId, groupId);
         storedGroup.setName(dto.getName());
         return groupRepository.save(storedGroup);
     }
 
-    public void delete(Long groupId) {
-        groupRepository.findById(groupId).ifPresent(group -> {
-            groupRepository.delete(group);
-            deleteGroupRoles(groupId);
-        });
+    public void deleteGroup(Long userId, Long groupId) {
+        Group group = findGroupById(userId, groupId);
+        groupRepository.delete(group);
+        deleteGroupRoles(groupId);
     }
 
-    public List<User> getMembers(Long groupId) {
-        return groupRepository.findById(groupId)
-                .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId))
-                .getMembers();
+    public List<User> getGroupMembers(Long userId, Long groupId) {
+        return findGroupById(userId, groupId).getMembers();
     }
 
     public Group addMemberByGroupRef(String groupRef, String username) {
@@ -87,22 +87,9 @@ public class GroupService {
         return group;
     }
 
-    public Group addMember(Long groupId, Long userId) {
-        User newMember = userRepository.findById(userId)
-                .filter(user -> user.getGroups().stream().noneMatch(group -> group.getId().equals(groupId)))
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
-        Group group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId));
-        group.getMembers().add(newMember);
-        assignUserRoleToUser(groupId, userId);
-        groupRepository.save(group);
-        return group;
-    }
-
-    public void deleteMember(Long groupId, Long deletableMemberId) {
-        Group group = findById(groupId);
-        User memberToDelete = userRepository.findById(deletableMemberId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + deletableMemberId));
+    public void deleteGroupMember(Long userId, Long groupId, Long deletableMemberId) {
+        Group group = findGroupById(userId, groupId);
+        User memberToDelete = userService.findById(deletableMemberId);
         checkMemberForRemoval(group, memberToDelete);
         if (group.removeMember(memberToDelete)) {
             revokeGroupPrivilegesFromMember(groupId, memberToDelete);
@@ -111,17 +98,8 @@ public class GroupService {
         }
     }
 
-    private void checkMemberForRemoval(Group group, User member) {
-        if (member.isAdminInGroup(group.getId())) {
-            throw new AdminRemovalException(String.format("Cannot remove admin [%s] for group [%s]",
-                    member.getId(), group.getId()));
-        }
-    }
-
-    public List<Game> getGroupGames(Long groupId) {
-        return groupRepository.findById(groupId)
-                .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId))
-                .getGames();
+    public List<Game> getGroupGames(Long userId, Long groupId) {
+        return findGroupById(userId, groupId).getGames();
     }
 
     public void checkAdminPermissions(UserDetails userDetails, Long groupId) {
@@ -157,31 +135,27 @@ public class GroupService {
             roleRepository.delete(role);
         }
     }
-    
+
     private void revokeGroupPrivilegesFromMember(Long groupId, User memberToDelete) {
         List<Role> groupRoles = roleRepository.findAllByGroupId(groupId);
         memberToDelete.removeRoles(new HashSet<>(groupRoles));
         roleRepository.saveAll(groupRoles);
     }
 
-    public void assignAdminRoleToUser(Long groupId, Long userId) {
-        String processingGroupAdminRole = RoleGenerator.createAdminRoleTitle(groupId);
-        Role existingAdminRole = roleRepository.findByName(processingGroupAdminRole)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin role for the group not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
-        existingAdminRole.getUsers().add(user);
-        roleRepository.save(existingAdminRole);
-    }
-
     public void assignUserRoleToUser(Long groupId, Long userId) {
         String processingGroupUserRole = RoleGenerator.createUserRoleTitle(groupId);
         Role existingAdminRole = roleRepository.findByName(processingGroupUserRole)
                 .orElseThrow(() -> new ResourceNotFoundException("User role for the group not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        User user = userService.findById(userId);
         existingAdminRole.getUsers().add(user);
         roleRepository.save(existingAdminRole);
+    }
+
+    private void checkMemberForRemoval(Group group, User member) {
+        if (member.isAdminInGroup(group.getId())) {
+            throw new AdminRemovalException(String.format("Cannot remove admin [%s] for group [%s]",
+                    member.getId(), group.getId()));
+        }
     }
 
 }
