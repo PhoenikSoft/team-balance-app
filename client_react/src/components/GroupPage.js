@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { authHelper } from '../_helpers';
 import Button from '@material-ui/core/Button';
 import AddGameDialog from './AddGameDialog';
+import Typography from "@material-ui/core/Typography";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +48,11 @@ export default function GroupPage(
                         container
                         justify="flex-start"
                         spacing={3}>
+                        <Grid item>
+                            <Typography variant="h4" gutterBottom>
+                                {group.name}
+                            </Typography>
+                        </Grid>
                         <Grid item>
                             <Button variant="contained" color="primary" onClick={e => setAddGameDialog(true)}>
                                 Add Game

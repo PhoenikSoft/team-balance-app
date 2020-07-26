@@ -66,6 +66,11 @@ export default function GamePage(
                     justify="flex-start"
                     spacing={3}>
                     <Grid item>
+                        <Typography variant="h4" gutterBottom>
+                            {game.name}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
                         <Button variant="contained" color="primary" onClick={e => goBack()}>
                             Back to group
                     </Button>
