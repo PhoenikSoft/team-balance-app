@@ -80,7 +80,7 @@ export default function GamePage(
                     </Grid>}
 
                     {game.voteStatus === 'NOT_STARTED' && <Grid item>
-                        <Button variant="contained" color="primary" onClick={e => startVoting(groupId, game.id)}>
+                        <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
                             Start voting
                     </Button>
                     </Grid>}

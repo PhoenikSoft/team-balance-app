@@ -1,5 +1,5 @@
-import { serviceHelper, authHelper } from '../_helpers';
-import { apiConstants, constructUrl } from '../_constants';
+import {serviceHelper, authHelper} from '../_helpers';
+import {apiConstants, constructUrl} from '../_constants';
 
 export const gamesService = {
     deleteGame,
@@ -10,12 +10,12 @@ export const gamesService = {
     startVoting
 }
 
-function deleteGame(gameId, groupId) {
+function deleteGame(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GAME(groupId, gameId)),
+        constructUrl(apiConstants.GAME(gameId)),
         serviceHelper.getRequestOptions('DELETE', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
-};
+}
 
 function addGame(game, groupId) {
     return global.fetchWithLoader(
@@ -24,9 +24,9 @@ function addGame(game, groupId) {
         .then(serviceHelper.handleResponse);
 }
 
-function getGame(gameId, groupId) {
+function getGame(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GAME(groupId, gameId)),
+        constructUrl(apiConstants.GAME(gameId)),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }
@@ -45,9 +45,9 @@ function sendVotes(gameId, votes) {
         .then(serviceHelper.handleResponse);
 }
 
-function startVoting(groupId, gameId) {
+function startVoting(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.START_VOTING(groupId, gameId)),
+        constructUrl(apiConstants.START_VOTING(gameId)),
         serviceHelper.getRequestOptions('POST', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }

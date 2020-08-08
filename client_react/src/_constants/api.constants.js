@@ -7,32 +7,29 @@ export const apiConstants = {
 
     FEEDBACK_URL: '/api/feedbacks',
 
-    GROUPS: userId => `/api/groups?userId=${userId}`,
-    GROUP_ACTION: groupId => `/api/groups/${groupId}`,
-    ACCESS_CHECK: groupId => `/api/groups/${groupId}/accessChecks`,
+    GROUPS: () => '/api/userGroups',
+    GROUP_ACTION: groupId => `/api/userGroups/${groupId}`,
+    ACCESS_CHECK: groupId => `/api/userGroups/${groupId}/accessChecks`,
 
-    GET_MEMBERS: groupId => `/api/groups/${groupId}/members`,
-    MEMBER: (groupId, memberId) => `/api/groups/${groupId}/members/${memberId}`,
-    ADD_MEMBER_BY_REF: ref => `/api/groups/refs/${ref}/members`,
-    ADD_MEMBER_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
+    GET_MEMBERS: groupId => `/api/userGroups/${groupId}/members`,
+    MEMBER: (groupId, memberId) => `/api/userGroups/${groupId}/members/${memberId}`,
+    ADD_MEMBER_BY_REF: ref => `/api/userGroups/refs/${ref}/members`,
+    GAMES: groupId => `/api/userGroups/${groupId}/games`,
 
-    GAMES: groupId => `/api/groups/${groupId}/games`,
-    GAME: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}`,
+    GAME: gameId => `/api/userGames/${gameId}`,
+    ADD_MEMBER_BATCH: gameId => `/api/userGames/${gameId}/playersBatch`,
 
-    GENERATE_BALANCED_TEAMS: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/balancedTeams`,
+    GENERATE_BALANCED_TEAMS: gameId => `/api/userGames/${gameId}/balancedTeams`,
 
-    GET_PLAYERS: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/players`,
-    PLAYER: (groupId, gameId, playerId) => `/api/groups/${groupId}/games/${gameId}/players/${playerId}`,
-    PLAYERS_BATCH: (groupId, gameId) => `/api/groups/${groupId}/games/${gameId}/playersBatch`,
-
-    MY_VOTES: gameId => `/api/groups/{groupId}/games/${gameId}/votes`,
-    POST_MY_VOTES_BATCH: gameId => `/api/groups/{groupId}/games/${gameId}/votesBatches`,
-    START_VOTING: (groupId,gameId) => `/api/groups/${groupId}/games/${gameId}/votingStarts`,
-
+    GET_PLAYERS: gameId => `/api/userGames/${gameId}/players`,
+    PLAYER: (gameId, playerId) => `/api/userGames/${gameId}/players/${playerId}`,
+    MY_VOTES: gameId => `/api/userGames/${gameId}/votes`,
+    POST_MY_VOTES_BATCH: gameId => `/api/userGames/${gameId}/votesBatches`,
+    START_VOTING: gameId => `/api/userGames/${gameId}/votingStarts`,
 }
 
 export const routingConstants = {
-    ADD_MEMBER_BY_REF: ref => `/addMe/${ref}`
+    ADD_MEMBER_BY_REF: ref => `/addMe/${ref}`,
 }
 
 export const constructUrl = url => `${config.apiUrl}${url}`;

@@ -2,13 +2,13 @@ import { playersCosntants } from '../_constants';
 import { serviceHelper } from '../_helpers';
 import { playersService } from '../_services';
 
-const addPlayers = (groupId, gameId, players) => dispatch =>
-    playersService.addPlayersByBatch(groupId, gameId, players)
+const addPlayers = (gameId, players) => dispatch =>
+    playersService.addPlayersByBatch(gameId, players)
         .then(newPlayersList => dispatch({ type: playersCosntants.PLAYER_ADDED, newPlayersList }))
         .catch(serviceHelper.actionsErrorHandler);
 
-const deletePlayer = (groupId, gameId, playerId) => dispatch =>
-    playersService.deletePlayer(groupId, gameId, playerId)
+const deletePlayer = (gameId, playerId) => dispatch =>
+    playersService.deletePlayer(gameId, playerId)
         .then(newPlayersList => dispatch({ type: playersCosntants.PLAYER_DELETED, newPlayersList }))
         .catch(serviceHelper.actionsErrorHandler);
 

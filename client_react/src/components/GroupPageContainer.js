@@ -16,8 +16,8 @@ const mapDispatchToProps = dispatch => {
         deleteMember: (userId, groupId) => {
             dispatch(membersActions.deleteMember(userId, groupId));
         },
-        deleteGame: (gameId, groupId) => {
-            dispatch(gamesActions.deleteGame(gameId, groupId));
+        deleteGame: gameId => {
+            dispatch(gamesActions.deleteGame(gameId));
         },
         copyLink: ref => {
             membersActions.copyLinkToClipBoard(ref);

@@ -10,7 +10,8 @@ import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.entity.VoteStatus;
 import com.phoenixoft.teambalanceapp.game.repository.GameRepository;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
-import com.phoenixoft.teambalanceapp.group.service.GroupService;
+import com.phoenixoft.teambalanceapp.group.service.UserGroupService;
+import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVotesFilter;
@@ -23,15 +24,15 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class GameService {
+public class UserGameService {
 
     private final GameRepository gameRepository;
-    private final GroupService groupService;
+    private final UserGroupService userGroupService;
     private final TeamBalancer teamBalancer;
     private final UserVoteService userVoteService;
 
-    public Game save(Long groupId, GameRequestDto dto) {
-        Group group = groupService.findById(groupId);
+    public Game save(Long userId, Long groupId, GameRequestDto dto) {
+        Group group = userGroupService.findGroupById(userId, groupId);
         Game newGame = new Game();
         newGame.setName(dto.getName());
         newGame.setStartDateTime(dto.getStartDateTime());
@@ -40,44 +41,41 @@ public class GameService {
         return gameRepository.save(newGame);
     }
 
-    public Game findGameInGroup(Long groupId, Long gameId) {
-        Group group = groupService.findById(groupId);
-        return group.findGame(gameId)
+    public Game findUserGame(Long userId, Long gameId) {
+        Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
+        game.getGroup().findMember(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
+        return game;
     }
 
-    public Game updateGame(Long groupId, Long gameId, GameRequestDto dto) {
-        Group group = groupService.findById(groupId);
-        Game gameForUpdate = group.findGame(gameId)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
+    public Game updateGame(Long userId, Long gameId, GameRequestDto dto) {
+        Game gameForUpdate = findUserGame(userId, gameId);
         gameForUpdate = dto.fillEntityWithDtoData(gameForUpdate);
         return gameRepository.save(gameForUpdate);
     }
 
-    public void delete(Long groupId, Long gameId) {
-        Group group = groupService.findById(groupId);
-        Game gameForDelete = group.findGame(gameId)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found: " + gameId));
-        group.removeGame(gameForDelete);
+    public void deleteGame(CustomUser user, Long gameId) {
+        Game gameForDelete = findUserGame(user.getId(), gameId);
+        userGroupService.checkAdminPermissions(user, gameForDelete.getGroup().getId());
         gameRepository.deleteById(gameForDelete.getId());
     }
 
-    public List<User> getGamePlayers(Long groupId, Long gameId) {
-        return findGameInGroup(groupId, gameId).getPlayers();
+    public List<User> getGamePlayers(Long userId, Long gameId) {
+        return findUserGame(userId, gameId).getPlayers();
     }
 
-    public Game addPlayerToGame(Long groupId, Long gameId, Long userId) {
-        Group group = groupService.findById(groupId);
-        User newPlayer = group.findMember(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + userId));
-        Game game = findGameInGroup(groupId, gameId);
+    public Game addPlayerToGame(Long userId, Long gameId, Long memberToAddId) {
+        Game game = findUserGame(userId, gameId);
+        User newPlayer = game.getGroup().findMember(memberToAddId)
+                .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + memberToAddId));
         game.getPlayers().add(newPlayer);
         return gameRepository.save(game);
     }
 
-    public Game addPlayersToGame(Long groupId, Long gameId, AddPlayersRequestDto addPlayersRequestDto) {
-        Group group = groupService.findById(groupId);
-        Game game = findGameInGroup(groupId, gameId);
+    public Game addPlayersToGame(Long userId, Long gameId, AddPlayersRequestDto addPlayersRequestDto) {
+        Game game = findUserGame(userId, gameId);
+        Group group = game.getGroup();
         for (Long playerId : addPlayersRequestDto.getPlayers()) {
             User newPlayer = group.findMember(playerId)
                     .orElseThrow(() -> new ResourceNotFoundException("Group member not found: " + playerId));
@@ -86,17 +84,17 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    public Game deletePlayerFromGame(Long groupId, Long gameId, Long userId) {
-        Game game = findGameInGroup(groupId, gameId);
-        if (game.removePlayer(userId)) {
+    public Game deletePlayerFromGame(Long userId, Long gameId, Long playerId) {
+        Game game = findUserGame(userId, gameId);
+        if (game.removePlayer(playerId)) {
             game.setBalancedTeams(null);
             game = gameRepository.save(game);
         }
         return game;
     }
 
-    public List<Team> generateBalancedTeams(Long groupId, Long gameId, int teamsCount) {
-        Game game = findGameInGroup(groupId, gameId);
+    public List<Team> generateBalancedTeams(Long userId, Long gameId, int teamsCount) {
+        Game game = findUserGame(userId, gameId);
         List<Team> teams = game.getBalancedTeams() == null
                 ? teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()), teamsCount)
                 : teamBalancer.dividePlayersIntoBalancedTeamsWithSomeRandomness(new ArrayList<>(game.getPlayers()), teamsCount);
@@ -111,8 +109,9 @@ public class GameService {
         return userVoteService.getVotesByFilter(UserVotesFilter.builder().gameId(gameId).voterId(voterId).build());
     }
 
-    public void startGameVoting(Long groupId, Long gameId) {
-        Game game = findGameInGroup(groupId, gameId);
+    public void startGameVoting(CustomUser user, Long gameId) {
+        userGroupService.checkAdminPermissions(user, gameId);
+        Game game = findUserGame(user.getId(), gameId);
         if (game.getVoteStatus() != VoteStatus.NOT_STARTED) {
             throw new InvalidGameVotingStatusException("Game voting has already started");
         }

@@ -103,7 +103,7 @@ export default function GroupPage(
                             rowData => ({
                                 icon: 'delete',
                                 tooltip: 'Delete Game',
-                                onClick: (event, rowData) => deleteGame(rowData.id, group.id),
+                                onClick: (event, rowData) => deleteGame(rowData.id),
                                 disabled: !authHelper.isGroupAdmin(group.id)
                             })
                         ]}

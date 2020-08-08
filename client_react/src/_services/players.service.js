@@ -7,23 +7,23 @@ export const playersService = {
     balanceTeams
 }
 
-function deletePlayer(groupId, gameId, playerId) {
+function deletePlayer(gameId, playerId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.PLAYER(groupId, gameId, playerId)),
+        constructUrl(apiConstants.PLAYER(gameId, playerId)),
         serviceHelper.getRequestOptions('DELETE', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }
 
-function addPlayersByBatch(groupId, gameId, players) {
+function addPlayersByBatch(gameId, players) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.ADD_MEMBER_BATCH(groupId, gameId)),
+        constructUrl(apiConstants.ADD_MEMBER_BATCH(gameId)),
         serviceHelper.getRequestOptions('POST', authHelper.authHeader(), { players }))
         .then(serviceHelper.handleResponse);
 }
 
-function balanceTeams(gameId, groupId) {
+function balanceTeams(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GENERATE_BALANCED_TEAMS(groupId, gameId)),
+        constructUrl(apiConstants.GENERATE_BALANCED_TEAMS(gameId)),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }
