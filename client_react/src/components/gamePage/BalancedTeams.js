@@ -52,18 +52,7 @@ export default function ({ balancedTeams, votes,
             }}
         />}
         {balancedTeams.map(team => {
-            // TODO refactor this when BE send votes with game 
-            team.players.map(player => {
-                if (!votes) return player;
-                const voteForPlayer = votes.find(vote => vote.forUserId === player.id);
-                if (voteForPlayer) {
-                    player.vote = voteForPlayer.vote
-                } else {
-                    delete player.vote;
-                };
-
-            });
-
+            team.players = mergePlayersWithVotes(team.players, votes);
             return React.cloneElement(<TeamTable />, {
                 team: showCurrentPlayer
                     ? team
@@ -138,4 +127,18 @@ function getColumns(showRating, votes) {
 
     votes && votes.length !== 0 && columns.push(voteColumn);
     return columns;
+};
+
+function mergePlayersWithVotes(players, votes) {
+    return players.map(player => {
+        if (!votes) return player;
+        const voteForPlayer = votes.find(vote => vote.forUserId === player.id);
+        if (voteForPlayer) {
+            return { ...player, vote: voteForPlayer.vote }
+        } else {
+            delete player.vote;
+            return player;
+        };
+
+    });
 };

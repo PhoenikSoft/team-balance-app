@@ -42,7 +42,6 @@ export default function GamePage(
         balanceTeams,
         startVoting,
         sendVotes,
-        getVotes,
         votes }) {
     const classes = useStyles();
 
@@ -51,11 +50,7 @@ export default function GamePage(
 
     useEffect(() => {
         const fetch = async () => {
-            const action = await fetchGame();
-            //TODO remove this when BE send votes with game
-            if (action && action.game.voteStatus !== "NOT_STARTED") {
-                await getVotes();
-            };
+            await fetchGame();
         };
         fetch();
     }, []);
