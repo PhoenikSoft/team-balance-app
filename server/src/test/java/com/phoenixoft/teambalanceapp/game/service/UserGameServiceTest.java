@@ -74,7 +74,7 @@ public class UserGameServiceTest implements TestData {
         when(gameRepository.findById(gameId))
                 .thenReturn(Optional.of(mockGameWithGroupMember(gameId, 0L, userId)));
 
-        Game game = userGameService.findGame(userId, gameId);
+        Game game = userGameService.findUserGame(userId, gameId);
 
         assertEquals(gameId, game.getId());
     }
@@ -85,7 +85,7 @@ public class UserGameServiceTest implements TestData {
         long userId = 1L;
         long gameId = 2L;
 
-        assertThrows(ResourceNotFoundException.class, () -> userGameService.findGame(userId, gameId));
+        assertThrows(ResourceNotFoundException.class, () -> userGameService.findUserGame(userId, gameId));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.phoenixoft.teambalanceapp.common.exception.CustomExpiredJwtException;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.util.model.JwtRoles;
 import io.jsonwebtoken.Claims;
@@ -20,8 +21,9 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private final String SECRET_KEY;
+    private static final int JWT_EXPIRATION_DURATION_IN_MILLIS = 60 * 60 * 1000;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public JwtUtil(@Value("${jwt_secret}") String secret_key, ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -29,6 +31,9 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
+        if (isTokenExpired(token)) {
+            throw new CustomExpiredJwtException("JWT token is expired!");
+        }
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -39,14 +44,13 @@ public class JwtUtil {
         return createToken(claims, user.getEmail());
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()));
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        return !isTokenExpired(token) && extractUsername(token).equals(userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_DURATION_IN_MILLIS)) // TODO: Extract to the config file
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
@@ -54,7 +58,7 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

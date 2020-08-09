@@ -8,3 +8,6 @@ cors:
   origins:
     - http://teambalanceapp-env.eba-sdy623yp.eu-central-1.elasticbeanstalk.com
     - http://localhost
+voting:
+  # Two days - 48h
+  timeToVoteInSeconds: 172800

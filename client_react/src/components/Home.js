@@ -5,7 +5,7 @@ import Profile from './ProfileContainer';
 import SnackBar from './Snackbar';
 import GroupsList from './GroupsListContainer';
 import GroupPage from './GroupPageContainer';
-import GamePage from './GamePageContainer';
+import GamePage from './gamePage';
 
 
 export default function HomeView() {

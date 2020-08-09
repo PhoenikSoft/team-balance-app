@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.phoenixoft'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
     developmentOnly
@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
     implementation 'com.sendgrid:sendgrid-java:4.4.1'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'org.postgresql:postgresql'

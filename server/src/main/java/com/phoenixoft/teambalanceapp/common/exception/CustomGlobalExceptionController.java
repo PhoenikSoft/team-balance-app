@@ -1,7 +1,6 @@
 package com.phoenixoft.teambalanceapp.common.exception;
 
 import lombok.Value;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
@@ -43,6 +41,11 @@ public class CustomGlobalExceptionController extends ResponseEntityExceptionHand
         return new ResponseEntity<>(body, headers, status);
     }
 
+    @ExceptionHandler(value = IndexedServiceException.class)
+    public ResponseEntity<Object> indexedServiceException(IndexedServiceException ex, WebRequest request) {
+        return this.handleExceptionInternal(ex, IndexedResponseBody.of(ex.getElemIndex(), ex.getMessage()), new HttpHeaders(), ex.getHttpStatus(), request);
+    }
+
     @ExceptionHandler(value = ServiceException.class)
     public ResponseEntity<Object> serviceException(ServiceException ex, WebRequest request) {
         return this.handleExceptionInternal(ex, ResponseBody.of(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus(), request);
@@ -50,6 +53,12 @@ public class CustomGlobalExceptionController extends ResponseEntityExceptionHand
 
     @Value(staticConstructor = "of")
     private static class ResponseBody {
+        String msg;
+    }
+
+    @Value(staticConstructor = "of")
+    private static class IndexedResponseBody {
+        int elemIndex;
         String msg;
     }
 }

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid';
-import { authHelper } from '../_helpers';
+import { authHelper } from '../../_helpers';
 import Button from '@material-ui/core/Button';
-import AddPlayersDialog from './AddPlayersDialog';
-import Typography from '@material-ui/core/Typography';
+
+import AddPlayersDialog from '../AddPlayersDialog';
+import VoteDialog from '../Dialogs/voteDialog';
+import BalancedTeams from './BalancedTeams';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,18 +33,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GamePage(
-    { gameFromGlobalState, fetchGame, groupId, goBack, deletePlayer, addPlayers, balanceTeams }) {
-    let game = gameFromGlobalState;
+    { game,
+        fetchGame,
+        groupId,
+        goBack,
+        deletePlayer,
+        addPlayers,
+        balanceTeams,
+        startVoting,
+        sendVotes,
+        votes }) {
     const classes = useStyles();
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
+    const [voteDialogOpened, setVoteDialogOpened] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
-            const action = await fetchGame();
-            if (action) {
-                game = action.game;
-            };
+            await fetchGame();
         };
         fetch();
     }, []);
@@ -60,11 +68,29 @@ export default function GamePage(
                             Back to group
                     </Button>
                     </Grid>
-                    <Grid item>
+                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
                             Add members
                     </Button>
-                    </Grid>
+                    </Grid>}
+
+                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                        <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
+                            Start voting
+                    </Button>
+                    </Grid>}
+
+                    {game.voteStatus === 'STARTED' && <Grid item>
+                        <Button variant="contained" color="secondary" onClick={e => setVoteDialogOpened(true)}>
+                            Vote for players
+                    </Button>
+                    </Grid>}
+
+                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                        <Button variant="contained" color="secondary" onClick={e => balanceTeams()}>
+                            Balance teams
+                        </Button>
+                    </Grid>}
 
                 </Grid>
             </Grid>
@@ -74,7 +100,6 @@ export default function GamePage(
                     title='Players'
                     data={game.players}
                     columns={[
-                        //{ title: 'Num', field: 'id', type: 'numeric' },
                         { title: 'Name', field: 'firstName' },
                         { title: 'Rating', field: 'rating', type: 'numeric' }
                     ]}
@@ -95,7 +120,12 @@ export default function GamePage(
             </Grid>
 
             {game.balancedTeams
-                ? <Grid item xs={12} sm={6}>{generateTeamTables(game.balancedTeams.teams, classes.toolbar)}</Grid>
+                ? <Grid item xs={12} sm={6}>
+                    <BalancedTeams
+                        balancedTeams={game.balancedTeams.teams}
+                        votes={votes}
+                    />
+                </Grid>
                 : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
                     <Grid item >
                         <h6 className="MuiTypography-root MuiTypography-h6">
@@ -103,14 +133,6 @@ export default function GamePage(
                         </h6>
                     </Grid>
                 </Grid>}
-
-            <Grid item xs={12} sm={12}>
-                <Button variant="contained" color="secondary" onClick={e => {
-                    balanceTeams();
-                }}>
-                    Balance teams
-                </Button>
-            </Grid>
         </Grid>
 
         <AddPlayersDialog
@@ -123,70 +145,17 @@ export default function GamePage(
                 setaddPlayersDialogOpened(false);
             }}
         />
-    </>
-    )
-}
 
-// TODO move into separate file
-function generateTeamTables(balancedTeams, toolbarClass) {
-
-    let index = 1;
-    return < Grid >
-        <Grid container justify="center">
-            <Typography variant="h6" >Balanced teams</Typography>
-        </Grid>
-        {/* Dummy table used to show just column titles */}
-        <MaterialTable
-            data={[]}
-            columns={[
-                { title: 'First Name', field: 'firstName' },
-                { title: 'Last Name', field: 'lastName' },
-                { title: 'Rating', field: 'rating' }
-            ]}
-            options={{
-                search: false,
-                paging: false,
-                showTitle: false,
-                showEmptyDataSourceMessage: false,
-                toolbar: false
+        <VoteDialog
+            balancedTeams={game.balancedTeams && game.balancedTeams.teams}
+            gameId={game.id}
+            open={voteDialogOpened}
+            handleClose={e => setVoteDialogOpened(false)}
+            onSubmit={votes => {
+                sendVotes(votes)
+                setVoteDialogOpened(false);
             }}
         />
-        {balancedTeams.map(team =>
-            React.cloneElement(<TeamTable />, {
-                team,
-                index: index++,
-                key: index,
-                toolbarClass
-            }))}
-    </Grid>
-}
-
-function TeamTable({ team, index, toolbarClass }) {
-    return (
-        <MaterialTable
-            title={`Team ${index}`}
-            data={team.players}
-            columns={[
-                { title: 'First Name', field: 'firstName' },
-                { title: 'Last Name', field: 'lastName' },
-                { title: 'Rating', field: 'rating' }
-            ]}
-            options={{
-                search: false,
-                paging: false,
-                header: false
-            }}
-            components={{
-                Toolbar: props => <div className={toolbarClass}>
-                    <h6
-                        className="MuiTypography-root MuiTypography-h6"
-                        style={{ flexGrow: '0.45' }}>
-                        {props.title}</h6>
-                    <h6 className="MuiTypography-root MuiTypography-h6"
-                        style={{ paddingRight: '11px', color: 'red' }}>
-                        {team.averageRating}
-                    </h6>
-                </div>
-            }}
-        />)
+    </>
+    )
 }

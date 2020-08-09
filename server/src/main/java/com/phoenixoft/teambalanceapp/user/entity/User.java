@@ -49,6 +49,8 @@ public class User implements Serializable {
 
     private BigDecimal rating;
 
+    private BigDecimal prevRating;
+
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
@@ -78,6 +80,6 @@ public class User implements Serializable {
     }
 
     public Optional<Game> findGame(Long gameId) {
-        return games.stream().filter(game -> game.getId().equals(gameId)).findFirst();
+        return this.games.stream().filter(game -> game.getId().equals(gameId)).findFirst();
     }
 }

@@ -21,11 +21,15 @@ export const apiConstants = {
 
     GENERATE_BALANCED_TEAMS: gameId => `/api/userGames/${gameId}/balancedTeams`,
 
-    PLAYER: (gameId, playerId) => `/api/userGames/games/${gameId}/players/${playerId}`,
+    GET_PLAYERS: gameId => `/api/userGames/${gameId}/players`,
+    PLAYER: (gameId, playerId) => `/api/userGames/${gameId}/players/${playerId}`,
+    MY_VOTES: gameId => `/api/userGames/${gameId}/votes`,
+    POST_MY_VOTES_BATCH: gameId => `/api/userGames/${gameId}/votesBatches`,
+    START_VOTING: gameId => `/api/userGames/${gameId}/votingStarts`,
 }
 
 export const routingConstants = {
-    ADD_MEMBER_BY_REF: ref => `/addMe/${ref}`
+    ADD_MEMBER_BY_REF: ref => `/addMe/${ref}`,
 }
 
 export const constructUrl = url => `${config.apiUrl}${url}`;

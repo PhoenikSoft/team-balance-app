@@ -10,11 +10,34 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+          batch_size: 10
+        order_inserts: true
   datasource:
     platform: postgres
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/teambalance
     username: ${PGUSER:postgres}
     password: ${PGPASSWORD:root}
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    wait-for-jobs-to-complete-on-shutdown: true
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: TeamBalanceScheduler
+            instanceId: AUTO
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 3
+            threadPriority: 5
+          jobStore:
+            misfireThreshold: 60000
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            isClustered: false
+            useProperties: false
 
   sendgrid:
     api-key: ${SENDGRID_API-KEY:dummy}
@@ -23,5 +46,11 @@ cors:
   origins:
     - http://localhost:4200
     - http://localhost:3000
+
+voting:
+  # 5 min
+  timeToVoteInSeconds: 300
+  minRating: 1
+  maxRating: 100
 
 jwt_secret: ${JWT_SECRET:TB_SECRET}

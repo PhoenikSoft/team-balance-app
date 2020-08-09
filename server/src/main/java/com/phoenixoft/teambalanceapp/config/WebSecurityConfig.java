@@ -29,13 +29,13 @@ import static com.phoenixoft.teambalanceapp.util.HttpUtils.RESPONSE_NEW_JWT_HEAD
 @AllArgsConstructor
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    private AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private CorsProperties corsProperties;
+    private final CorsProperties corsProperties;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

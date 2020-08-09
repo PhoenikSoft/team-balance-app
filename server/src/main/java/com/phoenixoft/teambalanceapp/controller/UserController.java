@@ -7,7 +7,7 @@ import com.phoenixoft.teambalanceapp.security.dto.UpdatePasswordRequestDto;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.util.DtoConverter;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
@@ -44,5 +44,4 @@ public class UserController {
         CustomUser user = (CustomUser) authentication.getPrincipal();
         userService.updatePassword(dto, user);
     }
-
 }

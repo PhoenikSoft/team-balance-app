@@ -4,6 +4,8 @@ import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.FeedbackResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameViewResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.PlayerResponseDto;
@@ -13,6 +15,7 @@ import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -39,6 +42,7 @@ public class DtoConverter {
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
+        dto.setRating(entity.getRating());
         return dto;
     }
 
@@ -69,6 +73,7 @@ public class DtoConverter {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setStartDateTime(entity.getStartDateTime());
+        dto.setVoteStatus(entity.getVoteStatus());
         dto.setPlayers(entity.getPlayers().stream().map(DtoConverter::convertUser).collect(Collectors.toList()));
         Optional.ofNullable(entity.getBalancedTeams())
                 .map(BalancedTeams::getTeams)
@@ -77,10 +82,25 @@ public class DtoConverter {
         return dto;
     }
 
+    public static GameViewResponseDto convertGameView(Game game, List<UserVote> gameVotes) {
+        List<GameUserVoteResponseDto> gameVotesDtos = gameVotes.stream()
+                .map(DtoConverter::convertGameUserVote)
+                .collect(Collectors.toList());
+        return GameViewResponseDto.of(convertGame(game), gameVotesDtos);
+    }
+
     public static FeedbackResponseDto convertFeedback(Feedback feedback) {
         FeedbackResponseDto dto = new FeedbackResponseDto();
         dto.setId(feedback.getId());
         dto.setMessage(feedback.getMessage());
         return dto;
+    }
+
+    public static GameUserVoteResponseDto convertGameUserVote(UserVote entity) {
+        return GameUserVoteResponseDto.builder()
+                .id(entity.getId())
+                .forUserId(entity.getForUser().getId())
+                .vote(entity.getVote())
+                .build();
     }
 }
