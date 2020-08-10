@@ -19,7 +19,7 @@ export const apiConstants = {
     GAME: gameId => `/api/userGames/${gameId}`,
     ADD_MEMBER_BATCH: gameId => `/api/userGames/${gameId}/playersBatch`,
 
-    GENERATE_BALANCED_TEAMS: gameId => `/api/userGames/${gameId}/balancedTeams`,
+    GENERATE_BALANCED_TEAMS: (gameId, teamsCount) => `/api/userGames/${gameId}/balancedTeams?teamsCount=${teamsCount}`,
 
     GET_PLAYERS: gameId => `/api/userGames/${gameId}/players`,
     PLAYER: (gameId, playerId) => `/api/userGames/${gameId}/players/${playerId}`,

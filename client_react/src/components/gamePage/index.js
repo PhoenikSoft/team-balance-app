@@ -1,7 +1,7 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import GamePage from './GamePage';
-import {navigation, urlParserHelper} from '../../_helpers';
-import {gamesActions, playersActions} from '../../actions';
+import { navigation, urlParserHelper } from '../../_helpers';
+import { gamesActions, playersActions } from '../../actions';
 
 const getGroupId = () => urlParserHelper.getGroupId();
 const getGameId = () => urlParserHelper.getGameId();
@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => {
             dispatch(playersActions.addPlayers(getGameId(), players));
         },
         deletePlayer: playerId => dispatch(playersActions.deletePlayer(getGameId(), playerId)),
-        balanceTeams: () => dispatch(playersActions.balanceTeams(getGameId())),
+        balanceTeams: teamsCount => dispatch(playersActions.balanceTeams(getGameId(), teamsCount)),
         startVoting: gameId => dispatch(gamesActions.startVoting(gameId)),
         sendVotes: votes => dispatch(gamesActions.sendVotes(getGameId(), votes)),
         getVotes: () => dispatch(gamesActions.getVotes(getGameId())),
