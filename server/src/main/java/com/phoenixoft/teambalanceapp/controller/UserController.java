@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/{userId}")
-    public UserResponseDto updateUser(@Valid @RequestBody UserRequestDto dto, @PathVariable Long userId) {
+    public UserResponseDto updateUser(@RequestBody @Valid UserRequestDto dto, @PathVariable Long userId) {
         User entity = userService.update(userId, dto);
         return DtoConverter.convertUser(entity);
     }

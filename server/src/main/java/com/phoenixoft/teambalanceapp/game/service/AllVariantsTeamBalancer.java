@@ -1,7 +1,7 @@
 package com.phoenixoft.teambalanceapp.game.service;
 
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
-import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.util.Tuple2;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +29,7 @@ public class AllVariantsTeamBalancer extends AbstractTeamBalancer {
 
     @Override
     @Deprecated
-    public List<Team> dividePlayersIntoBalancedTeams(List<User> players, int teamsCount) {
+    public List<Team> dividePlayersIntoBalancedTeams(List<Player> players, int teamsCount) {
         Preconditions.checkArgument(players.size() >= 2, "players");
 
         if (players.size() == teamsCount) {
@@ -47,7 +47,7 @@ public class AllVariantsTeamBalancer extends AbstractTeamBalancer {
         return teams.getLeft().getAverageRating().subtract(teams.getRight().getAverageRating()).abs();
     }
 
-    private static List<Tuple2<Team, Team>> getAllCombinations(List<User> leftTeam, List<User> rightTeam) {
+    private static List<Tuple2<Team, Team>> getAllCombinations(List<Player> leftTeam, List<Player> rightTeam) {
         if (leftTeam.size() >= rightTeam.size() - 1) {
             return Collections.singletonList(Tuple2.of(Team.of(leftTeam), Team.of(rightTeam)));
         }

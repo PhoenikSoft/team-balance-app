@@ -6,8 +6,10 @@ import com.phoenixoft.teambalanceapp.controller.dto.AddPlayersRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.entity.VoteStatus;
+import com.phoenixoft.teambalanceapp.game.model.BalancingConfig;
 import com.phoenixoft.teambalanceapp.game.repository.GameRepository;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.UserGroupService;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -93,11 +96,14 @@ public class UserGameService {
         return game;
     }
 
-    public List<Team> generateBalancedTeams(Long userId, Long gameId, int teamsCount) {
-        Game game = findUserGame(userId, gameId);
+    public List<Team> generateBalancedTeams(BalancingConfig balancingConfig) {
+        Game game = findUserGame(balancingConfig.getUserId(), balancingConfig.getGameId());
+        List<Player> allPlayers = new ArrayList<>(balancingConfig.getBots());
+        List<Player> realPlayers = game.getPlayers().stream().map(Player::of).collect(Collectors.toList());
+        allPlayers.addAll(realPlayers);
         List<Team> teams = game.getBalancedTeams() == null
-                ? teamBalancer.dividePlayersIntoBalancedTeams(new ArrayList<>(game.getPlayers()), teamsCount)
-                : teamBalancer.dividePlayersIntoBalancedTeamsWithSomeRandomness(new ArrayList<>(game.getPlayers()), teamsCount);
+                ? teamBalancer.dividePlayersIntoBalancedTeams(allPlayers, balancingConfig.getTeamsCount())
+                : teamBalancer.dividePlayersIntoBalancedTeamsWithSomeRandomness(allPlayers, balancingConfig.getTeamsCount());
 
         game.setBalancedTeams(new BalancedTeams(teams));
         gameRepository.save(game);

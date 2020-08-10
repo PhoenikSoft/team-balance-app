@@ -1,7 +1,7 @@
 package com.phoenixoft.teambalanceapp.game.service;
 
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
-import com.phoenixoft.teambalanceapp.user.entity.User;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalan
     }
 
     @Override
-    public List<Team> dividePlayersIntoBalancedTeams(List<User> players, int teamsCount) {
+    public List<Team> dividePlayersIntoBalancedTeams(List<Player> players, int teamsCount) {
         Preconditions.checkArgument(teamsCount > 1, "teamsCount");
         Preconditions.checkArgument(players.size() >= 2 * teamsCount, "players");
 
@@ -39,19 +39,19 @@ public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalan
             return players.stream().map(Collections::singletonList).map(Team::of).collect(Collectors.toList());
         }
 
-        List<User> sortedUsers = players.stream()
-                .sorted(Comparator.comparing(User::getRating).reversed())
+        List<Player> sortedUsers = players.stream()
+                .sorted(Comparator.comparing(Player::getRating).reversed())
                 .collect(Collectors.toList());
         List<Team> teams = IntStream.range(0, teamsCount).mapToObj(index -> Team.of()).collect(Collectors.toList());
-        Iterator<User> iterator = sortedUsers.iterator();
+        Iterator<Player> iterator = sortedUsers.iterator();
         while (iterator.hasNext()) {
-            List<User> nextBatch = nextBatch(iterator, teamsCount);
+            List<Player> nextBatch = nextBatch(iterator, teamsCount);
             addPlayersToTeams(teams, nextBatch);
         }
         return teams;
     }
 
-    private static void addPlayersToTeams(List<Team> teams, List<User> players) {
+    private static void addPlayersToTeams(List<Team> teams, List<Player> players) {
         if (teams.get(0).isEmpty()) {
             for (int i = 0; i < players.size(); i++) {
                 teams.get(i).addPlayer(players.get(i));
@@ -59,19 +59,19 @@ public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalan
             return;
         }
 
-        List<Optional<User>> orderToInsert = defineOrderToInsertPlayersIntoTeams(teams, players);
+        List<Optional<Player>> orderToInsert = defineOrderToInsertPlayersIntoTeams(teams, players);
         for (int i = 0; i < orderToInsert.size(); i++) {
             orderToInsert.get(i).ifPresent(teams.get(i)::addPlayer);
         }
     }
 
-    private static List<Optional<User>> defineOrderToInsertPlayersIntoTeams(List<Team> teams, List<User> players) {
-        List<Optional<User>> playersOrEmpty = IntStream.range(0, teams.size())
-                .mapToObj(i -> i < players.size() ? Optional.of(players.get(i)) : Optional.<User>empty())
+    private static List<Optional<Player>> defineOrderToInsertPlayersIntoTeams(List<Team> teams, List<Player> players) {
+        List<Optional<Player>> playersOrEmpty = IntStream.range(0, teams.size())
+                .mapToObj(i -> i < players.size() ? Optional.of(players.get(i)) : Optional.<Player>empty())
                 .collect(Collectors.toList());
-        List<List<Optional<User>>> allPlayersCombinations = generateAllCombinations(playersOrEmpty);
+        List<List<Optional<Player>>> allPlayersCombinations = generateAllCombinations(playersOrEmpty);
 
-        TreeMap<BigDecimal, List<Optional<User>>> sortedCombinations = allPlayersCombinations.stream()
+        TreeMap<BigDecimal, List<Optional<Player>>> sortedCombinations = allPlayersCombinations.stream()
                 .collect(Collectors.toMap(
                         combination -> teamsRatingDifferenceForCombination(combination, teams),
                         Function.identity(),
@@ -81,7 +81,7 @@ public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalan
         return sortedCombinations.firstEntry().getValue();
     }
 
-    private static BigDecimal teamsRatingDifferenceForCombination(List<Optional<User>> combination, List<Team> teams) {
+    private static BigDecimal teamsRatingDifferenceForCombination(List<Optional<Player>> combination, List<Team> teams) {
         ArrayList<BigDecimal> newAverages = new ArrayList<>(combination.size());
         for (int i = 0; i < combination.size(); i++) {
             Team team = teams.get(i);
@@ -105,8 +105,8 @@ public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalan
                 .divide(new BigDecimal(oldSize + 1), 2, RoundingMode.HALF_EVEN);
     }
 
-    private static List<User> nextBatch(Iterator<User> iterator, int teamsCount) {
-        ArrayList<User> batch = new ArrayList<>(teamsCount);
+    private static List<Player> nextBatch(Iterator<Player> iterator, int teamsCount) {
+        ArrayList<Player> batch = new ArrayList<>(teamsCount);
         for (int i = 0; i < teamsCount; i++) {
             if (!iterator.hasNext()) {
                 return batch;
