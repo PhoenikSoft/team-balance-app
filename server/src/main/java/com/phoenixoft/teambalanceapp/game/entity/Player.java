@@ -3,6 +3,7 @@ package com.phoenixoft.teambalanceapp.game.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,16 +15,20 @@ import java.math.BigDecimal;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Player implements Serializable {
 
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank(message = "{user.blank.firstName}")
     @Size(max = 50)
+    @EqualsAndHashCode.Include
     private String firstName;
 
     @NotBlank(message = "{user.blank.lastName}")
     @Size(max = 50)
+    @EqualsAndHashCode.Include
     private String lastName;
 
     @NotNull(message = "{user.null.rating}")

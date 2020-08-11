@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.game.service;
 
 import com.phoenixoft.teambalanceapp.common.LongListArgumentConverter;
 import com.phoenixoft.teambalanceapp.common.TestData;
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import org.junit.jupiter.api.DisplayName;
@@ -32,13 +33,13 @@ class AllVariantTeamBalancerTest implements TestData {
     void testDividePlayersIntoBalancedTeams(@ConvertWith(LongListArgumentConverter.class) List<Long> input,
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedLeft,
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedRight) {
-        List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
+        List<Player> users = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
 
         List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users, 2);
 
-        List<Long> leftIds = balancedTeams.get(0).getPlayers().stream().map(User::getId).collect(Collectors.toList());
+        List<Long> leftIds = balancedTeams.get(0).getPlayers().stream().map(Player::getId).collect(Collectors.toList());
         assertThat(leftIds).containsExactlyInAnyOrderElementsOf(expectedLeft);
-        List<Long> rightIds = balancedTeams.get(1).getPlayers().stream().map(User::getId).collect(Collectors.toList());
+        List<Long> rightIds = balancedTeams.get(1).getPlayers().stream().map(Player::getId).collect(Collectors.toList());
         assertThat(rightIds).containsExactlyInAnyOrderElementsOf(expectedRight);
     }
 
@@ -46,7 +47,7 @@ class AllVariantTeamBalancerTest implements TestData {
     @ParameterizedTest
     @ValueSource(strings = {"", "1"})
     void testDividePlayersIntoBalancedTeams_tooSmallInputList(@ConvertWith(LongListArgumentConverter.class) List<Long> input) {
-        List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
+        List<Player> users = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
 
         assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(users, 2));
     }
