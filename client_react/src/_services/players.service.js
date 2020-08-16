@@ -21,9 +21,9 @@ function addPlayersByBatch(gameId, players) {
         .then(serviceHelper.handleResponse);
 }
 
-function balanceTeams(gameId) {
+function balanceTeams(gameId, teamsCount = 2) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GENERATE_BALANCED_TEAMS(gameId)),
+        constructUrl(apiConstants.GENERATE_BALANCED_TEAMS(gameId, teamsCount)),
         serviceHelper.getRequestOptions('PUT', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }
