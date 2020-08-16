@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 
 import AddPlayersDialog from '../AddPlayersDialog';
 import VoteDialog from '../Dialogs/voteDialog';
+import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
 
 
@@ -47,6 +48,7 @@ export default function GamePage(
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
     const [voteDialogOpened, setVoteDialogOpened] = useState(false);
+    const [teamCountDialogOpened, setTeamCountDialogOpened] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -87,7 +89,7 @@ export default function GamePage(
                     </Grid>}
 
                     {game.voteStatus === 'NOT_STARTED' && <Grid item>
-                        <Button variant="contained" color="secondary" onClick={e => balanceTeams()}>
+                        <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
                             Balance teams
                         </Button>
                     </Grid>}
@@ -156,6 +158,16 @@ export default function GamePage(
                 setVoteDialogOpened(false);
             }}
         />
+
+        <TeamCountDialog
+            handleClose={e => setTeamCountDialogOpened(false)}
+            onSubmit={teamsCount => {
+                balanceTeams(teamsCount);
+                setTeamCountDialogOpened(false)
+            }}
+            open={teamCountDialogOpened}
+        />
+
     </>
     )
 }
