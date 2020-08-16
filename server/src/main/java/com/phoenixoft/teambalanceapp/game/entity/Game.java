@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.game.entity;
 
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -59,6 +61,9 @@ public class Game implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true)
+    private List<UserVote> votes = new ArrayList<>();
 
     @Column(name = "vote_status")
     @Enumerated(value = EnumType.STRING)
