@@ -1,7 +1,29 @@
 import React from 'react';
+import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 
-/// telephone code can be 2 and 3 digits 
+function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+  
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+        format="+38 (0##) ###-####" 
+        allowEmptyFormatting 
+        mask="_"
+      />
+    );
+  }
+
 
 export default function ({ onChange, error, value }) {
     return (
@@ -14,11 +36,12 @@ export default function ({ onChange, error, value }) {
             error={error ? error : false}
             onChange={onChange}
             variant="outlined"
-            inputProps={{
+            required
+            InputProps={{
+                inputComponent: NumberFormatCustom,
                 maxLength: "12",
-                // BE validation. this value can also be 10 digits
                 minLength: "12"
-            }}
+              }}
         />
     )
 }
