@@ -41,7 +41,12 @@ function login(username, password) {
 function register(inputs) {
     return dispatch => {
         dispatch(request({ username: inputs.email }));
-        return userService.register(inputs)
+
+        return userService.register(
+            {
+                ...inputs,
+                phone: inputs.phone.replace(/\D/g, "")
+            })
             .then(
                 user => {
                     dispatch(success(user));
@@ -92,7 +97,10 @@ function getCurrentUser() {
         return userService.getUser(userId)
             .then(fetchedUser => {
                 dispatch({ type: userConstants.USER_FETCHED, fetchedUser });
-                return fetchedUser;
+                return {
+                    ...fetchedUser,
+                    phone: fetchedUser.phone.replace('38', '')
+                };
             })
             .catch(() => serviceHelper.actionsErrorHandler())
     }
