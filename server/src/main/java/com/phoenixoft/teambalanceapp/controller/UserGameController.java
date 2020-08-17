@@ -3,6 +3,7 @@ package com.phoenixoft.teambalanceapp.controller;
 import com.phoenixoft.teambalanceapp.controller.dto.AddGameVotesRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.AddPlayersRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.BalancedTeamsResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.BalancingBots;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
@@ -11,6 +12,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.UserGameVoteRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
+import com.phoenixoft.teambalanceapp.game.model.BalancingConfig;
 import com.phoenixoft.teambalanceapp.game.service.UserGameService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
@@ -102,11 +104,14 @@ public class UserGameController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/{gameId}/balancedTeams")
+    @PutMapping(path = "/{gameId}/balancedTeams")
     public BalancedTeamsResponseDto generateBalancedTeams(@PathVariable Long gameId,
                                                           @RequestParam(defaultValue = "2") Integer teamsCount,
+                                                          @RequestBody @Valid BalancingBots bots,
                                                           @RequestAttribute CustomUser currentCustomUser) {
-        List<Team> teams = userGameService.generateBalancedTeams(currentCustomUser.getId(), gameId, teamsCount);
+        BalancingConfig balancingConfig = BalancingConfig.builder().userId(currentCustomUser.getId()).gameId(gameId)
+                .teamsCount(teamsCount).bots(bots.getBots()).build();
+        List<Team> teams = userGameService.generateBalancedTeams(balancingConfig);
         return BalancedTeamsResponseDto.of(teams);
     }
 

@@ -13,6 +13,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.feedback.entity.Feedback;
 import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
@@ -37,12 +38,12 @@ public class DtoConverter {
         return dto;
     }
 
-    public static PlayerResponseDto convertPlayer(User entity) {
+    public static PlayerResponseDto convertPlayer(Player player) {
         PlayerResponseDto dto = new PlayerResponseDto();
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setRating(entity.getRating());
+        dto.setId(player.getId());
+        dto.setFirstName(player.getFirstName());
+        dto.setLastName(player.getLastName());
+        dto.setRating(player.getRating());
         return dto;
     }
 

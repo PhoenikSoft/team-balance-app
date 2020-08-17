@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.common;
 
 import com.phoenixoft.teambalanceapp.game.entity.Game;
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 
@@ -29,11 +30,17 @@ public interface TestData {
         return user;
     }
 
-    default User mockUserWithGame(long id, Game game) {
-        User user = new User();
-        user.setId(id);
-        user.getGames().add(game);
-        return user;
+    default Player mockPlayer(long id) {
+        Player player = new Player();
+        player.setId(id);
+        return player;
+    }
+
+    default Player mockPlayer(long id, BigDecimal rating) {
+        Player player = new Player();
+        player.setId(id);
+        player.setRating(rating);
+        return player;
     }
 
     default Group mockGroup(long id) {

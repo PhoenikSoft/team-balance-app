@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.game.service;
 
 import com.phoenixoft.teambalanceapp.common.LongListArgumentConverter;
 import com.phoenixoft.teambalanceapp.common.TestData;
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import org.junit.jupiter.api.DisplayName;
@@ -31,15 +32,15 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedFirst,
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedSecond,
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedThird) {
-        List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
+        List<Player> users = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
 
         List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users, 3);
 
-        List<Long> firstIds = balancedTeams.get(0).getPlayers().stream().map(User::getId).collect(Collectors.toList());
+        List<Long> firstIds = balancedTeams.get(0).getPlayers().stream().map(Player::getId).collect(Collectors.toList());
         assertThat(firstIds).containsExactlyInAnyOrderElementsOf(expectedFirst);
-        List<Long> secondIds = balancedTeams.get(1).getPlayers().stream().map(User::getId).collect(Collectors.toList());
+        List<Long> secondIds = balancedTeams.get(1).getPlayers().stream().map(Player::getId).collect(Collectors.toList());
         assertThat(secondIds).containsExactlyInAnyOrderElementsOf(expectedSecond);
-        List<Long> thirdIds = balancedTeams.get(2).getPlayers().stream().map(User::getId).collect(Collectors.toList());
+        List<Long> thirdIds = balancedTeams.get(2).getPlayers().stream().map(Player::getId).collect(Collectors.toList());
         assertThat(thirdIds).containsExactlyInAnyOrderElementsOf(expectedThird);
     }
 
@@ -47,8 +48,8 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
     @ParameterizedTest
     @ValueSource(strings = {"", "1", "1:2"})
     void testDividePlayersIntoBalancedTeams_tooSmallInputList(@ConvertWith(LongListArgumentConverter.class) List<Long> input) {
-        List<User> users = input.stream().map(id -> mockUser(id, new BigDecimal(id))).collect(Collectors.toList());
+        List<Player> players = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
 
-        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(users, 3));
+        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(players, 3));
     }
 }
