@@ -10,6 +10,7 @@ export const serviceHelper = {
 };
 
 function handleResponse(response) {
+    _setNewJwt(response);
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
@@ -20,8 +21,7 @@ function handleResponse(response) {
             const error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
                 && data.errors.name.toString()) || data.message || data.msg || response.statusText;
             return Promise.reject(error);
-        }
-
+        };
         return data;
     });
 };
@@ -42,4 +42,10 @@ function getRequestOptions(method, headers = {}, body) {
     return body
         ? { ...requestOptions, body: JSON.stringify(body) }
         : requestOptions;
+}
+
+function _setNewJwt(response) {
+    const newToken = response.headers.get('APP_NEW_JWT');
+    if (!newToken) return;
+    authHelper.setUserToken(newToken);
 }
