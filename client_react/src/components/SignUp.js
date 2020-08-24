@@ -104,7 +104,8 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
 
     function handlePhoneChange(e) {
         const input = e.target.value
-        if (input.length !== 12) {
+        // compare digit number
+        if (input.replace(/\D/g, "").length !== 12) {
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
@@ -171,6 +172,8 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 autoFocus
                                 onChange={handleChange}
                                 error={errors.firstNameError}
+                                helperText={errors.firstNameError && userConstants.FIRST_NAME_ERROR}
+                                novalidate
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -185,6 +188,8 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 autoComplete="lname"
                                 onChange={handleChange}
                                 error={errors.lastNameError}
+                                helperText={errors.lastNameError && userConstants.LAST_NAME_ERROR}
+                                novalidate
                             />
                         </Grid>
                         {isSignUp && <Grid item xs={12}>
@@ -199,6 +204,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 autoComplete="email"
                                 onChange={handleEmailChange}
                                 error={errors.emailError}
+                                helperText={errors.emailError && userConstants.EMAIL_ERROR}
                             />
                         </Grid>}
                         <Grid item xs={12}>
@@ -226,6 +232,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                             <Grid item xs={12}>
                                 <TextField
                                     error={errors.passwordError}
+                                    helperText={errors.passwordError && userConstants.PASSWORD_ERROR}
                                     variant="outlined"
                                     required
                                     fullWidth
@@ -247,16 +254,14 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                         </Grid>
                     </Grid>
                     <Button
-                        //disabled={isSubmitDisabled()}
+                        disabled={isSubmitDisabled()}
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
                         onClick={e => {
-                            isSubmitDisabled()
-                                ? setShowErrors(true)
-                                : onRegisterClick(e)(inputs)
+                            onRegisterClick(e)(inputs)
                         }}>
                         {isSignUp ? 'Sign Up' : 'Update'}
                     </Button>

@@ -41,7 +41,8 @@ function login(username, password) {
 function register(inputs) {
     return dispatch => {
         dispatch(request({ username: inputs.email }));
-        return userService.register(inputs)
+
+        return userService.register(_formatInputs(inputs))
             .then(
                 user => {
                     dispatch(success(user));
@@ -65,7 +66,7 @@ function register(inputs) {
 
 function update(inputs) {
     return dispatch => {
-        userService.update(inputs)
+        userService.update(_formatInputs(inputs))
             .then(() => dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.USER_UPDATE_SUCCESS_TEXT }))
             .catch(() => serviceHelper.actionsErrorHandler())
     }
@@ -92,12 +93,17 @@ function getCurrentUser() {
         return userService.getUser(userId)
             .then(fetchedUser => {
                 dispatch({ type: userConstants.USER_FETCHED, fetchedUser });
-                return fetchedUser;
+                return {
+                    ...fetchedUser,
+                    phone: fetchedUser.phone.replace('38', '')
+                };
             })
             .catch(() => serviceHelper.actionsErrorHandler())
     }
 }
 
-
-
-
+function _formatInputs(inputs) {
+    return {
+        ...inputs, phone: inputs.phone.replace(/\D/g, '')
+    }
+}
