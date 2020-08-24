@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
             margin: '8px'
         },
     },
+    cursor: {
+        cursor: 'pointer'
+    }
 }));
 
 
@@ -89,7 +92,7 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onA
                 <Toolbar>
 
                     <Typography className={classes.title} variant="h6" noWrap onClick={onAppNameClick}>
-                        <div className={classes.sectionDesktop}>
+                        <div className={`${classes.sectionDesktop} ${classes.cursor}`}>
                             Team Balance
                         </div>
                         <div className={classes.sectionMobile}>TB</div>
