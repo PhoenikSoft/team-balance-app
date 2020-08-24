@@ -47,9 +47,9 @@ export default function GroupPage(
                         className={classes.buttonsBar}
                         container
                         justify="flex-start"
-                        spacing={3}>
-                        <Grid item>
-                            <Typography variant="h4" gutterBottom>
+                        spacing={1}>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" gutterBottom>
                                 {group.name}
                             </Typography>
                         </Grid>
