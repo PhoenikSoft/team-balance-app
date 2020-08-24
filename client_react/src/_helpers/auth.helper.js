@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-import { history } from './history';
+import { history } from './history.helper';
 
 export const authHelper = {
     authHeader,
