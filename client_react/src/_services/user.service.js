@@ -19,8 +19,8 @@ async function login(email, password) {
 
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
     const user = await serviceHelper.handleResponse(res)
-    authHelper.setCookie('jwt', user.jwt);
-    authHelper.setCookie('userId', user.userDetails.id);
+    authHelper.setUserToken(user.jwt);
+    authHelper.setUserId(user.userDetails.id);
     return user;
 }
 
@@ -37,8 +37,8 @@ async function register(input) {
 
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.REGISTER_URL}`, requestOptions)
     const user = await serviceHelper.handleResponse(res);
-    authHelper.setCookie('jwt', user.jwt);
-    authHelper.setCookie('userId', user.userDetails.id);
+    authHelper.setUserToken(user.jwt);
+    authHelper.setUserId(user.userDetails.id);
     return user;
 }
 

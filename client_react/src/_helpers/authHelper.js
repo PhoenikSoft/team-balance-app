@@ -3,13 +3,12 @@ import { history } from './history';
 
 export const authHelper = {
     authHeader,
-    setCookie,
     getCookie,
     logout,
-    isGroupAdmin
+    isGroupAdmin,
+    setUserToken,
+    setUserId
 }
-
-
 
 function authHeader() {
     // return authorization header with jwt token
@@ -38,7 +37,7 @@ function getCookie(cname) {
     return "";
 }
 
-function setCookie(name, value, options = {}) {
+function _setCookie(name, value, options = {}) {
     options = {
         path: '/',
         ...options
@@ -62,7 +61,7 @@ function setCookie(name, value, options = {}) {
 }
 
 function deleteCookie(name) {
-    setCookie(name, "", {
+    _setCookie(name, "", {
         'max-age': -1
     })
 }
@@ -80,4 +79,12 @@ function isGroupAdmin(groupId) {
     };
     const decodedJwt = jwtDecode(getCookie('jwt'));
     return decodedJwt.roles.includes(`"ADMIN_ROLE_${groupId}"`)
+}
+
+function setUserToken(token) {
+    _setCookie('jwt', token);
+}
+
+function setUserId(userId) {
+    _setCookie('userId', userId);
 }
