@@ -95,7 +95,7 @@ function getCurrentUser() {
                 dispatch({ type: userConstants.USER_FETCHED, fetchedUser });
                 return {
                     ...fetchedUser,
-                    phone: fetchedUser.phone.replace('38', '')
+                    phone: fetchedUser.phone.replace('380', '')
                 };
             })
             .catch(() => serviceHelper.actionsErrorHandler())

@@ -34,7 +34,6 @@ export default function ({ onChange, error, value }) {
             type="tel"
             maxLength="12"
             value={value ? value : ''}
-            //value="935036714"
             error={error}
             helperText={error && userConstants.PHONE_ERROR}
             onChange={onChange}
