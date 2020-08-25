@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid';
-import { authHelper } from '../../_helpers';
 import Button from '@material-ui/core/Button';
+import Typography from "@material-ui/core/Typography";
 
+import { authHelper } from '../../_helpers';
 import AddPlayersDialog from '../AddPlayersDialog';
 import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
@@ -59,12 +60,17 @@ export default function GamePage(
 
     return (<>
         <Grid container spacing={3}>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} >
                 <Grid
                     className={classes.buttonsBar}
                     container
                     justify="flex-start"
-                    spacing={3}>
+                    spacing={1}>
+                    <Grid item xs={12} >
+                        <Typography variant="h5" gutterBottom>
+                            {game.name}
+                        </Typography>
+                    </Grid>
                     <Grid item>
                         <Button variant="contained" color="primary" onClick={e => goBack()}>
                             Back to group
