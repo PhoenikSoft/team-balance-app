@@ -122,12 +122,12 @@ function getColumns(showRating, votes) {
         </div>
     };
 
-    columns.push(voteColumn);
+    (votes && votes.length !== 0) && columns.push(voteColumn);
     return columns;
 };
 
 function getVoteChangeIcon(rowData) {
-    if(!rowData.vote || rowData.vote === 0) {
+    if (!rowData.vote || rowData.vote === 0) {
         return <div><RemoveIcon style={{ color: blue[500] }} /></div>;
     }
     return (rowData.vote && rowData.vote > 0)
