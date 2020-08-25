@@ -53,8 +53,7 @@ export default function GamePage(
 
     useEffect(() => {
         const fetch = async () => {
-            await fetchGame();
-            await getVotes();
+            await Promise.all([fetchGame(), getVotes()]);
         };
         fetch();
     }, []);

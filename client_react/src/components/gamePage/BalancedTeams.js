@@ -127,6 +127,9 @@ function getColumns(showRating, votes) {
 };
 
 function getVoteChangeIcon(rowData) {
+    if (rowData.id == authHelper.getCookie('userId')) {
+        return;
+    };
     if (!rowData.vote || rowData.vote === 0) {
         return <div><RemoveIcon style={{ color: blue[500] }} /></div>;
     }
