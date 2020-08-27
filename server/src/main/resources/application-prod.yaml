@@ -7,7 +7,7 @@ server:
 cors:
   origins:
     - http://teambalance.cc
-    - http://teambalanceapp-env.eba-sdy623yp.eu-central-1.elasticbeanstalk.com
+    - http://teambalanceapp-dev-env.eu-central-1.elasticbeanstalk.com
     - http://localhost
 voting:
   # Two days - 48h
