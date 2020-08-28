@@ -1,5 +1,9 @@
 # Team Balance Application
 
+## Environments
+- Dev: http://teambalanceapp-dev-env.eu-central-1.elasticbeanstalk.com
+- Prod: http://teambalance.cc
+
 ## How to boot up the whole project (development version)
 In that mode code live-refresh is enabled for frontend.
 1. Install Docker: https://docs.docker.com/get-docker/
