@@ -16,7 +16,7 @@ const addGame = (gameId, groupId) => dispatch =>
 const getGame = gameId => dispatch =>
     gamesService.getGame(gameId)
         .then(res => {
-            dispatch({ type: gameConstants.GAME_FETCHED, game: { ...res, submittedVotes: res.userVotes } })
+            dispatch({ type: gameConstants.GAME_FETCHED, game: { ...res.game, submittedVotes: res.userVotes } })
         })
         .catch(serviceHelper.actionsErrorHandler);
 

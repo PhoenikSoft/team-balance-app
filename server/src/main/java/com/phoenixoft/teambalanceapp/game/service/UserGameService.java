@@ -116,8 +116,8 @@ public class UserGameService {
     }
 
     public void startGameVoting(CustomUser user, Long gameId) {
-        userGroupService.checkAdminPermissions(user, gameId);
         Game game = findUserGame(user.getId(), gameId);
+        userGroupService.checkAdminPermissions(user, game.getGroup().getId());
         if (game.getVoteStatus() != VoteStatus.NOT_STARTED) {
             throw new InvalidGameVotingStatusException("Game voting has already started");
         }

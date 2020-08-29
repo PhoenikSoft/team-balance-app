@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import VoteSlider from '../Dialogs/voteDialog/VoteSlider';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import { green, red } from '@material-ui/core/colors';
+import RemoveIcon from '@material-ui/icons/Remove';
+import { green, red, blue } from '@material-ui/core/colors';
 import { authHelper } from '../../_helpers';
 
 
@@ -116,18 +117,26 @@ function getColumns(showRating, votes) {
         field: 'vote',
         title: 'Votes',
         render: rowData => <div style={{ display: 'flex' }}>
-            {(rowData.vote && rowData.vote !== 0) ?
-                rowData.vote > 0
-                    ? <div><ArrowUpwardIcon style={{ color: green[500] }} /></div>
-                    : <div><ArrowDownwardIcon style={{ color: red[500] }} /></div>
-                : <div />}
+            {getVoteChangeIcon(rowData)}
             {rowData.vote !== 0 && <div style={{ paddingTop: '5px' }}>{rowData.vote}</div>}
         </div>
     };
 
-    votes && votes.length !== 0 && columns.push(voteColumn);
+    (votes && votes.length !== 0) && columns.push(voteColumn);
     return columns;
 };
+
+function getVoteChangeIcon(rowData) {
+    if (rowData.id == authHelper.getCookie('userId')) {
+        return;
+    };
+    if (!rowData.vote || rowData.vote === 0) {
+        return <div><RemoveIcon style={{ color: blue[500] }} /></div>;
+    }
+    return (rowData.vote && rowData.vote > 0)
+        ? <div><ArrowUpwardIcon style={{ color: green[500] }} /></div>
+        : <div><ArrowDownwardIcon style={{ color: red[500] }} /></div>;
+}
 
 function mergePlayersWithVotes(players, votes) {
     return players.map(player => {

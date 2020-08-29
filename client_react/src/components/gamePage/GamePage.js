@@ -11,7 +11,6 @@ import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -44,6 +43,7 @@ export default function GamePage(
         balanceTeams,
         startVoting,
         sendVotes,
+        getVotes,
         votes }) {
     const classes = useStyles();
 
@@ -53,7 +53,7 @@ export default function GamePage(
 
     useEffect(() => {
         const fetch = async () => {
-            await fetchGame();
+            await Promise.all([fetchGame(), getVotes()]);
         };
         fetch();
     }, []);

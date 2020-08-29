@@ -11,6 +11,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.GameViewResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserGameVoteRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
+import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.model.BalancingConfig;
 import com.phoenixoft.teambalanceapp.game.service.UserGameService;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -107,10 +109,11 @@ public class UserGameController {
     @PutMapping(path = "/{gameId}/balancedTeams")
     public BalancedTeamsResponseDto generateBalancedTeams(@PathVariable Long gameId,
                                                           @RequestParam(defaultValue = "2") Integer teamsCount,
-                                                          @RequestBody @Valid BalancingBots bots,
+                                                          @RequestBody(required = false) @Valid BalancingBots bots,
                                                           @RequestAttribute CustomUser currentCustomUser) {
+        List<Player> botsList = Optional.ofNullable(bots).map(BalancingBots::getBots).orElse(null);
         BalancingConfig balancingConfig = BalancingConfig.builder().userId(currentCustomUser.getId()).gameId(gameId)
-                .teamsCount(teamsCount).bots(bots.getBots()).build();
+                .teamsCount(teamsCount).bots(botsList).build();
         List<Team> teams = userGameService.generateBalancedTeams(balancingConfig);
         return BalancedTeamsResponseDto.of(teams);
     }
