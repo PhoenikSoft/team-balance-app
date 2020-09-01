@@ -121,7 +121,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                 {(isGroupAdmin(groupId) || isGroupCreatedByCurrentUser(groupId)) &&
                     <ListItemSecondaryAction>
                         {edit[groupId]
-                            ? <><IconButton onClick={() => onEditSubmit(groupId, edit[groupId])}
+                            ? <> <IconButton onClick={() => onEditSubmit(groupId, edit[groupId])}
                                 aria-label="submit group name">
                                 <CheckIcon />
                             </IconButton>
