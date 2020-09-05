@@ -167,9 +167,9 @@ export default function GamePage(
 
         <TeamCountDialog
             handleClose={e => setTeamCountDialogOpened(false)}
-            onSubmit={teamsCount => {
-                balanceTeams(teamsCount);
-                setTeamCountDialogOpened(false)
+            onSubmit={(teamsCount, bots) => {
+                balanceTeams(teamsCount, bots);
+                setTeamCountDialogOpened(false);
             }}
             open={teamCountDialogOpened}
         />

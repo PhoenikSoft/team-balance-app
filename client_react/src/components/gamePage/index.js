@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => {
             dispatch(playersActions.addPlayers(getGameId(), players));
         },
         deletePlayer: playerId => dispatch(playersActions.deletePlayer(getGameId(), playerId)),
-        balanceTeams: teamsCount => dispatch(playersActions.balanceTeams(getGameId(), teamsCount)),
+        balanceTeams: (teamsCount, bots) => dispatch(playersActions.balanceTeams(getGameId(), teamsCount, bots)),
         startVoting: gameId => dispatch(gamesActions.startVoting(gameId)),
         sendVotes: votes => dispatch(gamesActions.sendVotes(getGameId(), votes)),
         getVotes: () => dispatch(gamesActions.getVotes(getGameId())),
