@@ -5,7 +5,7 @@
   "scripts": {
     "build": "react-scripts build",
     "lint": "eslint src",
-    "start": "set PORT=8001 && react-scripts start"
+    "start": "react-scripts start"
   },
   "repository": {
     "type": "git",
