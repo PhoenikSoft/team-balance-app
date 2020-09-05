@@ -36,7 +36,6 @@ export default function ({ open, handleClose, onSubmit }) {
         handleReset();
     };
     const addNewBot = ({ lastName, firstName, rating }) => {
-        const id = Number.parseInt(Math.random() * 10000);
         const botsExists = bots
             .filter(player => player.lastName === lastName && player.firstName === firstName).length;
 
@@ -45,7 +44,7 @@ export default function ({ open, handleClose, onSubmit }) {
         } else if (Number.parseInt(rating) > 100 || Number.parseInt(rating) < 1) {
             store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.PROVIDE_VALID_RATING });
         } else {
-            setBots([...bots, { lastName, firstName, rating, id }]);
+            setBots([...bots, { lastName, firstName, rating }]);
         };
     };
     const deleteBot = botToDelete => setBots(bots.filter(player => player.name !== botToDelete.name))
