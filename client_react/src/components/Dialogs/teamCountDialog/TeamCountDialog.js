@@ -13,19 +13,25 @@ import Typography from '@material-ui/core/Typography';
 
 import ChooseTeamCountStep from './ChooseTeamCountStep';
 import AddBotsStep from './AddBotsStep';
+import { store } from '../../../index';
+import { alertConstants } from '../../../_constants';
 
 
 function getSteps() {
     return ['Choose how much teams you want to generate', 'Add unregistered players'];
 };
 
-
+const mock_bots = [
+    //{ name: 'bot_1', rating: 51 },
+    //{ name: 'bot_2', rating: 15 }
+];
 
 export default function ({ open, handleClose, onSubmit }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamsCount, setTeamsCount] = useState('2');
     const [activeStep, setActiveStep] = React.useState(0);
+    const [players, setPlayers] = useState(mock_bots);
     const steps = getSteps();
 
     const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -35,42 +41,24 @@ export default function ({ open, handleClose, onSubmit }) {
         handleClose();
         handleReset();
     };
+    const addNewBot = ({ name, rating }) => {
+        if (players.filter(player => player.name === name).length) {
+            store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.BOT_EXISTS });
+        } else if (Number.parseInt(rating) > 100 || Number.parseInt(rating) < 1) {
+            store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.PROVIDE_VALID_RATING });
+        } else {
+            setPlayers([...players, { name, rating }])
+        };
+    };
+    const deleteBot = botToDelete => setPlayers(players.filter(player => player.name !== botToDelete.name))
+
 
     const getStepContent = step => {
         switch (step) {
             case 0:
-                return <>
-                    <ChooseTeamCountStep teamsCount={teamsCount} setTeamsCount={setTeamsCount} />
-                    <DialogActions>
-                        <Button onClick={closeModal} color='primary'>
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={handleNext}
-                            color='primary'>
-                            Proceed to team players
-                        </Button>
-                    </DialogActions>
-                </>;
+                return <ChooseTeamCountStep teamsCount={teamsCount} setTeamsCount={setTeamsCount} />
             case 1:
-                return <>
-                    <AddBotsStep />
-                    <DialogActions>
-                        <Button onClick={closeModal} color='primary'>
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={handleBack}
-                            color='primary'>
-                            Back to balance Teams
-                        </Button>
-                        <Button
-                            onClick={() => onSubmit(teamsCount)}
-                            color='primary'>
-                            Balance Teams
-                        </Button>
-                    </DialogActions>
-                </>;
+                return <AddBotsStep bots={players} addBot={addNewBot} deleteBot={deleteBot} />
             default:
                 return 'Unknown step';
         }
@@ -100,5 +88,28 @@ export default function ({ open, handleClose, onSubmit }) {
             </div>
 
         </DialogContent>
+
+        <DialogActions>
+            <Button onClick={closeModal} color='primary'>
+                Cancel
+                        </Button>
+            {activeStep === 0 &&
+                <Button
+                    onClick={handleNext}
+                    color='primary'>
+                    Proceed to team players
+                        </Button>
+            }
+            {activeStep === 1 && <Button
+                    onClick={handleBack}
+                    color='primary'>
+                    Back to balance Teams
+                        </Button>}
+            <Button
+                onClick={() => onSubmit(teamsCount)}
+                color='primary'>
+                Balance Teams
+                        </Button>
+        </DialogActions>
     </Dialog>
 }

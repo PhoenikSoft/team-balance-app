@@ -1,41 +1,24 @@
 import React, { useState } from 'react';
 import MaterialTable from 'material-table';
-import EditIcon from '@material-ui/icons/Edit';
-import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
 import ListItem from '@material-ui/core/ListItem';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Grid from '@material-ui/core/Grid';
 
-import { store } from '../../../index';
-import { alertConstants } from '../../../_constants';
 
-const mock_bots = [
-    { name: 'bot_1', rating: 51 },
-    { name: 'bot_2', rating: 15 }
-];
-
-export default () => {
+export default ({ bots, addBot, deleteBot }) => {
     const defaultBot = {
         name: 'New bot name',
         rating: 50
     };
 
-    const [players, setPlayers] = useState(mock_bots);
     const [newBot, setNewBot] = useState(defaultBot);
 
-    const addNewBot = () => {
-        if (players.filter(player => player.name === newBot.name).length) {
-            store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.BOT_EXISTS });
-        } else {
-            setPlayers([...players, { name: newBot.name, rating: newBot.rating }])
-        };
-    };
-
     return <>
-        {players.length ? <MaterialTable
-            data={players}
+        {bots.length ? <MaterialTable
+            data={bots}
             columns={[
                 { title: 'Name', field: 'name' },
                 { title: 'Rating', field: 'rating', type: 'numeric' }
@@ -44,8 +27,7 @@ export default () => {
                 player => ({
                     icon: 'delete',
                     tooltip: 'Delete Player',
-                    onClick: (event, playerToDelete) =>
-                        setPlayers(players.filter(player => player.name !== playerToDelete.name))
+                    onClick: (event, botToDelete) => deleteBot(botToDelete)
                 })
             ]}
             options={{
@@ -60,25 +42,24 @@ export default () => {
             : <div>No bots added</div>}
 
         <ListItem>
-            <TextField value={newBot.name}
-                onChange={e => { setNewBot({ ...newBot, name: e.target.value }) }} />
-            <TextField value={newBot.rating}
-                onChange={e => { setNewBot({ ...newBot, rating: e.target.value }) }} />
-
-            <ListItemSecondaryAction>
-
-                <IconButton
-                    onClick={addNewBot}>
-                    <CheckIcon />
-                </IconButton>
-
-                {/* <IconButton onClick={() => setNewBot({})}>
-                    <CancelIcon />
-                </IconButton> */}
-                {/* <IconButton onClick={() => onGroupDelete(groupId)}>
-                    <DeleteIcon />
-                </IconButton> */}
-            </ListItemSecondaryAction>
+            <Grid container spacing={3} >
+                <Grid item >
+                    <TextField value={newBot.name}
+                        onChange={e => { setNewBot({ ...newBot, name: e.target.value }) }} />
+                </Grid>
+                <Grid item >
+                    <TextField value={newBot.rating} type="number"
+                        onChange={e => { setNewBot({ ...newBot, rating: e.target.value }) }} />
+                </Grid>
+                <Grid item >
+                    <ListItemSecondaryAction>
+                        <IconButton
+                            onClick={e => addBot(newBot)}>
+                            <CheckIcon />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </Grid>
+            </Grid>
         </ListItem>
 
     </>
