@@ -10,7 +10,8 @@ import Grid from '@material-ui/core/Grid';
 
 export default ({ bots, addBot, deleteBot }) => {
     const defaultBot = {
-        name: 'New bot name',
+        firstName: 'New',
+        lastName: 'Bot',
         rating: 50
     };
 
@@ -20,7 +21,8 @@ export default ({ bots, addBot, deleteBot }) => {
         {bots.length ? <MaterialTable
             data={bots}
             columns={[
-                { title: 'Name', field: 'name' },
+                { title: 'First name', field: 'firstName' },
+                { title: 'Last name', field: 'lastName' },
                 { title: 'Rating', field: 'rating', type: 'numeric' }
             ]}
             actions={[
@@ -43,14 +45,19 @@ export default ({ bots, addBot, deleteBot }) => {
 
         <ListItem>
             <Grid container spacing={3} >
-                <Grid item >
-                    <TextField value={newBot.name}
-                        onChange={e => { setNewBot({ ...newBot, name: e.target.value }) }} />
+                <Grid item xs={12} sm={3}>
+                    <TextField value={newBot.firstName}
+                        onChange={e => { setNewBot({ ...newBot, firstName: e.target.value }) }} />
                 </Grid>
-                <Grid item >
+                <Grid item xs={12} sm={3}>
+                    <TextField value={newBot.lastName}
+                        onChange={e => { setNewBot({ ...newBot, lastName: e.target.value }) }} />
+                </Grid>
+                <Grid item xs={12} sm={3}>
                     <TextField value={newBot.rating} type="number"
                         onChange={e => { setNewBot({ ...newBot, rating: e.target.value }) }} />
                 </Grid>
+
                 <Grid item >
                     <ListItemSecondaryAction>
                         <IconButton

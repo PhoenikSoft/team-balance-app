@@ -12,8 +12,8 @@ const deletePlayer = (gameId, playerId) => dispatch =>
         .then(newPlayersList => dispatch({ type: playersCosntants.PLAYER_DELETED, newPlayersList }))
         .catch(serviceHelper.actionsErrorHandler);
 
-const balanceTeams = (gameId, teamsCount) => dispatch =>
-    playersService.balanceTeams(gameId, teamsCount)
+const balanceTeams = (gameId, teamsCount, bots) => dispatch =>
+    playersService.balanceTeams(gameId, teamsCount, bots)
         .then(balancedTeams => dispatch({ type: playersCosntants.TEAM_BALANCED, balancedTeams, gameId }))
         .catch(e => {
             if (e === `Argument 'players' is not valid`) {

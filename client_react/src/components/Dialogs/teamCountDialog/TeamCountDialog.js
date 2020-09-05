@@ -16,22 +16,16 @@ import AddBotsStep from './AddBotsStep';
 import { store } from '../../../index';
 import { alertConstants } from '../../../_constants';
 
-
 function getSteps() {
-    return ['Choose how much teams you want to generate', 'Add unregistered players'];
+    return ['Choose how much teams you want to generate', 'Add unregistered bots'];
 };
-
-const mock_bots = [
-    //{ name: 'bot_1', rating: 51 },
-    //{ name: 'bot_2', rating: 15 }
-];
 
 export default function ({ open, handleClose, onSubmit }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamsCount, setTeamsCount] = useState('2');
     const [activeStep, setActiveStep] = React.useState(0);
-    const [players, setPlayers] = useState(mock_bots);
+    const [bots, setBots] = useState([]);
     const steps = getSteps();
 
     const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -41,28 +35,31 @@ export default function ({ open, handleClose, onSubmit }) {
         handleClose();
         handleReset();
     };
-    const addNewBot = ({ name, rating }) => {
-        if (players.filter(player => player.name === name).length) {
+    const addNewBot = ({ lastName, firstName, rating }) => {
+        const id = Number.parseInt(Math.random() * 10000);
+        const botsExists = bots
+            .filter(player => player.lastName === lastName && player.firstName === firstName).length;
+
+        if (botsExists) {
             store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.BOT_EXISTS });
         } else if (Number.parseInt(rating) > 100 || Number.parseInt(rating) < 1) {
             store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.PROVIDE_VALID_RATING });
         } else {
-            setPlayers([...players, { name, rating }])
+            setBots([...bots, { lastName, firstName, rating, id }]);
         };
     };
-    const deleteBot = botToDelete => setPlayers(players.filter(player => player.name !== botToDelete.name))
-
+    const deleteBot = botToDelete => setBots(bots.filter(player => player.name !== botToDelete.name))
 
     const getStepContent = step => {
         switch (step) {
             case 0:
                 return <ChooseTeamCountStep teamsCount={teamsCount} setTeamsCount={setTeamsCount} />
             case 1:
-                return <AddBotsStep bots={players} addBot={addNewBot} deleteBot={deleteBot} />
+                return <AddBotsStep bots={bots} addBot={addNewBot} deleteBot={deleteBot} />
             default:
                 return 'Unknown step';
-        }
-    }
+        };
+    };
 
     return <Dialog
         open={open}
@@ -74,8 +71,6 @@ export default function ({ open, handleClose, onSubmit }) {
                 Choose how much teams you want to generate
             </DialogContentText>
 
-            {/* <ChooseTeamCountStep teamsCount={teamsCount} setTeamsCount={setTeamsCount} /> */}
-
             <Stepper activeStep={activeStep}>
                 {steps.map(label =>
                     <Step key={label}>
@@ -83,10 +78,7 @@ export default function ({ open, handleClose, onSubmit }) {
                     </Step>
                 )}
             </Stepper>
-            <div>
-                <Typography>{getStepContent(activeStep)}</Typography>
-            </div>
-
+            <Typography>{getStepContent(activeStep)}</Typography>
         </DialogContent>
 
         <DialogActions>
@@ -97,19 +89,20 @@ export default function ({ open, handleClose, onSubmit }) {
                 <Button
                     onClick={handleNext}
                     color='primary'>
-                    Proceed to team players
-                        </Button>
-            }
-            {activeStep === 1 && <Button
+                    Proceed to team bots
+                        </Button>}
+
+            {activeStep === 1 &&
+                <Button
                     onClick={handleBack}
                     color='primary'>
                     Back to balance Teams
                         </Button>}
             <Button
-                onClick={() => onSubmit(teamsCount)}
+                onClick={() => onSubmit(teamsCount, bots)}
                 color='primary'>
                 Balance Teams
                         </Button>
         </DialogActions>
     </Dialog>
-}
+};
