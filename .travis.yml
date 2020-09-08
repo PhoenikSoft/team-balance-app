@@ -26,9 +26,9 @@ deploy:
   provider: elasticbeanstalk
   region: eu-central-1
   app: TeamBalanceApp
-  env: Teambalanceapp-env
+  env: Teambalanceapp-dev-env
   bucket_name: elasticbeanstalk-eu-central-1-623682165123
-  bucket_path: team-balance-app
+  bucket_path: team-balance-app-dev
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
