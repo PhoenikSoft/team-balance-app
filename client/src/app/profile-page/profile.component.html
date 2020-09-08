@@ -23,9 +23,10 @@
       </div>
       <div>
         <mat-form-field>
-          <input matInput placeholder="Phone" formControlName="phone" maxlength="13">
+          <input matInput placeholder="Phone" formControlName="phone" maxlength="9">
           <mat-error *ngIf="phone.hasError('required')">Phone number is <strong>required</strong></mat-error>
-          <mat-error *ngIf="phone.hasError( 'pattern')">Should be valid phone (12 digits)</mat-error>
+          <mat-error *ngIf="phone.hasError( 'maxlength')">You have more than 9 characters</mat-error>
+          <mat-error *ngIf="phone.hasError( 'pattern')">Should be valid phone (9 digits)</mat-error>
         </mat-form-field>
       </div>
       <div class="rating-container">

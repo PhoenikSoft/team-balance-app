@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
 
     @GetMapping(path = "/{userId}")
     public UserResponseDto getUser(@PathVariable Long userId) {

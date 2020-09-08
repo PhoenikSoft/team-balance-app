@@ -32,7 +32,7 @@ public class UserRegistrationRequestDto {
     private String email;
 
     @NotBlank(message = "{user.blank.phone}")
-    @Pattern(regexp = "^\\+?\\d{12}$", message = "{user.phone.invalid}")
+    @Pattern(regexp = "^\\d{1,9}$", message = "{user.phone.invalid}")
     private String phone;
 
     @NotNull(message = "{user.null.rating}")

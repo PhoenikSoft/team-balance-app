@@ -80,7 +80,8 @@ export class ProfileComponent {
       email: fb.control({value: '', disabled: true}, [Validators.required, Validators.email]),
       phone: fb.control('', [
         Validators.required,
-        Validators.pattern('^\\+?\\d{12}$')
+        Validators.maxLength(9),
+        Validators.pattern('^\\d{9}$')
       ]),
       rating: fb.control('')
     });
