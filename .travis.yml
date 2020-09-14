@@ -21,13 +21,23 @@ script:
   - docker push $DOCKER_ID/team-balance-app-nginx
 
 deploy:
-  provider: elasticbeanstalk
-  region: eu-central-1
-  app: TeamBalanceApp
-  env: Teambalanceapp-env
-  bucket_name: elasticbeanstalk-eu-central-1-623682165123
-  bucket_path: team-balance-app
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+  - provider: elasticbeanstalk
+    region: eu-central-1
+    app: TeamBalanceApp
+    env: Teambalanceapp-dev-env
+    bucket_name: elasticbeanstalk-eu-central-1-623682165123
+    bucket_path: team-balance-app-dev
+    on:
+      branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+  - provider: elasticbeanstalk
+    region: eu-central-1
+    app: TeamBalanceApp
+    env: Teambalanceapp-env
+    bucket_name: elasticbeanstalk-eu-central-1-623682165123
+    bucket_path: team-balance-app
+    on:
+      branch: release
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

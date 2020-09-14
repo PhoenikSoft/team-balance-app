@@ -6,7 +6,7 @@ server:
     include-exception: false
 cors:
   origins:
-    - http://teambalance.cc
+    - https://teambalance.cc
     - http://teambalanceapp-dev-env.eu-central-1.elasticbeanstalk.com
     - http://localhost
 voting:
