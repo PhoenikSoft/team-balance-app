@@ -7,11 +7,9 @@ services:
 
 before_install:
   - docker build -t $DOCKER_ID/team-balance-app-server-test -f ./server/Dockerfile.test ./server
-
-script:
   - docker run $DOCKER_ID/team-balance-app-server-test
 
-after_success:
+script:
   - docker build -t $DOCKER_ID/team-balance-app-client ./client_react
   - docker build -t $DOCKER_ID/team-balance-app-server ./server
   - docker build -t $DOCKER_ID/team-balance-app-nginx ./nginx
@@ -26,9 +24,9 @@ deploy:
   provider: elasticbeanstalk
   region: eu-central-1
   app: TeamBalanceApp
-  env: Teambalanceapp-dev-env
+  env: Teambalanceapp-env
   bucket_name: elasticbeanstalk-eu-central-1-623682165123
-  bucket_path: team-balance-app-dev
+  bucket_path: team-balance-app
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
