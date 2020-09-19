@@ -58,7 +58,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
     useEffect(() => {
         const fetchData = async () => {
             const action = await fetchGroups();
-            groups = action.groups;
+            groups = action?.groups;
         };
         fetchData();
     }, []);
