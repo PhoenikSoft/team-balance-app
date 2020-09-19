@@ -9,10 +9,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import createRootReducer from './reducers';
 import App from './components/App';
 import { alertConstants } from './_constants';
+import ErrorBoundary from './components/ErrorBoundary';
 
 export const history = History.createBrowserHistory();
-
-
 
 const enhancers = []
 const middleware = [thunk, routerMiddleware(history)];
@@ -40,7 +39,9 @@ export const store = createStore(
 
 render(
     <Provider store={store}>
-        <App />
+        <ErrorBoundary>
+            <App />
+        </ErrorBoundary>
     </Provider>,
     document.getElementById('root')
 );
