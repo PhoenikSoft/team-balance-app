@@ -109,13 +109,13 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
-        };
+        }
         setInputs(inputs => ({ ...inputs, phone: input }));
     }
 
     function handlePasswordChange(e) {
         const { value, name } = e.target;
-        const isPassValid = pass => pass.length > 8;
+        const isPassValid = pass => pass.length >= 8;
         const setPass = () => setInputs(inputs => ({ ...inputs, [name]: value }));
         const setError = flag => setErrors(errors => ({ ...errors, passwordError: flag }));
         const isPasswordsMatch = () => value === inputs.confirmPassword || value === inputs.password;
@@ -124,11 +124,11 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
             setError(true);
             setPass();
             return;
-        };
+        }
 
         setError(!isPasswordsMatch());
         setPass();
-    };
+    }
 
     function handleEmailChange(e) {
 
