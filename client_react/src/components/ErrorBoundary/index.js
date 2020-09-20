@@ -21,8 +21,8 @@ export default class ErrorBoundary extends React.Component {
                 <div id="error">
                     <div id="box"></div>
                     <h3>Something went wrong</h3>
-                    <p>Things are a little <span>unstable</span> here</p>
-                    <p>I suggest come back later</p>
+                    <span>Please come back later</span>
+                    <p>We are trying to resolve it</p>
                 </div>
             );
         }
