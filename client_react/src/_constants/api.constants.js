@@ -16,7 +16,8 @@ export const apiConstants = {
     ADD_MEMBER_BY_REF: ref => `/api/userGroups/refs/${ref}/members`,
     GAMES: groupId => `/api/userGroups/${groupId}/games`,
 
-    GAME: gameId => `/api/userGames/${gameId}/views`,
+    GAME: gameId => `/api/userGames/${gameId}`,
+    GAME_VIEW: gameId => `/api/userGames/${gameId}/views`,
     ADD_MEMBER_BATCH: gameId => `/api/userGames/${gameId}/playersBatch`,
 
     GENERATE_BALANCED_TEAMS: (gameId, teamsCount) => `/api/userGames/${gameId}/balancedTeams?teamsCount=${teamsCount}`,

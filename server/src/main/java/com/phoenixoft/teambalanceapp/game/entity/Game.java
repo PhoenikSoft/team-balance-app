@@ -6,6 +6,7 @@ import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Basic;
@@ -68,6 +69,10 @@ public class Game implements Serializable {
     @Column(name = "vote_status")
     @Enumerated(value = EnumType.STRING)
     private VoteStatus voteStatus;
+
+    @Column
+    @CreationTimestamp
+    private LocalDateTime created;
 
     public boolean removePlayer(Long playerId) {
         boolean removed = players.removeIf(player -> player.getId().equals(playerId));

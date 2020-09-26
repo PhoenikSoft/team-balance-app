@@ -118,13 +118,20 @@ public class UserGameService {
     public void startGameVoting(CustomUser user, Long gameId) {
         Game game = findUserGame(user.getId(), gameId);
         userGroupService.checkAdminPermissions(user, game.getGroup().getId());
-        if (game.getVoteStatus() != VoteStatus.NOT_STARTED) {
-            throw new InvalidGameVotingStatusException("Game voting has already started");
-        }
+        validateGameForVoting(game);
 
         userVoteService.scheduleFinishVotingTask(gameId);
 
         game.setVoteStatus(VoteStatus.STARTED);
         gameRepository.save(game);
+    }
+
+    private void validateGameForVoting(Game game) {
+        if (game.getVoteStatus() != VoteStatus.NOT_STARTED) {
+            throw new InvalidGameVotingStatusException("Game voting has already started");
+        }
+        if (game.getPlayers().isEmpty()) {
+            throw new InvalidGameVotingStatusException("Cannot start voting. Cause: no players added to the game");
+        }
     }
 }

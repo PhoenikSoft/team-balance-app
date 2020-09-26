@@ -161,4 +161,29 @@ databaseChangeLog:
                   type: smallint
             schemaName: public
             tableName: tbl_user
+  - changeSet:
+      id: add-created-column-to-main-entities
+      author: Yevhen Karychkovskyi
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: created
+                  type: timestamp
+            schemaName: public
+            tableName: tbl_game
+        - addColumn:
+            columns:
+              - column:
+                  name: created
+                  type: timestamp
+            schemaName: public
+            tableName: tbl_group
+        - addColumn:
+            columns:
+              - column:
+                  name: created
+                  type: timestamp
+            schemaName: public
+            tableName: tbl_user
 
