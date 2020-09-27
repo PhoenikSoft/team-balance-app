@@ -106,7 +106,7 @@ export default function GroupPage(
 
                         ]}
                         actions={[
-                            rowData => ({
+                            () => ({
                                 icon: 'delete',
                                 tooltip: 'Delete Game',
                                 onClick: (event, rowData) => deleteGame(rowData.id),

@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.game.service;
 
 import com.phoenixoft.teambalanceapp.common.LongListArgumentConverter;
 import com.phoenixoft.teambalanceapp.common.TestData;
+import com.phoenixoft.teambalanceapp.common.exception.TeamBalancerInvalidParamsException;
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.user.entity.User;
@@ -50,6 +51,6 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
     void testDividePlayersIntoBalancedTeams_tooSmallInputList(@ConvertWith(LongListArgumentConverter.class) List<Long> input) {
         List<Player> players = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
 
-        assertThrows(IllegalArgumentException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(players, 3));
+        assertThrows(TeamBalancerInvalidParamsException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(players, 3));
     }
 }

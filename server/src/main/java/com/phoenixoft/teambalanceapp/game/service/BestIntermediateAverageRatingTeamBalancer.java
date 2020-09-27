@@ -1,5 +1,6 @@
 package com.phoenixoft.teambalanceapp.game.service;
 
+import com.phoenixoft.teambalanceapp.common.exception.TeamBalancerInvalidParamsException;
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
@@ -32,8 +33,13 @@ public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalan
 
     @Override
     public List<Team> dividePlayersIntoBalancedTeams(List<Player> players, int teamsCount) {
-        Preconditions.checkArgument(teamsCount > 1, "teamsCount");
-        Preconditions.checkArgument(players.size() >= 2 * teamsCount, "players");
+        if (teamsCount < 1) {
+            throw new TeamBalancerInvalidParamsException("Teams count param should be greater than 0");
+        }
+        int minPlayers = 2 * teamsCount;
+        if (players.size() < minPlayers) {
+            throw new TeamBalancerInvalidParamsException("Not enough players to balance. Should be minimum " + minPlayers);
+        }
 
         if (players.size() == teamsCount) {
             return players.stream().map(Collections::singletonList).map(Team::of).collect(Collectors.toList());

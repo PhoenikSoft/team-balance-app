@@ -26,7 +26,7 @@ function addGame(game, groupId) {
 
 function getGame(gameId) {
     return global.fetchWithLoader(
-        constructUrl(apiConstants.GAME(gameId)),
+        constructUrl(apiConstants.GAME_VIEW(gameId)),
         serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
 }

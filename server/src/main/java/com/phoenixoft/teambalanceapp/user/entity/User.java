@@ -7,7 +7,9 @@ import com.phoenixoft.teambalanceapp.util.RoleGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -59,6 +62,10 @@ public class User implements Serializable {
 
     @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
     private List<Game> games = new ArrayList<>();
+
+    @Column
+    @CreationTimestamp
+    private LocalDateTime created;
 
     public void removeRoles(Set<Role> roles) {
         roles.forEach(this::removeRole);

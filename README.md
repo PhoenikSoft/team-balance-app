@@ -1,8 +1,10 @@
 # Team Balance Application
 
 ## Environments
+- Prod: https://teambalance.cc
 - Dev: http://teambalanceapp-dev-env.eu-central-1.elasticbeanstalk.com
-- Prod: http://teambalance.cc
+- Local (dev mode): http://localhost:3000
+- Local (prod mode): http://localhost
 
 ## How to boot up the whole project (development version)
 In that mode code live-refresh is enabled for frontend.
