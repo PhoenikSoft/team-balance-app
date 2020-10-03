@@ -7,7 +7,12 @@ export const authHelper = {
     logout,
     isGroupAdmin,
     setUserToken,
-    setUserId
+    setUserId,
+    isAuthenticated
+}
+
+function isAuthenticated() {
+    return getCookie('jwt') && getCookie('userId');
 }
 
 function authHeader() {

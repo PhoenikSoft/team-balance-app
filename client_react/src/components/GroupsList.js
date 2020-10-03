@@ -58,7 +58,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
     useEffect(() => {
         const fetchData = async () => {
             const action = await fetchGroups();
-            groups = action.groups;
+            groups = action?.groups;
         };
         fetchData();
     }, []);
@@ -121,7 +121,12 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                 {(isGroupAdmin(groupId) || isGroupCreatedByCurrentUser(groupId)) &&
                     <ListItemSecondaryAction>
                         {edit[groupId]
-                            ? <> <IconButton onClick={() => onEditSubmit(groupId, edit[groupId])}
+                            ? <> <IconButton onClick={() => {
+                                if (edit[groupId] !== groupName) {
+                                   return onEditSubmit(groupId, edit[groupId]);
+                                };
+                                setEdit({});
+                            }}
                                 aria-label="submit group name">
                                 <CheckIcon />
                             </IconButton>
