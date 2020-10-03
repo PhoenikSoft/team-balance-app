@@ -60,7 +60,7 @@ export default function GroupPage(
                         </Grid>
                         <Grid item>
                             <Button variant="contained" color="primary" onClick={e => copyLink(group.ref)}>
-                                Copy link to clipboard
+                                Copy group invite link
                             </Button>
                         </Grid>
 
