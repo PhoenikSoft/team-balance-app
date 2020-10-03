@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
-import { history } from '../_helpers';
+import { history, authHelper } from '../_helpers';
 import SignIn from './SignInComponent';
 import SignUp from './SignUpContainer';
 import Home from './Home';
@@ -20,9 +20,11 @@ const App = () => (
                 <Route path='/register'>
                     <SignUp />
                 </Route>
-                <Route path='/home'>
-                    <Home />
-                </Route>
+                <Route path='/home' render={()=>(
+                    authHelper.isAuthenticated()
+                    ? <Home />
+                    : <Redirect to="/login" />
+                )}/>
                 <Route exact path='/addMe/:ref'>
                     <AddMe />
                 </Route>
