@@ -102,7 +102,6 @@ function getActionsConfig(showSlider) {
         ? [{
             icon: 'save',
             tooltip: 'Save User',
-            onClick: (event, rowData) => alert("You saved " + rowData.name)
         }]
         : []
 };

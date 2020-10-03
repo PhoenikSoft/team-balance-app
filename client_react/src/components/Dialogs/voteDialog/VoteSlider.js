@@ -20,6 +20,8 @@ const mapState = state => {
 };
 
 function VoteDialog({ rating, userId, addVote, votes, submittedVotes }) {
+    // bot doesn't have id
+    const isBot = userId;
     const voteForThisUser = votes && votes.find(vote => vote.forUserId === userId);
     const submittedVoteForThisUser = submittedVotes && submittedVotes.find(vote => vote.forUserId === userId);
     const getVote = () => {
@@ -46,6 +48,7 @@ function VoteDialog({ rating, userId, addVote, votes, submittedVotes }) {
 
     return <>
         <Slider
+            disabled={!isBot}
             value={rating + vote}
             style={{ color: vote === 0 ? '#3f51b5' : (vote > 0 ? 'green' : 'red') }}
             aria-labelledby="discrete-slider"
