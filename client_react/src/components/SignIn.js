@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn({ onLoginClick, error }) {
+export default function SignIn({ onLoginClick, error, refLink }) {
     const classes = useStyles();
 
     const [inputs, setInputs] = useState({
@@ -56,7 +56,7 @@ export default function SignIn({ onLoginClick, error }) {
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign in
-        </Typography>
+                </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
                         name="email"
@@ -98,13 +98,18 @@ export default function SignIn({ onLoginClick, error }) {
                             //onLoginClick(e)('dev@dev.com', 'dev');
                         }} >
                         Sign In
-          </Button>
+                    </Button>
                     <Grid container>
                         <Grid item>
                             <Link href="#" variant="body2" onClick={() => history.push('/register')}>
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
+                        {refLink && <Grid item>
+                            <Typography color="secondary">
+                                You were invited by link. Please register if you don't have an account
+                            </Typography>
+                        </Grid>}
                     </Grid>
                     {error && <Typography color="error">Login failed: {error}</Typography>}
                 </form>
