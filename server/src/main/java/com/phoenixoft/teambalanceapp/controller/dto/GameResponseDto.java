@@ -12,6 +12,8 @@ public class GameResponseDto {
     private String name;
     private LocalDateTime startDateTime;
     private VoteStatus voteStatus;
+    private LocalDateTime startVotingTimestamp;
+    private LocalDateTime endVotingTimestamp;
     private List<UserResponseDto> players;
     private BalancedTeamsResponseDto balancedTeams;
 }

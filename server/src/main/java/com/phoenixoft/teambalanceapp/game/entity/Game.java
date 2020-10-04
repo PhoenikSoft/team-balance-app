@@ -63,6 +63,11 @@ public class Game implements Serializable {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @Column
+    @CreationTimestamp
+    private LocalDateTime created;
+
+    // ------------ Voting fields -------------------
     @OneToMany(mappedBy = "game", orphanRemoval = true)
     private List<UserVote> votes = new ArrayList<>();
 
@@ -71,8 +76,10 @@ public class Game implements Serializable {
     private VoteStatus voteStatus;
 
     @Column
-    @CreationTimestamp
-    private LocalDateTime created;
+    private LocalDateTime startVotingTimestamp;
+
+    @Column
+    private LocalDateTime endVotingTimestamp;
 
     public boolean removePlayer(Long playerId) {
         boolean removed = players.removeIf(player -> player.getId().equals(playerId));
