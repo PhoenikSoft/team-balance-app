@@ -15,6 +15,7 @@ import com.phoenixoft.teambalanceapp.user.service.UserService;
 import com.phoenixoft.teambalanceapp.vote.entity.LightUserVote;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVotesFilter;
+import com.phoenixoft.teambalanceapp.vote.model.VoteTaskSettings;
 import com.phoenixoft.teambalanceapp.vote.repository.UserVoteRepository;
 import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteForUserFieldSpecification;
 import com.phoenixoft.teambalanceapp.vote.repository.spec.UserVoteGameFieldSpecification;
@@ -76,7 +77,7 @@ public class UserVoteService {
     }
 
     @SneakyThrows
-    public void scheduleFinishVotingTask(Long gameId) {
+    public VoteTaskSettings scheduleFinishVotingTask(Long gameId) {
         Instant startTimeOfTheTask = Instant.now(Clock.systemUTC())
                 .plus(Duration.ofSeconds(votingProperties.getTimeToVoteInSeconds()));
         Trigger trigger = TriggerBuilder.newTrigger()
@@ -85,6 +86,7 @@ public class UserVoteService {
                 .usingJobData(GAME_ID_PARAM, gameId)
                 .build();
         scheduler.scheduleJob(trigger);
+        return VoteTaskSettings.of(startTimeOfTheTask);
     }
 
     private DbFetchedUserVoteFields validateSaveVoteRequest(LightUserVote userVoteRequest) {

@@ -17,10 +17,13 @@ import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVote;
 import com.phoenixoft.teambalanceapp.vote.entity.UserVotesFilter;
+import com.phoenixoft.teambalanceapp.vote.model.VoteTaskSettings;
 import com.phoenixoft.teambalanceapp.vote.service.UserVoteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,8 +123,10 @@ public class UserGameService {
         userGroupService.checkAdminPermissions(user, game.getGroup().getId());
         validateGameForVoting(game);
 
-        userVoteService.scheduleFinishVotingTask(gameId);
+        VoteTaskSettings voteTaskSettings = userVoteService.scheduleFinishVotingTask(gameId);
 
+        game.setStartVotingTimestamp(LocalDateTime.now(ZoneOffset.UTC));
+        game.setEndVotingTimestamp(LocalDateTime.ofInstant(voteTaskSettings.getEndTimeOfTheVoting(), ZoneOffset.UTC));
         game.setVoteStatus(VoteStatus.STARTED);
         gameRepository.save(game);
     }

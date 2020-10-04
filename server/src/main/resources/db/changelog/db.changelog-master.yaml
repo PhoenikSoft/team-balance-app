@@ -186,4 +186,21 @@ databaseChangeLog:
                   type: timestamp
             schemaName: public
             tableName: tbl_user
-
+  - changeSet:
+      id: add-voting-start-end-column-to-game
+      author: Yevhen Karychkovskyi
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: start_voting_timestamp
+                  type: timestamp
+            schemaName: public
+            tableName: tbl_game
+        - addColumn:
+            columns:
+              - column:
+                  name: end_voting_timestamp
+                  type: timestamp
+            schemaName: public
+            tableName: tbl_game

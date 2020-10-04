@@ -75,6 +75,8 @@ public class DtoConverter {
         dto.setName(entity.getName());
         dto.setStartDateTime(entity.getStartDateTime());
         dto.setVoteStatus(entity.getVoteStatus());
+        dto.setStartVotingTimestamp(entity.getStartVotingTimestamp());
+        dto.setEndVotingTimestamp(entity.getEndVotingTimestamp());
         dto.setPlayers(entity.getPlayers().stream().map(DtoConverter::convertUser).collect(Collectors.toList()));
         Optional.ofNullable(entity.getBalancedTeams())
                 .map(BalancedTeams::getTeams)
