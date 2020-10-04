@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) {
     const classes = useStyles();
     const [inputs, setInputs] = useState(getInitialState());
-    const [showErrors, setShowErrors] = useState(false);
+    const [showErrors] = useState(false);
 
     useEffect(() => {
         if (isSignUp) { return }
@@ -173,7 +173,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 onChange={handleChange}
                                 error={errors.firstNameError}
                                 helperText={errors.firstNameError && userConstants.FIRST_NAME_ERROR}
-                                novalidate
+                                noValidate
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -189,7 +189,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                                 onChange={handleChange}
                                 error={errors.lastNameError}
                                 helperText={errors.lastNameError && userConstants.LAST_NAME_ERROR}
-                                novalidate
+                                noValidate
                             />
                         </Grid>
                         {isSignUp && <Grid item xs={12}>
