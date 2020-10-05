@@ -14,7 +14,7 @@ spring:
         order_inserts: true
   datasource:
     platform: postgres
-    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/teambalance
+    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDB:teambalance}
     username: ${PGUSER:postgres}
     password: ${PGPASSWORD:root}
   quartz:
