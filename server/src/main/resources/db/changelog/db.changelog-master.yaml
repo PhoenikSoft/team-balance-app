@@ -1,8 +1,4 @@
 databaseChangeLog:
-  - preConditions:
-      - runningAs:
-          username: postgres
-
   - changeSet:
       id: add-user-group-tables-with-data
       author: Andriy Kuzmin
