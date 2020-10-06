@@ -41,7 +41,7 @@ public class UserGroupService {
         Group group = new Group();
         group.setName(dto.getName());
         group.getMembers().add(creatorUser);
-        group.setRef(stringGenerator.generateRandomStr(GROUP_REF_LENGTH));
+        group.setRef(generateGroupRef());
         Group createdGroup = groupRepository.save(group);
         createAndAssignGroupRoles(createdGroup.getId(), creatorUser);
         return createdGroup;
@@ -158,4 +158,11 @@ public class UserGroupService {
         }
     }
 
+    private String generateGroupRef() {
+        String groupRef;
+        do {
+            groupRef = stringGenerator.generateRandomStr(GROUP_REF_LENGTH);
+        } while (groupRepository.findByRef(groupRef).isPresent());
+        return groupRef;
+    }
 }
