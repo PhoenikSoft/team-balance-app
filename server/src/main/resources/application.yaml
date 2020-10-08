@@ -14,7 +14,7 @@ spring:
         order_inserts: true
   datasource:
     platform: postgres
-    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDB:teambalance}
+    jdbc-url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDB:teambalance}
     username: ${PGUSER:postgres}
     password: ${PGPASSWORD:root}
   quartz:
@@ -38,9 +38,18 @@ spring:
             driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
             isClustered: false
             useProperties: false
+            dataSource: quartzDataSource
 
   sendgrid:
     api-key: ${SENDGRID_API-KEY:dummy}
+
+
+
+quartz:
+  datasource:
+    jdbc-url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDB:teambalance}?currentSchema=quartz
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
 
 cors:
   origins:
