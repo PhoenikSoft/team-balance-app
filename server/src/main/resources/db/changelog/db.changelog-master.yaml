@@ -200,3 +200,17 @@ databaseChangeLog:
                   type: timestamp
             schemaName: public
             tableName: tbl_game
+  - changeSet:
+      id: create-quartz-schema
+      author: Yevhen Karychkovskyi
+      dbms: 'postgresql'
+      splitStatements: true
+      stripComments: true
+      sql: create schema quartz
+  - changeSet:
+      id: move-quartz-tables-to-quartz-schema
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/migrate_quartz_tables.sql
+            relativeToChangelogFile: true
