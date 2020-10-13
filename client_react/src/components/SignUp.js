@@ -20,7 +20,7 @@ function getErrorsText(errorsToFlags) {
         emailError: userConstants.EMAIL_ERROR,
         phoneError: userConstants.PHONE_ERROR,
         lastNameError: userConstants.LAST_NAME_ERROR,
-        firstNameError: userConstants.FIRST_NAME_ERROR
+        firstNameError: userConstants.FIRST_NAME_ERROR,
     };
     const errors = [];
     Object.keys(errorsToFlags).forEach(key => {
@@ -57,7 +57,9 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
     const [showErrors, setShowErrors] = useState(false);
 
     useEffect(() => {
-        if (isSignUp) { return }
+        if (isSignUp) {
+            return;
+        }
         const fetchData = async () => {
             const user = await fetchUser();
             setInputs(user);
@@ -73,7 +75,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
             phone: '',
             rating: 50,
             confirmPassword: '',
-            password: ''
+            password: '',
         };
     }
 
@@ -82,8 +84,8 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
         emailError: false,
         phoneError: false,
         lastNameError: false,
-        firstNameError: false
-    })
+        firstNameError: false,
+    });
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -103,9 +105,9 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
     }
 
     function handlePhoneChange(e) {
-        const input = e.target.value
+        const input = e.target.value;
         // compare digit number
-        if (input.replace(/\D/g, "").length !== 12) {
+        if (input.replace(/\D/g, '').length !== 12) {
             setErrors(errors => ({ ...errors, phoneError: true }));
         } else {
             setErrors(errors => ({ ...errors, phoneError: false }));
@@ -144,20 +146,20 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
     }
 
     function isSubmitDisabled() {
-        return Object.values(errors).some(error => error) || Object.values(inputs).some(error => !error)
+        return Object.values(errors).some(error => error) || Object.values(inputs).some(error => !error);
     }
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
                 {isSignUp && <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlinedIcon/>
                 </Avatar>}
                 <Typography component="h1" variant="h5">
                     {isSignUp ? 'Sign up' : 'Profile'}
                 </Typography>
-                <form className={classes.form} >
+                <form className={classes.form}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -248,9 +250,14 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                             <Typography>Rating</Typography>
                             <Slider
                                 name="rating"
+                                disabled={!isSignUp}
                                 onChange={handleRatingChange}
                                 value={inputs.rating}
                             />
+                            {isSignUp &&
+                            <Typography color="textSecondary">You won’t be able to change the
+                                rating later. Only other players can vote for your
+                                rating</Typography>}
                         </Grid>
                     </Grid>
                     <Button
@@ -261,7 +268,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                         color="primary"
                         className={classes.submit}
                         onClick={e => {
-                            onRegisterClick(e)(inputs)
+                            onRegisterClick(e)(inputs);
                         }}>
                         {isSignUp ? 'Sign Up' : 'Update'}
                     </Button>
@@ -275,7 +282,7 @@ export default function SignUp({ onRegisterClick, isSignUp, fetchUser, error }) 
                     </Grid>}
                     {error && <Typography color="error">{error}</Typography>}
                     {showErrors && getErrorsText(errors).map(errorText => {
-                        return <Typography color='error' key={errorText}>{errorText}</Typography>
+                        return <Typography color='error' key={errorText}>{errorText}</Typography>;
                     })}
                 </form>
             </div>
