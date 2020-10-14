@@ -5,11 +5,24 @@ import { Provider } from 'react-redux';
 import { routerMiddleware } from 'connected-react-router';
 import * as History from 'history';
 import thunk from 'redux-thunk';
+import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
+import detector from "i18next-browser-languagedetector";
 import { createStore, applyMiddleware, compose } from 'redux';
 import createRootReducer from './reducers';
 import App from './components/App';
-import { alertConstants } from './_constants';
+import { alertConstants, resources } from './_constants';
 import ErrorBoundary from './components/ErrorBoundary';
+
+i18next.use(initReactI18next)
+    .use(detector)
+    .init({
+        resources,
+        fallbackLng: 'en',
+        whitelist: ['uk', 'en']
+    });
+
+export default i18next;
 
 export const history = History.createBrowserHistory();
 

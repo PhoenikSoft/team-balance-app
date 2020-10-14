@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn({ onLoginClick, error, refLink }) {
+export default withTranslation()(function SignIn({ t, onLoginClick, error, refLink }) {
     const classes = useStyles();
 
     const [inputs, setInputs] = useState({
@@ -45,8 +46,7 @@ export default function SignIn({ onLoginClick, error, refLink }) {
     function handleChange(e) {
         const { name, value } = e.target;
         setInputs(inputs => ({ ...inputs, [name]: value }));
-    }
-
+    };
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -55,7 +55,7 @@ export default function SignIn({ onLoginClick, error, refLink }) {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    {t('SIGN_IN')}
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
@@ -66,7 +66,7 @@ export default function SignIn({ onLoginClick, error, refLink }) {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label={t('EMAIL_ADDRESS')}
                         autoComplete="email"
                         autoFocus
                     />
@@ -77,7 +77,7 @@ export default function SignIn({ onLoginClick, error, refLink }) {
                         margin="normal"
                         required
                         fullWidth
-                        label="Password"
+                        label={t('PASSWORD')}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -97,21 +97,21 @@ export default function SignIn({ onLoginClick, error, refLink }) {
                             onLoginClick(e)(email, password);
                             //onLoginClick(e)('dev@dev.com', 'dev');
                         }} >
-                        Sign In
+                        {t('SIGN_IN')}
                     </Button>
                     <Grid container>
                         <Grid item>
                             <Link href="#" variant="body2" onClick={() => history.push('/register')}>
-                                {"Don't have an account? Sign Up"}
+                                {t('SIGN_UP_QUESTION')}
                             </Link>
                         </Grid>
                         {refLink && <Grid item>
                             <Typography color="secondary">
-                                You were invited by link. Please register if you don't have an account
+                                {t('LINK_REGISTER_QUESTION')}
                             </Typography>
                         </Grid>}
                     </Grid>
-                    {error && <Typography color="error">Login failed: {error}</Typography>}
+                    {error && <Typography color="error">{t('LOGIN_FAILED')} {error}</Typography>}
                 </form>
             </div>
             <Box mt={8}>
@@ -119,4 +119,4 @@ export default function SignIn({ onLoginClick, error, refLink }) {
             </Box>
         </Container>
     );
-}
+});

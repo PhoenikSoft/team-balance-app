@@ -1,16 +1,24 @@
-import LocalizedStrings from 'react-localization';
-
-export default new LocalizedStrings({
+export const resources = {
     en: {
-        how: "How do you want your egg today?",
-        boiledEgg: "Boiled egg",
-        softBoiledEgg: "Soft-boiled egg",
-        choice: "How to choose the egg"
+        translation: {
+            SIGN_IN: 'Sign in',
+            EMAIL_ADDRESS: 'Email Address',
+            PASSWORD: 'Password',
+            SIGN_UP_QUESTION: "Don't have an account? Sign Up",
+            LINK_REGISTER_QUESTION: "You were invited by link. Please register if you don't have an account",
+            LOGIN_FAILED: 'Login failed:',
+            LEAVE_FEEDBACK: 'Leave Feedback',
+        }
     },
-    ua: {
-        how: "Come vuoi il tuo uovo oggi?",
-        boiledEgg: "Uovo sodo",
-        softBoiledEgg: "Uovo alla coque",
-        choice: "Come scegliere l'uovo"
+    uk: {
+        translation: {
+            SIGN_IN: 'Логін',
+            EMAIL_ADDRESS: 'Електронна адресса',
+            PASSWORD: 'Пароль',
+            SIGN_UP_QUESTION: 'Немає аккаунту? Зареєструйся',
+            LINK_REGISTER_QUESTION: 'Ви були запрошені через посилання. Будь ласка зареєструйтеся, якщо у вас немає аккаунту',
+            LOGIN_FAILED: 'Невдалося авторизуватися:',
+            LEAVE_FEEDBACK: 'Залиште відгук',
+        }
     }
-});
+};

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import Dialog from './FeedBackDialog';
 import { navigation } from '../_helpers';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onAppNameClick }) {
+export default withTranslation()(function PrimarySearchAppBar({ t, onLogoutClick, submitFeedback, onAppNameClick, changeLanguage }) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
@@ -85,7 +86,6 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onA
         handleClose();
     };
 
-
     return (
         <div className={classes.grow}>
             <AppBar position="static">
@@ -100,10 +100,17 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onA
 
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
+
                         <div className={classes.spacing}>
+
+                            <ButtonGroup variant="contained" color="primary" >
+                                <Button onClick={e => changeLanguage('en')}>EN</Button>
+                                <Button onClick={e => changeLanguage('uk')}>UA</Button>
+                            </ButtonGroup>
+
                             <Button variant="contained" color="primary" startIcon={<FeedbackOutlinedIcon />}
                                 onClick={handleClickOpen}>
-                                Leave Feedback
+                                {t('LEAVE_FEEDBACK')}
                             </Button>
                             <Button variant="contained" color="primary" startIcon={<AccountCircle />}
                                 onClick={onProfileClick}>
@@ -129,4 +136,4 @@ export default function PrimarySearchAppBar({ onLogoutClick, submitFeedback, onA
             <Dialog open={open} handleClose={handleClose} onSubmit={onSubmit} />
         </div>
     );
-}
+});
