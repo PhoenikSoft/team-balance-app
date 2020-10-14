@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Slider from '@material-ui/core/Slider';
 
-export default function DiscreteSlider({ onChange, value }) {
+export default function DiscreteSlider({ disabled, onChange, value }) {
     const [localValue, setValue] = useState();
     const marks = [
         {
@@ -36,6 +36,7 @@ export default function DiscreteSlider({ onChange, value }) {
             value={getValue()}
             aria-labelledby="discrete-slider"
             valueLabelDisplay="auto"
+            disabled={disabled}
             step={1}
             min={0}
             max={100}
