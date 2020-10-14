@@ -114,11 +114,11 @@ export default withTranslation()(function PrimarySearchAppBar({ t, onLogoutClick
                             </Button>
                             <Button variant="contained" color="primary" startIcon={<AccountCircle />}
                                 onClick={onProfileClick}>
-                                Profile
+                                {t('PROFILE')}
                             </Button>
                             <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />}
                                 onClick={onLogoutClick}>
-                                Logout
+                                {t('LOGOUT')}
                             </Button>
                         </div>
 

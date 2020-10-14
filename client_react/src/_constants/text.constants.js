@@ -8,6 +8,8 @@ export const resources = {
             LINK_REGISTER_QUESTION: "You were invited by link. Please register if you don't have an account",
             LOGIN_FAILED: 'Login failed:',
             LEAVE_FEEDBACK: 'Leave Feedback',
+            PROFILE:'Profile',
+            LOGOUT: 'Logout',
         }
     },
     uk: {
@@ -19,6 +21,8 @@ export const resources = {
             LINK_REGISTER_QUESTION: 'Ви були запрошені через посилання. Будь ласка зареєструйтеся, якщо у вас немає аккаунту',
             LOGIN_FAILED: 'Невдалося авторизуватися:',
             LEAVE_FEEDBACK: 'Залиште відгук',
+            PROFILE:'Профайл',
+            LOGOUT: 'Вийти',
         }
     }
 };
