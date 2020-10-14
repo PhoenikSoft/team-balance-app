@@ -85,17 +85,15 @@ function TeamTable({ team, index, actions, showSlider, votes, showRating }) {
             Toolbar: props => <div className={classes.spacing}>
                 <h6 className="MuiTypography-root MuiTypography-h6">
                     {props.title}</h6>
-            </div>
+            </div>,
+            Action: props =>
+              (<div style={{ width: '150px', display: 'flex' }}>
+                  {showSlider && <VoteSlider rating={props.data.rating} userId={props.data.id} />}
+              </div>)
         }}
         actions={actions}
-        components={{
-            Action: props =>
-                (<div style={{ width: '150px', display: 'flex' }}>
-                    {showSlider && <VoteSlider rating={props.data.rating} userId={props.data.id} />}
-                </div>)
-        }}
     />
-};
+}
 
 function getActionsConfig(showSlider) {
     return showSlider
@@ -123,12 +121,12 @@ function getColumns(showRating, votes) {
 
     (votes && votes.length !== 0) && columns.push(voteColumn);
     return columns;
-};
+}
 
 function getVoteChangeIcon(rowData) {
     if (rowData.id == authHelper.getCookie('userId')) {
         return;
-    };
+    }
     if (!rowData.vote || rowData.vote === 0) {
         return <div><RemoveIcon style={{ color: blue[500] }} /></div>;
     }

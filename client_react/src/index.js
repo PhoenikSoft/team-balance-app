@@ -3,8 +3,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { routerMiddleware } from 'connected-react-router';
-import * as History from 'history'
-import thunk from 'redux-thunk'
+import * as History from 'history';
+import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createRootReducer from './reducers';
 import App from './components/App';
@@ -34,8 +34,6 @@ export const store = createStore(
     {},
     composedEnhancers
 );
-
-
 
 render(
     <Provider store={store}>

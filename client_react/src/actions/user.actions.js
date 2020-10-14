@@ -51,7 +51,7 @@ function register(inputs) {
                         navigation.goToRefLink(refLink);
                     } else {
                         navigation.goHome();
-                    };
+                    }
                 },
                 error => {
                     dispatch(failure(error.toString()));

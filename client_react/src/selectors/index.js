@@ -11,7 +11,7 @@ function getGroup(groupId) {
         return group;
     } else {
         return {};
-    };
+    }
 }
 
 function getGame(groupId, gameId) {
