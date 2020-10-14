@@ -22,9 +22,7 @@ i18next.use(initReactI18next)
         whitelist: ['uk', 'en']
     });
 
-export default i18next;
-
-export const history = History.createBrowserHistory();
+const history = History.createBrowserHistory();
 
 const enhancers = []
 const middleware = [thunk, routerMiddleware(history)];
@@ -42,7 +40,7 @@ global.fetchWithLoader = (...args) => {
     });
 }
 
-export const store = createStore(
+const store = createStore(
     createRootReducer(history),
     {},
     composedEnhancers
@@ -56,3 +54,5 @@ render(
     </Provider>,
     document.getElementById('root')
 );
+
+export { store, history, i18next };
