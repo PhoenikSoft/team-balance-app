@@ -6,6 +6,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.FeedbackResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameViewResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameVotingStartedResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.PlayerResponseDto;
@@ -105,5 +106,9 @@ public class DtoConverter {
                 .forUserId(entity.getForUser().getId())
                 .vote(entity.getVote())
                 .build();
+    }
+
+    public static GameVotingStartedResponseDto convertGameVotingStartedResponse(Game entity) {
+        return GameVotingStartedResponseDto.of(entity.getEndVotingTimestamp());
     }
 }
