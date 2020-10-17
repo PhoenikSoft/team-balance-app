@@ -16,11 +16,13 @@ import AddBotsStep from './AddBotsStep';
 import { store } from '../../../index';
 import { alertConstants } from '../../../_constants';
 
+const MINIMAL_BALANCING_PLAYERS_AMOUNT = 6;
+
 function getSteps() {
     return ['Choose how much teams you want to generate', 'Add unregistered bots'];
 };
 
-export default function ({ open, handleClose, onSubmit }) {
+export default function ({ open, handleClose, onSubmit, playersCount }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamsCount, setTeamsCount] = useState('2');
@@ -99,6 +101,7 @@ export default function ({ open, handleClose, onSubmit }) {
                         </Button>}
             <Button
                 onClick={() => onSubmit(teamsCount, bots)}
+                disabled={bots.length + playersCount < MINIMAL_BALANCING_PLAYERS_AMOUNT}
                 color='primary'>
                 Balance Teams
                         </Button>

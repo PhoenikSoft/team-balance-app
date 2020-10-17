@@ -11,6 +11,11 @@ import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
 
+const voteStatus = {
+    NOT_STARTED: 'NOT_STARTED',
+    STARTED:'STARTED'
+};
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -50,6 +55,8 @@ export default function GamePage(
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
     const [voteDialogOpened, setVoteDialogOpened] = useState(false);
     const [teamCountDialogOpened, setTeamCountDialogOpened] = useState(false);
+    const isGameContainsPlayers = game.players && !!game.players.length;
+    const isTeamsBalanced = game.balancedTeams && !!game.balancedTeams.teams;
 
     useEffect(() => {
         const fetch = async () => {
@@ -76,25 +83,25 @@ export default function GamePage(
                             Back to group
                     </Button>
                     </Grid>
-                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.NOT_STARTED && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
                             Add members
                     </Button>
                     </Grid>}
 
-                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.NOT_STARTED && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
                             Start voting
                     </Button>
                     </Grid>}
 
-                    {game.voteStatus === 'STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setVoteDialogOpened(true)}>
                             Vote for players
                     </Button>
                     </Grid>}
 
-                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
                             Balance teams
                         </Button>
@@ -166,6 +173,7 @@ export default function GamePage(
         />
 
         <TeamCountDialog
+            playersCount={game.players && game.players.length}
             handleClose={e => setTeamCountDialogOpened(false)}
             onSubmit={(teamsCount, bots) => {
                 balanceTeams(teamsCount, bots);
