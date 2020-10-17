@@ -61,8 +61,6 @@ export default function ({ open, handleClose, onSubmit, playersCount }) {
                 return 'Unknown step';
         };
     };
-    console.log(playersCount)
-    console.log(bots.length)
 
     return <Dialog
         open={open}

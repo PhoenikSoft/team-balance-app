@@ -55,7 +55,7 @@ cors:
   origins:
     - http://localhost:4200
     - http://localhost:3000
-    - http://localhost:3002
+    - http://localhost
 
 voting:
   # 5 min
