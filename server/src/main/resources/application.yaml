@@ -59,7 +59,7 @@ cors:
 
 voting:
   # 5 min
-  timeToVoteInSeconds: 300
+  timeToVoteInSeconds: 60
   minRating: 1
   maxRating: 100
 

@@ -10,6 +10,7 @@ import AddPlayersDialog from '../AddPlayersDialog';
 import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
+import CountDownTimer from './CountdownTimer';
 
 const voteStatus = {
     NOT_STARTED: 'NOT_STARTED',
@@ -100,7 +101,6 @@ export default function GamePage(
                             Vote for players
                     </Button>
                     </Grid>}
-
                     {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
                             Balance teams
