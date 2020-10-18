@@ -10,6 +10,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import Dialog from './FeedBackDialog';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import { navigation } from '../_helpers';
 
 
@@ -108,17 +110,29 @@ export default withTranslation()(function PrimarySearchAppBar({ t, onLogoutClick
                                 <Button onClick={e => changeLanguage('uk')}>UA</Button>
                             </ButtonGroup>
 
+                            <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                onChange={event => changeLanguage(event.target.value)}
+                                label="Language"
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={'en'}>en</MenuItem>
+                                <MenuItem value={'ua'}>ua</MenuItem>
+                                <MenuItem value={'ru'}>ru</MenuItem>
+                            </Select>
+
                             <Button variant="contained" color="primary" startIcon={<FeedbackOutlinedIcon />}
                                 onClick={handleClickOpen}>
                                 {t('LEAVE_FEEDBACK')}
                             </Button>
                             <Button variant="contained" color="primary" startIcon={<AccountCircle />}
                                 onClick={onProfileClick}>
-                                {t('PROFILE')}
                             </Button>
                             <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />}
                                 onClick={onLogoutClick}>
-                                {t('LOGOUT')}
                             </Button>
                         </div>
 

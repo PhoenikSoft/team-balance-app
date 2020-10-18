@@ -18,8 +18,8 @@ i18next.use(initReactI18next)
     .use(detector)
     .init({
         resources,
-        fallbackLng: 'en',
-        whitelist: ['uk', 'en']
+        fallbackLng: 'ru',
+        whitelist: ['uk', 'en', 'ru']
     });
 
 const history = History.createBrowserHistory();

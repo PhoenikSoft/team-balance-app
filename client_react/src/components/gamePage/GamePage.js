@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid';
@@ -33,8 +34,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function GamePage(
-    { game,
+export default withTranslation() (function GamePage(
+    {   t,
+        game,
         fetchGame,
         groupId,
         goBack,
@@ -105,11 +107,11 @@ export default function GamePage(
             <Grid item xs={12} sm={6}>
                 <MaterialTable
                     className={classes.paper}
-                    title='Players'
+                    title={t('PLAYERS')}
                     data={game.players}
                     columns={[
-                        { title: 'Name', field: 'firstName' },
-                        { title: 'Rating', field: 'rating', type: 'numeric' }
+                        { title: t('NAME'), field: 'firstName' },
+                        { title: t('RATING'), field: 'rating', type: 'numeric' }
                     ]}
                     actions={[
                         player => ({
@@ -136,8 +138,8 @@ export default function GamePage(
                 </Grid>
                 : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
                     <Grid item >
-                        <h6 className="MuiTypography-root MuiTypography-h6">
-                            Push button below to balance teams!
+                        <h6 className="MuiTypography-root MuiTypography-h6" style={{textAlign: 'center'}}>
+                            {t('GAME_PAGE_CTA')}
                         </h6>
                     </Grid>
                 </Grid>}
@@ -176,4 +178,4 @@ export default function GamePage(
 
     </>
     )
-}
+});

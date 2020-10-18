@@ -1,4 +1,5 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 import MaterialTable from 'material-table'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ({ balancedTeams, votes,
+export default withTranslation() (function ({ t, balancedTeams, votes,
     showTitle = true,
     showSlider = false,
     showTitleTable = true,
@@ -36,12 +37,12 @@ export default function ({ balancedTeams, votes,
     let index = 1;
     return < Grid >
         {showTitle && <Grid container justify="center">
-            <Typography variant="h6" >Balanced teams</Typography>
+            <Typography variant="h6" >{t('BALANCED_TEAMS')}</Typography>
         </Grid>}
         {/* Dummy table used to show just column titles */}
         {showTitleTable && <MaterialTable
             data={[]}
-            columns={getColumns(showRating, votes)}
+            columns={getColumns(t, showRating, votes)}
             actions={getActionsConfig()}
             options={{
                 search: false,
@@ -55,6 +56,7 @@ export default function ({ balancedTeams, votes,
         {balancedTeams.map(team => {
             team.players = mergePlayersWithVotes(team.players, votes);
             return React.cloneElement(<TeamTable />, {
+                t, 
                 team: showCurrentPlayer
                     ? team
                     : { ...team, players: team.players.filter(player => player.id != authHelper.getCookie('userId')) },
@@ -67,14 +69,14 @@ export default function ({ balancedTeams, votes,
             })
         })}
     </Grid>
-}
+});
 
-function TeamTable({ team, index, actions, showSlider, votes, showRating }) {
+function TeamTable({ t, team, index, actions, showSlider, votes, showRating }) {
     const classes = useStyles();
     return <MaterialTable
-        title={`Team ${index}`}
+        title={t('TEAM') + ` ${index}`}
         data={team.players}
-        columns={getColumns(showRating, votes)}
+        columns={getColumns(t, showRating, votes)}
         options={{
             search: false,
             paging: false,
@@ -104,15 +106,15 @@ function getActionsConfig(showSlider) {
         : []
 };
 
-function getColumns(showRating, votes) {
+function getColumns(t, showRating, votes) {
     const columns = [
-        { title: 'First Name', field: 'firstName' },
-        { title: 'Last Name', field: 'lastName' }
+        { title: t('NAME'), field: 'firstName' },
+        { title: t('LAST_NAME'), field: 'lastName' }
     ];
-    showRating && columns.push({ title: 'Rating', field: 'rating' });
+    showRating && columns.push({ title: t('RATING'), field: 'rating' });
     const voteColumn = {
         field: 'vote',
-        title: 'Votes',
+        title: t('VOTES'),
         render: rowData => <div style={{ display: 'flex' }}>
             {getVoteChangeIcon(rowData)}
             {rowData.vote !== 0 && <div style={{ paddingTop: '5px' }}>{rowData.vote}</div>}

@@ -15,6 +15,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import AddGroupDialog from './AddGroupDialog';
+import { withTranslation } from 'react-i18next';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +50,7 @@ function generate(groups, element) {
 }
 
 // this component uses global state to render groups
-export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditSubmit, isGroupAdmin, onGroupDelete,
+export default withTranslation() (function GroupsList({ t, groupsFromGlobalState, fetchGroups, onEditSubmit, isGroupAdmin, onGroupDelete,
     onGroupAdd, isGroupCreatedByCurrentUser, goToGroupPage }) {
     let groups = groupsFromGlobalState;
     const classes = useStyles();
@@ -69,7 +70,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
             <div className={classes.root}>
                 <Grid container spacing={6}>
                     <Grid item xs={12} md={12}>
-                        <Typography variant="h6" className={classes.title}>Your groups</Typography>
+                        <Typography variant="h6" className={classes.title}>{t('YOUR_GROUPS')}</Typography>
                         <div className={classes.demo}>
                             <List dense={false}>
                                 {generate(groups, <GroupsListItem />)}
@@ -87,7 +88,7 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
                                     color="secondary"
                                     fontSize="large"
                                 />}>
-                                Add group
+                                {t('ADD_GROUP')}
                             </Button>
                         </div>
                     </Grid>
@@ -147,6 +148,4 @@ export default function GroupsList({ groupsFromGlobalState, fetchGroups, onEditS
             </ListItem>
         )
     }
-}
-
-
+});
