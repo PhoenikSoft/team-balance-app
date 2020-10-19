@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 
-export default function ({ deadline }) {
-    const isTimerExpired = total => total > 0;
+export default function ({ deadline, votingFinished }) {
+    const isTimerExpired = total => total < 0;
     const [timer, setTimer] = useState(getTimeRemaining(deadline));
 
     setTimeout(() => {
         const timer = getTimeRemaining(deadline);
-        isTimerExpired(timer.total) && setTimer(timer);
+        isTimerExpired(timer.total) ? votingFinished() : setTimer(timer)
     }, 1000);
 
-    return isTimerExpired(timer.total)
+    return !isTimerExpired(timer.total)
         ? (<div>
-            {`${timer.hours} hours `} 
+            {`${timer.hours} hours `}
             {`${timer.minutes} minutes `}
             {`${timer.seconds} seconds `}
         </div>)

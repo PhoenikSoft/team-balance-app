@@ -14,7 +14,8 @@ import CountDownTimer from './CountdownTimer';
 
 const voteStatus = {
     NOT_STARTED: 'NOT_STARTED',
-    STARTED:'STARTED'
+    STARTED: 'STARTED',
+    FINISHED: 'FINISHED',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +51,8 @@ export default function GamePage(
         startVoting,
         sendVotes,
         getVotes,
-        votes }) {
+        votes,
+        votingFinished }) {
     const classes = useStyles();
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
@@ -101,6 +103,28 @@ export default function GamePage(
                             Vote for players
                     </Button>
                     </Grid>}
+
+                    {game.voteStatus === voteStatus.STARTED && game.endVotingTimestamp &&
+                        <>
+                            <Grid item>
+                                <Typography variant="h5" gutterBottom>
+                                    Time left to vote
+                            </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h5" gutterBottom>
+                                    <CountDownTimer deadline={game.endVotingTimestamp} votingFinished={votingFinished} />
+                                </Typography>
+                            </Grid>
+                        </>
+                    }
+                    
+                    {game.voteStatus === voteStatus.FINISHED && <Grid item>
+                        <Typography variant="h5" gutterBottom>
+                            Voting is finished
+                            </Typography>
+                    </Grid>}
+
                     {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
                             Balance teams
