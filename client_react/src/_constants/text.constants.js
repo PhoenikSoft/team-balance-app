@@ -11,6 +11,13 @@ export const resources = {
             PROFILE:'Profile',
             LOGOUT: 'Logout',
 
+                // register validation error
+            EMAIL_ERROR: 'Provide a valid email',
+            PHONE_ERROR: 'Provide a valid phone',
+            FIRST_NAME_ERROR: 'First name should not be empty',
+            LAST_NAME_ERROR: 'Last name should not be empty',
+            PASSWORD_ERROR: 'Provide passwords containing minimum 8 characters and make sure passwords match',
+
             YOUR_GROUPS: 'Your groups:',
             ADD_GROUP: 'Create a group',
 
@@ -48,6 +55,13 @@ export const resources = {
             CREATE: 'Создать',
             ADD: 'Добавить',
 
+            // register validation error
+            EMAIL_ERROR: 'Введите корректный адрес почты.',
+            PHONE_ERROR: 'Введите корректный номер телефона.',
+            FIRST_NAME_ERROR: 'Поле имени не может быть пустым.',
+            LAST_NAME_ERROR: 'Поле фамилии не может быть пустым.',
+            PASSWORD_ERROR: 'Введите пароль не короче 8 символов и убедитесь что пароли совпадают.',
+
             YOUR_GROUPS: 'Ваши группы:',
             ADD_GROUP: 'Создать группу',
 
@@ -71,7 +85,8 @@ export const resources = {
 
             BALANCED_TEAMS: 'Сбалансированные команды ⚖️',
             TEAM: 'Команда',
-            VOTES: 'Голосование'
+            VOTES: 'Голосование',
+            CHOOSE_TEAMS_COUNT: 'Выберите на какое количество команд сгенерировать составы'
         }
     }
 };
