@@ -101,7 +101,7 @@ export default function GroupPage(
                         columns={[
                             //{ title: 'Num', field: 'id', type: 'numeric' },
                             { title: 'Name', field: 'name' },
-                            { title: 'Start date', field: 'startDateTime' }
+                            { title: 'Start date', field: 'startDateTime', defaultSort: 'desc' }
                             //players number
 
                         ]}
@@ -115,7 +115,8 @@ export default function GroupPage(
                         ]}
                         options={{
                             actionsColumnIndex: -1,
-                            search: false
+                            search: false,
+                            sorting: true
                         }}
                     />
                 </Grid>
