@@ -20,7 +20,7 @@ function goBack() {
 
 function goToGroupView(groupId) {
     history.push(`/home/groups/${groupId}`);
-};
+}
 
 function goToProfile() {
     history.push('/home/profile');
