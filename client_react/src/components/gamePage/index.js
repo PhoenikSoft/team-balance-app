@@ -23,6 +23,7 @@ const mapDispatchToProps = dispatch => {
         startVoting: gameId => dispatch(gamesActions.startVoting(gameId)),
         sendVotes: votes => dispatch(gamesActions.sendVotes(getGameId(), votes)),
         getVotes: () => dispatch(gamesActions.getVotes(getGameId())),
+        votingFinished:() => dispatch(gamesActions.votingFinished())
     }
 }
 
