@@ -86,7 +86,7 @@ export default function GamePage(
                             Back to group
                     </Button>
                     </Grid>
-                    {game.voteStatus === voteStatus.NOT_STARTED && <Grid item>
+                    {game.voteStatus === voteStatus.NOT_STARTED && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
                             Add members
                     </Button>
