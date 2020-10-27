@@ -4,14 +4,16 @@ export const resources = {
             SIGN_IN: 'Sign in',
             EMAIL_ADDRESS: 'Email Address',
             PASSWORD: 'Password',
+            CONFIRM_PASSWORD: 'Confirm password',
             SIGN_UP_QUESTION: "Don't have an account? Sign Up",
             LINK_REGISTER_QUESTION: "You were invited by link. Please register if you don't have an account",
             LOGIN_FAILED: 'Login failed:',
             LEAVE_FEEDBACK: 'Leave Feedback',
-            PROFILE:'Profile',
+            PROFILE: 'Profile',
             LOGOUT: 'Logout',
+            PHONE_NUMBER: 'Phone',
 
-                // register validation error
+            // register validation error
             EMAIL_ERROR: 'Provide a valid email',
             PHONE_ERROR: 'Provide a valid phone',
             FIRST_NAME_ERROR: 'First name should not be empty',
@@ -21,7 +23,22 @@ export const resources = {
             YOUR_GROUPS: 'Your groups:',
             ADD_GROUP: 'Create a group',
 
-            ADD_GROUP_DIALOG_NEW_GROUP: 'New group'
+            ADD_GROUP_DIALOG_NEW_GROUP: 'New group',
+
+            TEAMS: 'Teams',
+
+            SIGN_UP: 'Sign up',
+            LAST_NAME: 'Last name',
+            FIRST_NAME: 'First name',
+            RATING: 'Rating',
+            RATING_MESSAGE: 'You won’t be able to change the rating later. Only other players can vote for your rating',
+            UPDATE: 'Update',
+            SIGN_IN_MESSAGE: 'Already have an account? Sign in',
+            BEGINNER: 'Beginner',
+            AMATEUR: 'Amateur',
+            INTERMEDIATE: 'Intermediate',
+            MASTER: 'Master',
+            STAR: 'Star',
         }
     },
     uk: {
@@ -33,7 +50,7 @@ export const resources = {
             LINK_REGISTER_QUESTION: 'Ви були запрошені через посилання. Будь ласка зареєструйтеся, якщо у вас немає аккаунту',
             LOGIN_FAILED: 'Невдалося авторизуватися:',
             LEAVE_FEEDBACK: 'Залиште відгук',
-            PROFILE:'Профайл',
+            PROFILE: 'Профайл',
             LOGOUT: 'Вийти',
 
             YOUR_GROUPS: 'Ваші групи:',
@@ -45,15 +62,17 @@ export const resources = {
             SIGN_IN: 'Логин',
             EMAIL_ADDRESS: 'Почта',
             PASSWORD: 'Пароль',
+            CONFIRM_PASSWORD: 'Подтвердить пароль',
             SIGN_UP_QUESTION: 'Нет аккаунта? Зарегестрируйся',
             LINK_REGISTER_QUESTION: 'Вас пригласили по ссылке. Зарегистрируйтесь, если у вас нет аккаунта.',
             LOGIN_FAILED: 'Не удалось авторизоваться:',
             LEAVE_FEEDBACK: 'Оставьте отзыв',
-            PROFILE:'Профайл',
+            PROFILE: 'Профайл',
             LOGOUT: 'Выйти',
             CANCEL: 'Отменить',
             CREATE: 'Создать',
             ADD: 'Добавить',
+            PHONE_NUMBER: 'Номер телефона',
 
             // register validation error
             EMAIL_ERROR: 'Введите корректный адрес почты.',
@@ -85,8 +104,20 @@ export const resources = {
 
             BALANCED_TEAMS: 'Сбалансированные команды ⚖️',
             TEAM: 'Команда',
+            TEAMS: 'Команды',
             VOTES: 'Голосование',
-            CHOOSE_TEAMS_COUNT: 'Выберите на какое количество команд сгенерировать составы'
+            CHOOSE_TEAMS_COUNT: 'Выберите на какое количество команд сгенерировать составы',
+
+            SIGN_UP: 'Зарегестрироваться',
+            FIRST_NAME: 'Имя',
+            RATING_MESSAGE: 'Вы не сможете менять рейтинг позже. Только игроки могут проголосовать за Ваш рейтинг',
+            UPDATE: 'Обновить',
+            SIGN_IN_MESSAGE: 'Войдите, если у Вас уже есть аккаунт',
+            BEGINNER: 'Начинающий',
+            AMATEUR: 'Аматор',
+            INTERMEDIATE: 'Средний',
+            MASTER: 'Мастер',
+            STAR: 'Звезда',
         }
     }
 };

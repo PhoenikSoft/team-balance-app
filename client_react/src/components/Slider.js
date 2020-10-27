@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 import Slider from '@material-ui/core/Slider';
+import { withTranslation } from 'react-i18next';
 
-export default function DiscreteSlider({ disabled, onChange, value }) {
+
+export default withTranslation()(function DiscreteSlider({ t, disabled, onChange, value }) {
     const [localValue, setValue] = useState();
     const marks = [
         {
             value: 0,
-            label: 'Beginner',
+            label: t('BEGINNER'),
         },
         {
             value: 25,
-            label: 'Amateur',
+            label: t('AMATEUR'),
         },
         {
             value: 50,
-            label: 'Intermediate',
+            label: t('INTERMEDIATE'),
         },
         {
             value: 75,
-            label: 'Master',
+            label: t('MASTER'),
         },
         {
             value: 100,
-            label: 'Star',
+            label: t('STAR'),
         }
     ];
 
@@ -47,4 +49,4 @@ export default function DiscreteSlider({ disabled, onChange, value }) {
             marks={marks}
         />
     );
-}
+});
