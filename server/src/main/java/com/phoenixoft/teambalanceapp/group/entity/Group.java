@@ -61,15 +61,7 @@ public class Group implements Serializable {
         return members.removeIf(groupMember -> groupMember.getId().equals(memberToDelete.getId()));
     }
 
-    public void removeGame(Game gameToRemove) {
-        this.getGames().remove(gameToRemove);
-    }
-
     public Optional<User> findMember(Long memberId) {
         return members.stream().filter(member -> member.getId().equals(memberId)).findFirst();
-    }
-
-    public Optional<Game> findGame(Long gameId) {
-        return games.stream().filter(game -> game.getId().equals(gameId)).findFirst();
     }
 }

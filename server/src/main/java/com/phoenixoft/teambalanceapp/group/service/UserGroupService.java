@@ -6,6 +6,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.GroupRequestDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.repository.GroupRepository;
+import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.Role;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.repository.RoleRepository;
@@ -102,13 +103,25 @@ public class UserGroupService {
         return findGroupById(userId, groupId).getGames();
     }
 
+    public void checkRemoveMemberPermissions(CustomUser userDetails, Long userId, Long groupId) {
+        boolean hasAdminPermissions = hasAdminPermissions(userDetails, groupId);
+        boolean removeCurrentUser = userDetails.getId().equals(userId);
+        boolean canRemoveMember = (hasAdminPermissions && !removeCurrentUser) || (!hasAdminPermissions && removeCurrentUser);
+        if (!canRemoveMember) {
+            throw new AccessDeniedException("You don't have \"remove member\" permissions");
+        }
+    }
+
     public void checkAdminPermissions(UserDetails userDetails, Long groupId) {
-        String processingGroupAdminRole = RoleGenerator.createAdminRoleTitle(groupId);
-        Set<SimpleGrantedAuthority> authorities = (Set<SimpleGrantedAuthority>) userDetails.getAuthorities();
-        boolean matchAdminRole = authorities.stream().anyMatch(simpleGrantedAuthority -> simpleGrantedAuthority.getAuthority().equals(processingGroupAdminRole));
-        if (!matchAdminRole) {
+        if (!hasAdminPermissions(userDetails, groupId)) {
             throw new AccessDeniedException("Admin privileges required.");
         }
+    }
+
+    private boolean hasAdminPermissions(UserDetails userDetails, Long groupId) {
+        String processingGroupAdminRole = RoleGenerator.createAdminRoleTitle(groupId);
+        Set<SimpleGrantedAuthority> authorities = (Set<SimpleGrantedAuthority>) userDetails.getAuthorities();
+        return authorities.stream().anyMatch(simpleGrantedAuthority -> simpleGrantedAuthority.getAuthority().equals(processingGroupAdminRole));
     }
 
     public boolean hasUserAccessToGroup(Long groupId, UserDetails userDetails) {

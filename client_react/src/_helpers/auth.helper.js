@@ -8,7 +8,8 @@ export const authHelper = {
     isGroupAdmin,
     setUserToken,
     setUserId,
-    isAuthenticated
+    isAuthenticated,
+    getUserId,
 }
 
 function isAuthenticated() {
@@ -81,7 +82,7 @@ function isGroupAdmin(groupId) {
     const jwt = getCookie('jwt');
     if (!jwt) {
         return false;
-    };
+    }
     const decodedJwt = jwtDecode(getCookie('jwt'));
     return decodedJwt.roles.includes(`"ADMIN_ROLE_${groupId}"`)
 }
@@ -92,4 +93,8 @@ function setUserToken(token) {
 
 function setUserId(userId) {
     _setCookie('userId', userId);
+}
+
+function getUserId() {
+    return getCookie('userId');
 }

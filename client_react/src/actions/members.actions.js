@@ -1,17 +1,21 @@
 import { memberConstants, routingConstants, groupConstants, userConstants, alertConstants } from '../_constants';
-import { serviceHelper, navigation } from '../_helpers';
+import { serviceHelper, navigation, authHelper } from '../_helpers';
 import { membersService } from '../_services';
-
 
 const deleteMember = (userId, groupId) => dispatch =>
     membersService.deleteMember(userId, groupId)
-        .then(() => dispatch({ type: memberConstants.DELETE_MEMBER, memberId: userId }))
+        .then(() => {
+            dispatch({ type: memberConstants.DELETE_MEMBER, memberId: userId });
+            if (authHelper.getUserId() == userId) {
+                navigation.goHome();
+            }
+        })
         .catch(serviceHelper.actionsErrorHandler);
 
 const copyLinkToClipBoard = groupRef => {
     const refLink = document.location.origin + routingConstants.ADD_MEMBER_BY_REF(groupRef);
     performCopy(refLink);
-}
+};
 
 const addMemberByRef = refLink => dispatch => {
     return membersService.addMemberByRef(refLink)
@@ -43,7 +47,6 @@ function performCopy(text) {
     document.execCommand("copy");
     document.body.removeChild(dummy);
 }
-
 
 export const membersActions = {
     deleteMember,
