@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { gameConstants, playersCosntants } from '../_constants';
 
-export function game(state = { }, action) {
+export function game(state = {}, action) {
     switch (action.type) {
         case gameConstants.GAME_FETCHED:
             return action.game;
@@ -15,10 +15,12 @@ export function game(state = { }, action) {
         case gameConstants.VOTES_FETCHED:
             return { ...state, submittedVotes: action.votes }
         case gameConstants.VOTES_SUBMITTED:
-            return { ...state, submittedVotes: [...action.votes,...state.submittedVotes ]}
+            return { ...state, submittedVotes: [...action.votes, ...state.submittedVotes] }
 
         case gameConstants.VOTING_STARTED:
-            return { ...state, voteStatus: "STARTED" }
+            return { ...state, endVotingTimestamp: action.endVotingTimestamp, voteStatus: "STARTED" }
+        case gameConstants.VOTING_FINISHED:
+            return { ...state, voteStatus: "FINISHED" }
         case gameConstants.VOTE_ADDED:
             if (state.votes) {
                 state.votes.unshift(action.vote)
@@ -26,7 +28,7 @@ export function game(state = { }, action) {
             } else {
                 return { ...state, votes: [action.vote] };
             }
-        
+
         case gameConstants.FLUSH_VOTES:
             return { ...state, votes: [] }
         default:

@@ -118,7 +118,7 @@ public class UserGameService {
         return userVoteService.getVotesByFilter(UserVotesFilter.builder().gameId(gameId).voterId(voterId).build());
     }
 
-    public void startGameVoting(CustomUser user, Long gameId) {
+    public Game startGameVoting(CustomUser user, Long gameId) {
         Game game = findUserGame(user.getId(), gameId);
         userGroupService.checkAdminPermissions(user, game.getGroup().getId());
         validateGameForVoting(game);
@@ -128,7 +128,7 @@ public class UserGameService {
         game.setStartVotingTimestamp(LocalDateTime.now(ZoneOffset.UTC));
         game.setEndVotingTimestamp(LocalDateTime.ofInstant(voteTaskSettings.getEndTimeOfTheVoting(), ZoneOffset.UTC));
         game.setVoteStatus(VoteStatus.STARTED);
-        gameRepository.save(game);
+        return gameRepository.save(game);
     }
 
     private void validateGameForVoting(Game game) {

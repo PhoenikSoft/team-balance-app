@@ -11,6 +11,13 @@ import AddPlayersDialog from '../AddPlayersDialog';
 import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
+import CountDownTimer from './CountdownTimer';
+
+const voteStatus = {
+    NOT_STARTED: 'NOT_STARTED',
+    STARTED: 'STARTED',
+    FINISHED: 'FINISHED',
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,12 +53,15 @@ export default withTranslation() (function GamePage(
         startVoting,
         sendVotes,
         getVotes,
-        votes }) {
+        votes,
+        votingFinished }) {
     const classes = useStyles();
 
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
     const [voteDialogOpened, setVoteDialogOpened] = useState(false);
     const [teamCountDialogOpened, setTeamCountDialogOpened] = useState(false);
+    const isGameContainsPlayers = game.players && !!game.players.length;
+    const isTeamsBalanced = game.balancedTeams && !!game.balancedTeams.teams;
 
     useEffect(() => {
         const fetch = async () => {
@@ -78,25 +88,46 @@ export default withTranslation() (function GamePage(
                             Back to group
                     </Button>
                     </Grid>
-                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.NOT_STARTED && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
                             Add members
                     </Button>
                     </Grid>}
 
-                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.NOT_STARTED && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
                             Start voting
                     </Button>
                     </Grid>}
 
-                    {game.voteStatus === 'STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setVoteDialogOpened(true)}>
                             Vote for players
                     </Button>
                     </Grid>}
 
-                    {game.voteStatus === 'NOT_STARTED' && <Grid item>
+                    {game.voteStatus === voteStatus.STARTED && game.endVotingTimestamp &&
+                        <>
+                            <Grid item>
+                                <Typography variant="h5" gutterBottom>
+                                    Time left to vote
+                            </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h5" gutterBottom>
+                                    <CountDownTimer deadline={game.endVotingTimestamp} votingFinished={votingFinished} />
+                                </Typography>
+                            </Grid>
+                        </>
+                    }
+                    
+                    {game.voteStatus === voteStatus.FINISHED && <Grid item>
+                        <Typography variant="h5" gutterBottom>
+                            Voting is finished
+                            </Typography>
+                    </Grid>}
+
+                    {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
                             Balance teams
                         </Button>
@@ -168,6 +199,7 @@ export default withTranslation() (function GamePage(
         />
 
         <TeamCountDialog
+            playersCount={game.players && game.players.length}
             handleClose={e => setTeamCountDialogOpened(false)}
             onSubmit={(teamsCount, bots) => {
                 balanceTeams(teamsCount, bots);
