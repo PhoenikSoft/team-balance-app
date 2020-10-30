@@ -23,7 +23,7 @@ function getSteps() {
     return ['Choose how much teams you want to generate', 'Add unregistered bots'];
 };
 
-export default withTranslation() (function ({ t, open, handleClose, onSubmit }) {
+export default withTranslation() (function ({ t, open, handleClose, onSubmit, playersCount }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamsCount, setTeamsCount] = useState('2');
