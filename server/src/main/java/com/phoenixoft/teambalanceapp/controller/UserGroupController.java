@@ -110,7 +110,7 @@ public class UserGroupController {
     @DeleteMapping(path = "/{groupId}/members/{userId}")
     public ResponseEntity<?> deleteMember(@PathVariable Long groupId, @PathVariable Long userId,
                                           @RequestAttribute CustomUser currentCustomUser) {
-        userGroupService.checkAdminPermissions(currentCustomUser, groupId);
+        userGroupService.checkRemoveMemberPermissions(currentCustomUser, userId, groupId);
         userGroupService.deleteGroupMember(currentCustomUser.getId(), groupId, userId);
         return httpUtils.addJwtToResponse(ResponseEntity.ok(), currentCustomUser.getId()).build();
     }

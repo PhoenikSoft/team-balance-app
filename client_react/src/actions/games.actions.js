@@ -35,8 +35,8 @@ const sendVotes = (gameId, votes) => dispatch =>
 
 const startVoting = gameId => dispatch =>
     gamesService.startVoting(gameId)
-        .then(() => {
-            dispatch({ type: gameConstants.VOTING_STARTED })
+        .then(res => {
+            dispatch({ type: gameConstants.VOTING_STARTED, endVotingTimestamp: res.endVotingTimestamp })
             dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.VOTING_STARTED })
         })
         .catch(serviceHelper.actionsErrorHandler);
@@ -50,6 +50,10 @@ const flushVotes = () => dispatch => {
     dispatch({ type: gameConstants.FLUSH_VOTES })
 }
 
+const votingFinished = () => dispatch => {
+    dispatch({ type: gameConstants.VOTING_FINISHED })
+}
+
 export const gamesActions = {
     deleteGame,
     addGame,
@@ -58,5 +62,6 @@ export const gamesActions = {
     sendVotes,
     startVoting,
     addVote,
-    flushVotes
+    flushVotes,
+    votingFinished,
 };

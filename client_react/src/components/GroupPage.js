@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable from 'material-table'
+import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
 import { authHelper } from '../_helpers';
 import Button from '@material-ui/core/Button';
@@ -19,30 +19,36 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
     },
     buttonsBar: {
-        paddingTop: '22px'
-    }
+        paddingTop: '22px',
+    },
 }));
 
+function isCurrentUser(rowData) {
+    return rowData.id == authHelper.getUserId();
+}
 
 export default withTranslation() (function GroupPage(
     { t, groupFromGlobalState, fetchGroup, deleteMember, deleteGame, copyLink, addGame, onGameRowClick }) {
     let group = groupFromGlobalState;
     const classes = useStyles();
     const [gameAddDialogOpened, setAddGameDialog] = useState(false);
+    const checkRemoveMemberDisabled = rowData =>
+        (authHelper.isGroupAdmin(group.id) && isCurrentUser(rowData)) ||
+        (!authHelper.isGroupAdmin(group.id) && !isCurrentUser(rowData));
 
     useEffect(() => {
         const fetch = async () => {
             const action = await fetchGroup();
             if (action) {
                 group = action.groups;
-            };
+            }
         };
         fetch();
     }, []);
 
     return (
         <div>
-            <Grid container spacing={3} >
+            <Grid container spacing={3}>
                 {authHelper.isGroupAdmin(group.id) && <Grid item xs={12} sm={12}>
                     <Grid
                         className={classes.buttonsBar}
@@ -84,12 +90,12 @@ export default withTranslation() (function GroupPage(
                                 icon: 'delete',
                                 tooltip: t('DELETE_MEMBER'),
                                 onClick: (event, rowData) => deleteMember(rowData.id, group.id),
-                                disabled: !authHelper.isGroupAdmin(group.id) || rowData.id == authHelper.getCookie('userId')
-                            })
+                                disabled: checkRemoveMemberDisabled(rowData),
+                            }),
                         ]}
                         options={{
                             actionsColumnIndex: -1,
-                            search: false
+                            search: false,
                         }}
                     />
                 </Grid>
@@ -101,8 +107,10 @@ export default withTranslation() (function GroupPage(
                         data={group.games}
                         columns={[
                             //{ title: 'Num', field: 'id', type: 'numeric' },
+
                             { field: 'name' },
                             { title: t('GAME_DATE'), field: 'startDateTime' }
+
                             //players number
 
                         ]}
@@ -111,12 +119,13 @@ export default withTranslation() (function GroupPage(
                                 icon: 'delete',
                                 tooltip: t('DELETE_GAME'),
                                 onClick: (event, rowData) => deleteGame(rowData.id),
-                                disabled: !authHelper.isGroupAdmin(group.id)
-                            })
+                                disabled: !authHelper.isGroupAdmin(group.id),
+                            }),
                         ]}
                         options={{
                             actionsColumnIndex: -1,
-                            search: false
+                            search: false,
+                            sorting: true
                         }}
                     />
                 </Grid>

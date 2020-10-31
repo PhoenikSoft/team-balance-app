@@ -8,6 +8,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameUserVoteResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameViewResponseDto;
+import com.phoenixoft.teambalanceapp.controller.dto.GameVotingStartedResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserGameVoteRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
@@ -140,8 +141,9 @@ public class UserGameController {
     }
 
     @PostMapping(path = "/{gameId}/votingStarts")
-    public void startVoting(@PathVariable Long gameId, @RequestAttribute CustomUser currentCustomUser) {
-        userGameService.startGameVoting(currentCustomUser, gameId);
+    public GameVotingStartedResponseDto startVoting(@PathVariable Long gameId, @RequestAttribute CustomUser currentCustomUser) {
+        Game game = userGameService.startGameVoting(currentCustomUser, gameId);
+        return DtoConverter.convertGameVotingStartedResponse(game);
     }
 
     private LightUserVote toLightUserVote(UserGameVoteRequestDto dto, Long gameId, CustomUser currentUser) {
