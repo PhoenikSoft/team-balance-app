@@ -5,3 +5,4 @@ export * from './group.constants';
 export * from './member.constants';
 export * from './game.constants';
 export * from './players.constants';
+export * from './text.constants';

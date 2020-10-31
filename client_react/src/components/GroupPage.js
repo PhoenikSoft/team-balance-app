@@ -5,7 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import { authHelper } from '../_helpers';
 import Button from '@material-ui/core/Button';
 import AddGameDialog from './AddGameDialog';
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
+import { withTranslation } from 'react-i18next';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +27,8 @@ function isCurrentUser(rowData) {
     return rowData.id == authHelper.getUserId();
 }
 
-export default function GroupPage(
-    { groupFromGlobalState, fetchGroup, deleteMember, deleteGame, copyLink, addGame, onGameRowClick }) {
+export default withTranslation() (function GroupPage(
+    { t, groupFromGlobalState, fetchGroup, deleteMember, deleteGame, copyLink, addGame, onGameRowClick }) {
     let group = groupFromGlobalState;
     const classes = useStyles();
     const [gameAddDialogOpened, setAddGameDialog] = useState(false);
@@ -60,15 +61,13 @@ export default function GroupPage(
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="primary"
-                                    onClick={e => setAddGameDialog(true)}>
-                                Add Game
+                            <Button variant="contained" color="primary" onClick={e => setAddGameDialog(true)}>
+                                {t('ADD_GAME')}
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="primary"
-                                    onClick={e => copyLink(group.ref)}>
-                                Copy group invite link
+                            <Button variant="contained" color="primary" onClick={e => copyLink(group.ref)}>
+                                {t('COPY_GROUP_INVITE_LINK')}
                             </Button>
                         </Grid>
 
@@ -79,17 +78,17 @@ export default function GroupPage(
                 <Grid item xs={12} sm={6}>
                     <MaterialTable
                         className={classes.paper}
-                        title='Members'
+                        title={t('MEMBERS')}
                         data={group.members}
                         columns={[
                             //{ title: 'Num', field: 'id', type: 'numeric' },
-                            { title: 'Name', field: 'firstName' },
-                            { title: 'Rating', field: 'rating', type: 'numeric' },
+                            { field: 'firstName' },
+                            { title: t('RATING'), field: 'rating', type: 'numeric' },
                         ]}
                         actions={[
                             rowData => ({
                                 icon: 'delete',
-                                tooltip: 'Delete Member',
+                                tooltip: t('DELETE_MEMBER'),
                                 onClick: (event, rowData) => deleteMember(rowData.id, group.id),
                                 disabled: checkRemoveMemberDisabled(rowData),
                             }),
@@ -104,19 +103,21 @@ export default function GroupPage(
                     <MaterialTable
                         className={classes.paper}
                         onRowClick={onGameRowClick}
-                        title='Games'
+                        title={t('GAMES')}
                         data={group.games}
                         columns={[
                             //{ title: 'Num', field: 'id', type: 'numeric' },
-                            { title: 'Name', field: 'name' },
-                            { title: 'Start date', field: 'startDateTime', defaultSort: 'desc' },
+
+                            { field: 'name' },
+                            { title: t('GAME_DATE'), field: 'startDateTime' }
+
                             //players number
 
                         ]}
                         actions={[
                             () => ({
                                 icon: 'delete',
-                                tooltip: 'Delete Game',
+                                tooltip: t('DELETE_GAME'),
                                 onClick: (event, rowData) => deleteGame(rowData.id),
                                 disabled: !authHelper.isGroupAdmin(group.id),
                             }),
@@ -138,5 +139,5 @@ export default function GroupPage(
                 }}
             />
         </div>
-    );
-}
+    )
+});

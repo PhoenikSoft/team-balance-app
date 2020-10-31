@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../actions';
 import { navigation } from '../_helpers';
 import TopBar from './TopBar';
-
+import {i18next} from '../index';
 
 
 const mapDispatchToProps = dispatch => {
@@ -16,7 +16,10 @@ const mapDispatchToProps = dispatch => {
         },
         onAppNameClick: e => {
             navigation.goHome();
-        }
+        },
+        changeLanguage: lng => {
+            i18next.changeLanguage(lng)
+        },
     }
 };
 

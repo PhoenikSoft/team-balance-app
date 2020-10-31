@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId, defaultPlayers }) {
+export default withTranslation() (function AddPlayersDialog({ t, open, handleClose, onSubmit, groupId, defaultPlayers }) {
     const classes = useStyles();
     const [checked, setChecked] = useState([]);
     const [players, setPlayers] = useState([]);
@@ -55,7 +56,7 @@ export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId,
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
-                    Add Group
+                    {t('ADD_PLAYERS')}
                 </DialogContentText>
                 <List className={classes.root}>
                     {players.map((player) => {
@@ -79,15 +80,15 @@ export default function AddPlayersDialog({ open, handleClose, onSubmit, groupId,
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Cancel
+                    {t('CANCEL')}
           </Button>
                 <Button onClick={e => {
                     setChecked([]);
                     onSubmit(checked)
                 }} color="primary">
-                    Add Members
+                    {t('ADD')}
           </Button>
             </DialogActions>
         </Dialog>
     );
-}
+});

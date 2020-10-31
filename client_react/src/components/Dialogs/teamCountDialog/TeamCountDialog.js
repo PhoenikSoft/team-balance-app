@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,7 +23,7 @@ function getSteps() {
     return ['Choose how much teams you want to generate', 'Add unregistered bots'];
 };
 
-export default function ({ open, handleClose, onSubmit, playersCount }) {
+export default withTranslation() (function ({ t, open, handleClose, onSubmit, playersCount }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamsCount, setTeamsCount] = useState('2');
@@ -69,7 +70,7 @@ export default function ({ open, handleClose, onSubmit, playersCount }) {
         fullScreen={fullScreen}>
         <DialogContent>
             <DialogContentText>
-                Choose how much teams you want to generate
+                {t('CHOOSE_TEAMS_COUNT')}
             </DialogContentText>
 
             <Stepper activeStep={activeStep}>
@@ -84,7 +85,7 @@ export default function ({ open, handleClose, onSubmit, playersCount }) {
 
         <DialogActions>
             <Button onClick={closeModal} color='primary'>
-                Cancel
+                {t('CANCEL')}
                         </Button>
             {activeStep === 0 &&
                 <Button
@@ -107,4 +108,4 @@ export default function ({ open, handleClose, onSubmit, playersCount }) {
                         </Button>
         </DialogActions>
     </Dialog>
-};
+});

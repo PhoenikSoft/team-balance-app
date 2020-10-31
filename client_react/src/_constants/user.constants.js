@@ -16,11 +16,4 @@ export const userConstants = {
     SAVE_REF_LINK: 'SAVE_REF_LINK',
     DELETE_REF_LINK: 'DELETE_REF_LINK',
 
-    // register validation error
-    EMAIL_ERROR: 'Provide a valid email',
-    PHONE_ERROR: 'Provide a valid phone',
-    FIRST_NAME_ERROR: 'First name should not be empty',
-    LAST_NAME_ERROR: 'Last name should not be empty',
-    PASSWORD_ERROR: 'Provide passwords containing minimum 8 characters and make sure passwords match'
-
 };

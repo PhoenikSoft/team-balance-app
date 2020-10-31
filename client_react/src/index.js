@@ -5,13 +5,24 @@ import { Provider } from 'react-redux';
 import { routerMiddleware } from 'connected-react-router';
 import * as History from 'history';
 import thunk from 'redux-thunk';
+import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
+import detector from "i18next-browser-languagedetector";
 import { createStore, applyMiddleware, compose } from 'redux';
 import createRootReducer from './reducers';
 import App from './components/App';
-import { alertConstants } from './_constants';
+import { alertConstants, resources } from './_constants';
 import ErrorBoundary from './components/ErrorBoundary';
 
-export const history = History.createBrowserHistory();
+i18next.use(initReactI18next)
+    .use(detector)
+    .init({
+        resources,
+        fallbackLng: 'ru',
+        whitelist: ['uk', 'en', 'ru']
+    });
+
+const history = History.createBrowserHistory();
 
 const enhancers = []
 const middleware = [thunk, routerMiddleware(history)];
@@ -29,7 +40,7 @@ global.fetchWithLoader = (...args) => {
     });
 }
 
-export const store = createStore(
+const store = createStore(
     createRootReducer(history),
     {},
     composedEnhancers
@@ -43,3 +54,5 @@ render(
     </Provider>,
     document.getElementById('root')
 );
+
+export { store, history, i18next };

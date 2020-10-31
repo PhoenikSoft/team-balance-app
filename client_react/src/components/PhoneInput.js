@@ -1,8 +1,7 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
-import { userConstants } from '../_constants';
-
 
 function NumberFormatCustom(props) {
     const { inputRef, onChange, ...other } = props;
@@ -26,17 +25,17 @@ function NumberFormatCustom(props) {
     );
 }
 
-export default function ({ onChange, error, value }) {
+export default withTranslation()(function ({ t, onChange, error, value }) {
     return (
         <TextField
             id="phone"
-            label="Phone number"
+            label={t('PHONE_NUMBER')}
             type="tel"
             maxLength="12"
             value={value ? value : ''}
             //value="935036714"
             error={error}
-            helperText={error && userConstants.PHONE_ERROR}
+            helperText={error && t('PHONE_ERROR')}
             onChange={onChange}
             variant="outlined"
             required
@@ -47,4 +46,4 @@ export default function ({ onChange, error, value }) {
             }}
         />
     )
-}
+})
