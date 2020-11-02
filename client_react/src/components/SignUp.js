@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
 import PhoneInput from './PhoneInput';
+import RatingSurvey from './RatingSurvey';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -56,7 +57,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
             lastName: '',
             email: '',
             phone: '',
-            rating: 50,
+            rating: null,
             confirmPassword: '',
             password: '',
         };
@@ -100,7 +101,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
 
     }
 
-    function handleRatingChange(e, newValue) {
+    function handleRatingChange(newValue) {
         setInputs(inputs => ({ ...inputs, rating: newValue }));
     }
 
@@ -150,11 +151,11 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
     }
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
+        <Container component="main" maxWidth="sm">
+            <CssBaseline/>
             <div className={classes.paper}>
                 {isSignUp && <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlinedIcon/>
                 </Avatar>}
                 <Typography component="h1" variant="h5">
                     {isSignUp ? t('SIGN_UP') : t('PROFILE')}
@@ -170,7 +171,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                                 required
                                 fullWidth
                                 id="firstName"
-                                label={t("FIRST_NAME")}
+                                label={t('FIRST_NAME')}
                                 autoFocus
                                 onChange={handleChange}
                                 error={errors.firstNameError}
@@ -185,7 +186,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                                 required
                                 fullWidth
                                 id="lastName"
-                                label={t("LAST_NAME")}
+                                label={t('LAST_NAME')}
                                 name="lastName"
                                 autoComplete="lname"
                                 onChange={handleChange}
@@ -247,15 +248,13 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                                 />
                             </Grid> </>}
                         <Grid item xs={12}>
+                            {isSignUp && <RatingSurvey onChange={handleRatingChange}/>}
                             <Typography>{t('RATING')}</Typography>
                             <Slider
                                 name="rating"
-                                disabled={!isSignUp}
-                                onChange={handleRatingChange}
+                                disabled="true"
                                 value={inputs.rating}
                             />
-                            {isSignUp &&
-                                <Typography color="textSecondary">{t('RATING_MESSAGE')}</Typography>}
                         </Grid>
                     </Grid>
                     <Button
