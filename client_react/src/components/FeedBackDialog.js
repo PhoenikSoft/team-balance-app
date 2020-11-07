@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 
 //TODO create an abstaction
 /* 
@@ -15,12 +16,12 @@ actual form ....
 </DialogContainer>
 */
 
-export default function FormDialog({ open, handleClose, onSubmit }) {
+export default withTranslation()(function FormDialog({ t, open, handleClose, onSubmit }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [feedBack, setFeedBack] = useState({});
     const rows = fullScreen ? '' : '10';
-    const rowsMax = fullScreen ? '': 10;
+    const rowsMax = fullScreen ? '' : 10;
     return (
         <Dialog open={open}
             fullScreen={fullScreen}
@@ -34,7 +35,7 @@ export default function FormDialog({ open, handleClose, onSubmit }) {
                     multiline
                     autoFocus
                     margin="normal"
-                    label="Feedback"
+                    label={t('FEEDBACK')}
                     fullWidth
                     rowsMax={rowsMax}
                     rows={rows}
@@ -43,12 +44,12 @@ export default function FormDialog({ open, handleClose, onSubmit }) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Cancel
-          </Button>
+                    {t('CANCEL')}
+                </Button>
                 <Button onClick={onSubmit(feedBack)} color="primary">
-                    Submit feedback
-          </Button>
+                    {t('SUBMIT_FEEDBACK')}
+                </Button>
             </DialogActions>
         </Dialog>
     );
-}
+});

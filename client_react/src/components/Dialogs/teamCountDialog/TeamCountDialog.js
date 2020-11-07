@@ -19,17 +19,14 @@ import { alertConstants } from '../../../_constants';
 
 const MINIMAL_BALANCING_PLAYERS_AMOUNT = 6;
 
-function getSteps() {
-    return ['Choose how much teams you want to generate', 'Add unregistered bots'];
-};
 
-export default withTranslation() (function ({ t, open, handleClose, onSubmit, playersCount }) {
+export default withTranslation()(function ({ t, open, handleClose, onSubmit, playersCount }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamsCount, setTeamsCount] = useState('2');
     const [activeStep, setActiveStep] = React.useState(0);
     const [bots, setBots] = useState([]);
-    const steps = getSteps();
+    const steps = [t('TEAM_COUNT_STEP_1'), t('TEAM_COUNT_STEP_2')];
 
     const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
     const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -86,26 +83,26 @@ export default withTranslation() (function ({ t, open, handleClose, onSubmit, pl
         <DialogActions>
             <Button onClick={closeModal} color='primary'>
                 {t('CANCEL')}
-                        </Button>
+            </Button>
             {activeStep === 0 &&
                 <Button
                     onClick={handleNext}
                     color='primary'>
-                    Proceed to team bots
-                        </Button>}
+                    {t('TEAM_COUNT_PROCEED_TO_STEP_2')}
+                </Button>}
 
             {activeStep === 1 &&
                 <Button
                     onClick={handleBack}
                     color='primary'>
-                    Back to balance Teams
-                        </Button>}
+                    {t('TEAM_COUNT_GO_BACK_TO_STEP_1')}
+                </Button>}
             <Button
                 onClick={() => onSubmit(teamsCount, bots)}
                 disabled={bots.length + playersCount < MINIMAL_BALANCING_PLAYERS_AMOUNT}
                 color='primary'>
-                Balance Teams
-                        </Button>
+                {t('BALANCE_TEAMS')}
+            </Button>
         </DialogActions>
     </Dialog>
 });

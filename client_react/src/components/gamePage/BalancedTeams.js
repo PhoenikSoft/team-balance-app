@@ -1,6 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import MaterialTable from 'material-table'
+import LocalizedMaterialTable from '../LocalizedMaterialTable';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -40,7 +41,7 @@ export default withTranslation() (function ({ t, balancedTeams, votes,
             <Typography variant="h6" >{t('BALANCED_TEAMS')}</Typography>
         </Grid>}
         {/* Dummy table used to show just column titles */}
-        {showTitleTable && <MaterialTable
+        {showTitleTable && <LocalizedMaterialTable
             data={[]}
             columns={getColumns(t, showRating, votes)}
             actions={getActionsConfig()}
@@ -73,7 +74,7 @@ export default withTranslation() (function ({ t, balancedTeams, votes,
 
 function TeamTable({ t, team, index, actions, showSlider, votes, showRating }) {
     const classes = useStyles();
-    return <MaterialTable
+    return <LocalizedMaterialTable
         title={t('TEAM') + ` ${index}`}
         data={team.players}
         columns={getColumns(t, showRating, votes)}

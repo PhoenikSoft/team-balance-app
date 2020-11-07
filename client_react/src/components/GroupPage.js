@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable from 'material-table';
+import LocalizedMaterialTable from './LocalizedMaterialTable';
 import Grid from '@material-ui/core/Grid';
 import { authHelper } from '../_helpers';
 import Button from '@material-ui/core/Button';
@@ -76,7 +76,7 @@ export default withTranslation() (function GroupPage(
                 }
 
                 <Grid item xs={12} sm={6}>
-                    <MaterialTable
+                    <LocalizedMaterialTable
                         className={classes.paper}
                         title={t('MEMBERS')}
                         data={group.members}
@@ -100,7 +100,7 @@ export default withTranslation() (function GroupPage(
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <MaterialTable
+                    <LocalizedMaterialTable
                         className={classes.paper}
                         onRowClick={onGameRowClick}
                         title={t('GAMES')}

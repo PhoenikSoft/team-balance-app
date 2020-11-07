@@ -19,7 +19,7 @@ i18next.use(initReactI18next)
     .init({
         resources,
         fallbackLng: 'ru',
-        whitelist: ['uk', 'en', 'ru']
+        whitelist: [ 'en', 'ru']
     });
 
 const history = History.createBrowserHistory();
