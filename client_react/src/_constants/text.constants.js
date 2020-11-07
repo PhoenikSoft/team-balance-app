@@ -70,9 +70,18 @@ export const resources = {
             TEAM: 'Team',
             NAME: 'Name',
             SUBMIT_FEEDBACK: 'Submit feedback',
-            FEEDBACK:'Feedback',
+            FEEDBACK: 'Feedback',
             NO_DATA_TO_DISPLAY: 'No records to display',
-            
+
+            // Alerts
+            FEEDBACK_SUCCESS_TEXT: 'Feedback sent. Thank you!',
+            FEEDBACK_ERROR_TEXT: 'Feed back was not sent',
+            USER_UPDATE_SUCCESS_TEXT: 'User updated',
+            USER_ALREADY_IN_GROUP: 'It might be that you are already a member of a group',
+            VOTING_STARTED: 'Voting will last 48 hours',
+            BOT_EXISTS: 'Bot with this name already exists',
+            PROVIDE_VALID_RATING: 'Provide valid rating for a new bot',
+            DEFAULT_ERROR_TEXT: 'Oooops...'
         }
     },
 
@@ -159,8 +168,18 @@ export const resources = {
             NEW: 'Новый',
             BOT: 'Бот',
             SUBMIT_FEEDBACK: 'Отправить отзыв',
-            FEEDBACK:'Отзыв',
+            FEEDBACK: 'Отзыв',
             NO_DATA_TO_DISPLAY: 'Нет данных в таблице',
+
+            // Alerts
+            FEEDBACK_SUCCESS_TEXT: 'Спасибо за отзыв!',
+            FEEDBACK_ERROR_TEXT: 'Отзыв не был отправлен',
+            USER_UPDATE_SUCCESS_TEXT: 'Профайл пользователя обновлен',
+            USER_ALREADY_IN_GROUP: 'Скорее всего вы уже состоите в этой группе',
+            VOTING_STARTED: 'Голосование будет длиться 48 часов',
+            BOT_EXISTS: 'Бот с таким же именем уже существует',
+            PROVIDE_VALID_RATING: 'Предоставьте действительный рейтинг для бота',
+            DEFAULT_ERROR_TEXT: 'Ой, что-то пошло не так...'
         }
     },
     // uk: {
