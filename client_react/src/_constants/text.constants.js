@@ -44,6 +44,7 @@ export const resources = {
             ADD_MEMBERS: 'Add members',
             START_VOTING: 'Start voting',
             VOTE_FOR_PLAYERS: 'Vote for players',
+            START_VOTING: 'Start voting',
             TIME_LEFT_TO_VOTE: 'Time left to vote',
             VOTING_IS_FINISHED: 'Voting is finished',
             BALANCE_TEAMS: 'Balance teams',
@@ -108,7 +109,9 @@ export const resources = {
             VOTING_STARTED: 'Voting will last 48 hours',
             BOT_EXISTS: 'Bot with this name already exists',
             PROVIDE_VALID_RATING: 'Provide valid rating for a new bot',
-            DEFAULT_ERROR_TEXT: 'Oooops...'
+            DEFAULT_ERROR_TEXT: 'Oooops...',
+            FEEDBACK:'Feedback',
+            NO_DATA_TO_DISPLAY: 'No records to display',
         }
     },
 
@@ -234,7 +237,9 @@ export const resources = {
             VOTING_STARTED: 'Голосование будет длиться 48 часов',
             BOT_EXISTS: 'Бот с таким же именем уже существует',
             PROVIDE_VALID_RATING: 'Предоставьте действительный рейтинг для бота',
-            DEFAULT_ERROR_TEXT: 'Ой, что-то пошло не так...'
+            DEFAULT_ERROR_TEXT: 'Ой, что-то пошло не так...',
+            FEEDBACK:'Отзыв',
+            NO_DATA_TO_DISPLAY: 'Нет данных в таблице',
         }
     },
     // uk: {
