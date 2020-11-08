@@ -1,34 +1,36 @@
 import React, { useState } from 'react';
-import MaterialTable from 'material-table';
+import LocalizedMaterialTable from '../../LocalizedMaterialTable';
 import CheckIcon from '@material-ui/icons/Check';
 import ListItem from '@material-ui/core/ListItem';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Grid from '@material-ui/core/Grid';
+import { withTranslation } from 'react-i18next';
 
 
-export default ({ bots, addBot, deleteBot }) => {
+
+export default withTranslation()(function ({ t, bots, addBot, deleteBot }) {
     const defaultBot = {
-        firstName: 'New',
-        lastName: 'Bot',
+        firstName: t('NEW'),
+        lastName: t('BOT'),
         rating: 50
     };
 
     const [newBot, setNewBot] = useState(defaultBot);
 
     return <>
-        {bots.length ? <MaterialTable
+        {bots.length ? <LocalizedMaterialTable
             data={bots}
             columns={[
-                { title: 'First name', field: 'firstName' },
-                { title: 'Last name', field: 'lastName' },
-                { title: 'Rating', field: 'rating', type: 'numeric' }
+                { title: t('FIRST_NAME'), field: 'firstName' },
+                { title: t('LAST_NAME'), field: 'lastName' },
+                { title: t('RATING'), field: 'rating', type: 'numeric' }
             ]}
             actions={[
                 player => ({
                     icon: 'delete',
-                    tooltip: 'Delete Player',
+                    tooltip: t('DELETE_PLAYER'),
                     onClick: (event, botToDelete) => deleteBot(botToDelete)
                 })
             ]}
@@ -70,4 +72,4 @@ export default ({ bots, addBot, deleteBot }) => {
         </ListItem>
 
     </>
-}
+});

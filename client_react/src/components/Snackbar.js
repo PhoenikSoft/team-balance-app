@@ -4,8 +4,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import { appActions } from '../actions';
+import { withTranslation } from 'react-i18next';
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomizedSnackbars);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CustomizedSnackbars));
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CustomizedSnackbars({ open, success, text, closeSnackBar }) {
+function CustomizedSnackbars({ t, open, success, text, closeSnackBar }) {
   const classes = useStyles();
 
   const handleClose = (event, reason) => {
@@ -52,7 +54,7 @@ function CustomizedSnackbars({ open, success, text, closeSnackBar }) {
     <div className={classes.root}>
       { open && <Snackbar open={open} autoHideDuration={2000} onClose={closeSnackBar}>
         <Alert onClose={handleClose} severity={success ? 'success' : 'error'}>
-          {text}
+          {t(text)}
         </Alert>
       </Snackbar>
       }

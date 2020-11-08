@@ -159,7 +159,6 @@ export default withTranslation()(function PrimarySearchAppBar({ t, onLogoutClick
             classes={{ root: classes.select }}
             MenuProps={menuProps}>
             <MenuItem value='en'>EN</MenuItem>
-            <MenuItem value='uk'>UA</MenuItem>
             <MenuItem value='ru'>RU</MenuItem>
         </Select >
     </div>;

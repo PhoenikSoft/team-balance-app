@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { withTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable from 'material-table'
+
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
@@ -12,6 +12,7 @@ import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
 import CountDownTimer from './CountdownTimer';
+import LocalizedMaterialTable from '../LocalizedMaterialTable';
 
 const voteStatus = {
     NOT_STARTED: 'NOT_STARTED',
@@ -41,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default withTranslation() (function GamePage(
-    {   t,
+export default withTranslation()(function GamePage(
+    { t,
         game,
         fetchGame,
         groupId,
@@ -85,33 +86,33 @@ export default withTranslation() (function GamePage(
                     </Grid>
                     <Grid item>
                         <Button variant="contained" color="primary" onClick={e => goBack()}>
-                            Back to group
+                            {t('BACK_TO_GROUP')}
                     </Button>
                     </Grid>
                     {game.voteStatus === voteStatus.NOT_STARTED && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
-                            Add members
-                    </Button>
+                            {t('ADD_MEMBERS')}
+                        </Button>
                     </Grid>}
 
                     {game.voteStatus === voteStatus.NOT_STARTED && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
-                            Start voting
-                    </Button>
+                            {t('START_VOTING')}
+                        </Button>
                     </Grid>}
 
                     {game.voteStatus === voteStatus.STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setVoteDialogOpened(true)}>
-                            Vote for players
-                    </Button>
+                            {t('VOTE_FOR_PLAYERS')}
+                        </Button>
                     </Grid>}
 
                     {game.voteStatus === voteStatus.STARTED && game.endVotingTimestamp &&
                         <>
                             <Grid item>
                                 <Typography variant="h5" gutterBottom>
-                                    Time left to vote
-                            </Typography>
+                                    {t('TIME_LEFT_TO_VOTE')}
+                                </Typography>
                             </Grid>
                             <Grid item>
                                 <Typography variant="h5" gutterBottom>
@@ -120,23 +121,23 @@ export default withTranslation() (function GamePage(
                             </Grid>
                         </>
                     }
-                    
+
                     {game.voteStatus === voteStatus.FINISHED && <Grid item>
                         <Typography variant="h5" gutterBottom>
-                            Voting is finished
-                            </Typography>
+                            {t('VOTING_IS_FINISHED')}
+                        </Typography>
                     </Grid>}
 
                     {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && !isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
-                            Balance teams
+                            {t('BALANCE_TEAMS')}
                         </Button>
                     </Grid>}
 
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
-                <MaterialTable
+                <LocalizedMaterialTable
                     className={classes.paper}
                     title={t('PLAYERS')}
                     data={game.players}
@@ -147,7 +148,7 @@ export default withTranslation() (function GamePage(
                     actions={[
                         player => ({
                             icon: 'delete',
-                            tooltip: 'Delete Player',
+                            tooltip: t('DELETE_PLAYER'),
                             onClick: (event, player) => deletePlayer(player.id),
                             disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
                         })
@@ -169,7 +170,7 @@ export default withTranslation() (function GamePage(
                 </Grid>
                 : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
                     <Grid item >
-                        <h6 className="MuiTypography-root MuiTypography-h6" style={{textAlign: 'center'}}>
+                        <h6 className="MuiTypography-root MuiTypography-h6" style={{ textAlign: 'center' }}>
                             {t('GAME_PAGE_CTA')}
                         </h6>
                     </Grid>

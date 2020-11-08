@@ -1,4 +1,5 @@
 import 'date-fns';
+import moment from "moment";
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -6,65 +7,74 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DateFnsUtils from '@date-io/date-fns';
+import MomentUtils from "@date-io/moment";
 import {
     MuiPickersUtilsProvider,
-    KeyboardDateTimePicker
-} from '@material-ui/pickers';
+    DatePicker,
+    TimePicker
+} from "@material-ui/pickers";
+import { withTranslation } from 'react-i18next';
+import "moment/locale/en-gb";
+import "moment/locale/ru";
+import i18next from "i18next";
 
-export default function AddGroupDialog({ open, handleClose, onSubmit }) {
+
+export default withTranslation()(function AddGroupDialog({ t, open, handleClose, onSubmit }) {
     const [gameName, setGameName] = useState('');
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
+    const [selectedDate, handleDateChange] = React.useState(moment());
+    const [selectedTime, handleTimeChange] = React.useState(moment());
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
-                    Add Group
-          </DialogContentText>
+                    {t('ADD_GAME')}
+                </DialogContentText>
                 <form autoComplete="off">
                     <TextField
                         autoFocus
                         margin="dense"
                         id="groupName"
-                        label="Game name"
+                        label={t('GAME_NAME')}
                         type="text"
                         fullWidth
                         onChange={e => setGameName(e.target.value)}
                     />
                 </form>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDateTimePicker
-                        variant="inline"
-                        ampm={false}
-                        label="With keyboard"
+                <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils} locale={i18next.language}>
+                    <DatePicker
                         value={selectedDate}
                         onChange={handleDateChange}
-                        onError={console.log}
                         disablePast
-                        format="yyyy/MM/dd HH:mm"
+                        format="yyyy/MM/dd"
+                    />
+                </MuiPickersUtilsProvider>
+                <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+                    <TimePicker
+                        ampm={false}
+                        value={selectedTime}
+                        onChange={handleTimeChange}
+                        disablePast
+                        format="HH:mm"
                     />
                 </MuiPickersUtilsProvider>
             </DialogContent>
 
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Cancel
-          </Button>
+                    {t('CANCEL')}
+                </Button>
                 <Button onClick={() => {
                     onSubmit({
                         name: gameName,
-                        startDateTime: selectedDate.toISOString()
+                        startDateTime: selectedDate.hours(selectedTime.hours()).minutes(selectedTime.minutes()).toISOString()
                     });
                 }}
                     disabled={!gameName}
                     color="primary">
-                    Add Game
-          </Button>
+                    {t('ADD_GAME')}
+                </Button>
             </DialogActions>
         </Dialog>
     );
-}
+})
