@@ -14,7 +14,6 @@ import Container from '@material-ui/core/Container';
 import Slider from './Slider';
 import PhoneInput from './PhoneInput';
 
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),

@@ -9,7 +9,6 @@ export const apiConstants = {
 
     GROUPS: () => '/api/userGroups',
     GROUP_ACTION: groupId => `/api/userGroups/${groupId}`,
-    ACCESS_CHECK: groupId => `/api/userGroups/${groupId}/accessChecks`,
 
     GET_MEMBERS: groupId => `/api/userGroups/${groupId}/members`,
     MEMBER: (groupId, memberId) => `/api/userGroups/${groupId}/members/${memberId}`,
@@ -27,10 +26,10 @@ export const apiConstants = {
     MY_VOTES: gameId => `/api/userGames/${gameId}/votes`,
     POST_MY_VOTES_BATCH: gameId => `/api/userGames/${gameId}/votesBatches`,
     START_VOTING: gameId => `/api/userGames/${gameId}/votingStarts`,
-}
+};
 
 export const routingConstants = {
     ADD_MEMBER_BY_REF: ref => `/addMe/${ref}`,
-}
+};
 
 export const constructUrl = url => `${config.apiUrl}${url}`;

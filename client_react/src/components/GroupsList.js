@@ -17,7 +17,6 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import AddGroupDialog from './AddGroupDialog';
 import { withTranslation } from 'react-i18next';
 
-
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
         display: 'flex',
@@ -125,7 +124,7 @@ export default withTranslation() (function GroupsList({ t, groupsFromGlobalState
                             ? <> <IconButton onClick={() => {
                                 if (edit[groupId] !== groupName) {
                                    return onEditSubmit(groupId, edit[groupId]);
-                                };
+                                }
                                 setEdit({});
                             }}
                                 aria-label="submit group name">
