@@ -5,6 +5,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 export default withTranslation()(function SurveyEntry({ t, onChange, name, value, question, minLabel, maxLabel, maxValue }) {
     const radios = [];
@@ -19,16 +20,25 @@ export default withTranslation()(function SurveyEntry({ t, onChange, name, value
     }
 
     return (
-        <div>
-            <Typography>{question}</Typography>
-            <span>{minLabel}</span>
-            <FormControl component="fieldset">
-                <RadioGroup row aria-label={name} name={name} defaultValue={`${value}`}
-                            onChange={onChange}>
-                    {radios}
-                </RadioGroup>
-            </FormControl>
-            <span>{maxLabel}</span>
-        </div>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Typography>{question}</Typography>
+            </Grid>
+            <Grid item xs={2}>
+                {minLabel}
+            </Grid>
+
+            <Grid item xs={8}>
+                <FormControl component="fieldset">
+                    <RadioGroup row aria-label={name} name={name} defaultValue={`${value}`}
+                                onChange={onChange}>
+                        {radios}
+                    </RadioGroup>
+                </FormControl>
+            </Grid>
+            <Grid item xs={2}>
+                {maxLabel}
+            </Grid>
+        </Grid>
     );
 });
