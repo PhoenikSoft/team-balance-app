@@ -7,9 +7,8 @@ export const groupService = {
     getGroup,
     saveGroup,
     updateGroup,
-    deleteGroup,
-    checkAccess
-}
+    deleteGroup
+};
 
 function getGroups() {
     const userId = authHelper.getCookie('userId');
@@ -47,12 +46,4 @@ function deleteGroup(groupId) {
         `${config.apiUrl}${apiConstants.GROUP_ACTION(groupId)}`,
         serviceHelper.getRequestOptions('DELETE', authHelper.authHeader()))
         .then(serviceHelper.handleResponse);
-}
-
-function checkAccess(groupId) {
-    return global.fetchWithLoader(
-        `${config.apiUrl}${apiConstants.ACCESS_CHECK(groupId)}`,
-        serviceHelper.getRequestOptions('GET', authHelper.authHeader()))
-        .then(serviceHelper.handleResponse)
-        .then(res=>res.canAccess);
 }

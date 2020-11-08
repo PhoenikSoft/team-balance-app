@@ -5,31 +5,14 @@ import { groupService } from '../_services'
 import { groupActions } from '../actions';
 import GroupsList from './GroupsList';
 
-
 const mapDispatchToProps = dispatch => {
     return {
-        onEditSubmit: (groupdId, value) => {
-            dispatch(groupActions.updateGroup(groupdId, value));
-        },
-        onGroupDelete: groupId => {
-            dispatch(groupActions.deleteGroup(groupId));
-        },
-        onGroupAdd: value => {
-            dispatch(groupActions.saveGroup(value));
-        },
+        onEditSubmit: (groupdId, value) => dispatch(groupActions.updateGroup(groupdId, value)),
+        onGroupDelete: groupId => dispatch(groupActions.deleteGroup(groupId)),
+        onGroupAdd: value => dispatch(groupActions.saveGroup(value)),
         isGroupAdmin: authHelper.isGroupAdmin,
         fetchGroups: async () => await dispatch(groupActions.getGroups()),
-        goToGroupPage: async groupId => {
-            const access = await groupService.checkAccess(groupId);
-            if (access) {
-                navigation.goToGroupView(groupId)
-            } else {
-                navigation.goHome();
-                serviceHelper.actionsErrorHandler(`You don't have access to this group`)
-            };
-        }
-
-
+        goToGroupPage: async groupId => navigation.goToGroupView(groupId)
     }
 };
 
