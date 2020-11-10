@@ -3,7 +3,6 @@ package com.phoenixoft.teambalanceapp.controller;
 import com.phoenixoft.teambalanceapp.controller.dto.AddedGroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GameResponseDto;
-import com.phoenixoft.teambalanceapp.controller.dto.GroupAccessResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupRequestDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupResponseDto;
 import com.phoenixoft.teambalanceapp.controller.dto.GroupsResponseDto;
@@ -113,10 +112,5 @@ public class UserGroupController {
         userGroupService.checkRemoveMemberPermissions(currentCustomUser, userId, groupId);
         userGroupService.deleteGroupMember(currentCustomUser.getId(), groupId, userId);
         return httpUtils.addJwtToResponse(ResponseEntity.ok(), currentCustomUser.getId()).build();
-    }
-
-    @GetMapping(path = "/{groupId}/accessChecks")
-    public GroupAccessResponseDto checkAccess(@PathVariable Long groupId, @RequestAttribute CustomUser currentCustomUser) {
-        return GroupAccessResponseDto.of(userGroupService.hasUserAccessToGroup(groupId, currentCustomUser));
     }
 }
