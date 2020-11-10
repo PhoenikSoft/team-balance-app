@@ -124,14 +124,6 @@ public class UserGroupService {
         return authorities.stream().anyMatch(simpleGrantedAuthority -> simpleGrantedAuthority.getAuthority().equals(processingGroupAdminRole));
     }
 
-    public boolean hasUserAccessToGroup(Long groupId, UserDetails userDetails) {
-        String userRole = RoleGenerator.createUserRoleTitle(groupId);
-        String adminRole = RoleGenerator.createAdminRoleTitle(groupId);
-        User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userDetails.getUsername()));
-        return user.getRoles().stream().anyMatch(role -> role.getName().equals(userRole) || role.getName().equals(adminRole));
-    }
-
     private void createAndAssignGroupRoles(Long groupId, User creator) {
         Role adminRole = new Role();
         adminRole.setName(RoleGenerator.createAdminRoleTitle(groupId));

@@ -109,7 +109,7 @@ export default withTranslation() (function GroupPage(
                             //{ title: 'Num', field: 'id', type: 'numeric' },
 
                             { field: 'name' },
-                            { title: t('GAME_DATE'), field: 'startDateTime' }
+                            { title: t('GAME_DATE'), field: 'startDateTime', defaultSort: 'desc' }
 
                             //players number
 
