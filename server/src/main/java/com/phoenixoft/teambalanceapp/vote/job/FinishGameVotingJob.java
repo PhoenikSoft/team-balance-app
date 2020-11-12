@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.phoenixoft.teambalanceapp.common.constants.AppConstants.MAX_RATING_AS_BIG_DECIMAL;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -73,8 +75,8 @@ public class FinishGameVotingJob implements Job {
         if (newRating.compareTo(votingProperties.getMinRating()) < 0) {
             return votingProperties.getMinRating();
         }
-        if (newRating.compareTo(votingProperties.getMaxRating()) > 0) {
-            return votingProperties.getMaxRating();
+        if (newRating.compareTo(MAX_RATING_AS_BIG_DECIMAL) > 0) {
+            return MAX_RATING_AS_BIG_DECIMAL;
         }
         return newRating;
     }

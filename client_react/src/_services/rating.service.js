@@ -7,7 +7,10 @@ export const ratingService = {
 };
 
 async function calculateRating(answers) {
-    const surveyAnswers = Object.values(answers).map(answer => ({ surveyValue: answer }));
+    const surveyAnswers = Object.values(answers).map(answerObj => ({
+        surveyValue: answerObj.answer,
+        surveyMaxValue: answerObj.maxValue,
+    }));
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

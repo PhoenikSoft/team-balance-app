@@ -1,5 +1,4 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -7,14 +6,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-export default withTranslation()(function SurveyEntry({ t, onChange, name, value, question, minLabel, maxLabel, maxValue }) {
+export default function SurveyEntry({ onChange, name, value, question, minLabel, maxLabel, maxValue }) {
     const radios = [];
-    for (let index = 1; index <= maxValue; index++) {
+    for (let index = 0; index <= maxValue; index++) {
         radios.push(<FormControlLabel
             key={index}
             value={`${index}`}
             control={<Radio color="primary" inputProps={{ 'aria-label': index }}/>}
-            label={`${index}`}
+            label={`${index + 1}`}
             labelPlacement="top"
         />);
     }
@@ -41,4 +40,4 @@ export default withTranslation()(function SurveyEntry({ t, onChange, name, value
             </Grid>
         </Grid>
     );
-});
+}

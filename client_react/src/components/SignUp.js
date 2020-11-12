@@ -252,7 +252,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                             <Typography>{t('RATING')}</Typography>
                             <Slider
                                 name="rating"
-                                disabled="true"
+                                disabled={true}
                                 value={inputs.rating}
                             />
                         </Grid>

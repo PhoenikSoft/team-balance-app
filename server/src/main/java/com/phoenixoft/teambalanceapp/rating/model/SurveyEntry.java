@@ -6,5 +6,6 @@ import lombok.Value;
 public class SurveyEntry {
 
     byte surveyValue;
+    byte surveyMaxValue;
 }
 

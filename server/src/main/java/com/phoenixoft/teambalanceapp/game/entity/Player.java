@@ -13,6 +13,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import static com.phoenixoft.teambalanceapp.common.constants.AppConstants.MAX_RATING;
+
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -32,7 +34,7 @@ public class Player implements Serializable {
     private String lastName;
 
     @NotNull(message = "{user.null.rating}")
-    @Max(100)
+    @Max(MAX_RATING)
     @Min(1)
     private BigDecimal rating;
 

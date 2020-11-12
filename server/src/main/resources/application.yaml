@@ -61,6 +61,5 @@ voting:
   # 5 min
   timeToVoteInSeconds: 300
   minRating: 1
-  maxRating: 100
 
 jwt_secret: ${JWT_SECRET:TB_SECRET}
