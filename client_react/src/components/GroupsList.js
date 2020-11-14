@@ -67,6 +67,7 @@ export default withTranslation() (function GroupsList({ t, groupsFromGlobalState
     return (
         <div className={classes.rootContainer}>
             <div className={classes.root}>
+            <div>{t('GROUPS_LIST_DESCRIPTION')}</div>
                 <Grid container spacing={6}>
                     <Grid item xs={12} md={12}>
                         <Typography variant="h6" className={classes.title}>{t('YOUR_GROUPS')}</Typography>
