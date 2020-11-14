@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 
 import { authHelper } from '../../_helpers';
-import AddPlayersDialog from '../AddPlayersDialog';
+import AddPlayersDialog from '../Dialogs/AddPlayersDialog';
 import VoteDialog from '../Dialogs/voteDialog';
 import TeamCountDialog from '../Dialogs/teamCountDialog';
 import BalancedTeams from './BalancedTeams';
