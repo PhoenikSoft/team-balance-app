@@ -43,7 +43,7 @@ export default withTranslation()(function RatingSurvey({ t, onChange }) {
 
     return (
         <div>
-            <Typography variant="h4" style={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant="h4" style={{ display: 'flex', justifyContent: 'center', paddingBottom: '20px' }}>
                 {t('RATING_SURVEY_TITLE')}
             </Typography>
 

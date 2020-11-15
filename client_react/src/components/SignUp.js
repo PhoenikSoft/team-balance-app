@@ -267,7 +267,8 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
         <Container maxWidth="sm" >
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography>{t('RATING')}</Typography>
+                    <Typography variant='h5' 
+                    style={{ display: 'flex', justifyContent: 'center', paddingBottom:'20px' }}>{t('RATING')}</Typography>
                     <Slider
                         name="rating"
                         disabled={true}
@@ -290,8 +291,8 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                     </Button>
                 </Grid>
 
-                {isSignUp && <Grid container>
-                    <Grid item justify="flex-end"> 
+                {isSignUp && <Grid container justify="flex-end">
+                    <Grid item> 
                         <Link href="/login" variant="body2">
                             {t('SIGN_IN_MESSAGE')}
                         </Link>

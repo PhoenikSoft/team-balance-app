@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     sectionMobile: {
-        display: 'flex',
+        display: 'contents',
         [theme.breakpoints.up('sm')]: {
             display: 'none',
         },
@@ -53,7 +53,7 @@ export default withTranslation()(function SurveyEntry({ t, onChange, name, maxVa
             />);
 
             const optionLabel = getSelectOptionLabelByIndex(index);
-            selectOptions.push(<MenuItem key={index} value={`${index}`}>{optionLabel}</MenuItem>);
+            selectOptions.push(<MenuItem key={index} value={`${index}`} style={{ whiteSpace: 'pre-wrap' }}>{optionLabel}</MenuItem>);
         }
 
         return [radios, selectOptions];
@@ -95,8 +95,8 @@ export default withTranslation()(function SurveyEntry({ t, onChange, name, maxVa
             </div>
 
             <div className={classes.sectionMobile}>
-                <Grid item xs={12}>
-                    <FormControl>
+                <Grid item xs style={{ display: 'flex', justifyContent: 'center', maxWidth: '100vw' }}>
+                    <FormControl style={{ maxWidth: '70%' }}>
                         <Select onChange={handleMobileChange} value={answer} displayEmpty>
                             {selectOptions}
                         </Select>
