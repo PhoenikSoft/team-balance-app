@@ -98,6 +98,7 @@ export const resources = {
             RATING_SURVEY_GOALKEEPING_QUESTION: '(Goalkeeping skills) How well do you stand on goal?',
             RATING_SURVEY_GOALKEEPING_QUESTION_MIN: 'I\'m a fielder, it\'s not my thing',
             RATING_SURVEY_GOALKEEPING_QUESTION_MAX: 'Guardian of the goal',
+            CHOOSE_YOUR_ANSWER: 'Choose your answer',
 
             // Alerts
             FEEDBACK_SUCCESS_TEXT: 'Feedback sent. Thank you!',
@@ -162,7 +163,7 @@ export const resources = {
             VOTES: 'Голосование',
             CHOOSE_TEAMS_COUNT: 'Выберите на какое количество команд сгенерировать составы',
 
-            SIGN_UP: 'Зарегестрироваться',
+            SIGN_UP: 'Зарегистрироваться',
             FIRST_NAME: 'Имя',
             RATING_MESSAGE: 'Вы не сможете менять рейтинг позже. Только игроки могут проголосовать за Ваш рейтинг',
             UPDATE: 'Обновить',
@@ -223,6 +224,7 @@ export const resources = {
             RATING_SURVEY_GOALKEEPING_QUESTION: '(Вратарские навыки) На сколько хорошо ты стоишь на воротах?',
             RATING_SURVEY_GOALKEEPING_QUESTION_MIN: 'Я полевой игрок, это не моё ',
             RATING_SURVEY_GOALKEEPING_QUESTION_MAX: 'Страж ворот',
+            CHOOSE_YOUR_ANSWER: 'Выберите свой ответ',
 
             // Alerts
             FEEDBACK_SUCCESS_TEXT: 'Спасибо за отзыв!',

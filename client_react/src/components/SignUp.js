@@ -291,7 +291,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                 </Grid>
 
                 {isSignUp && <Grid container justify="flex-end">
-                    <Grid item justify="flex-end">
+                    <Grid item>
                         <Link href="/login" variant="body2">
                             {t('SIGN_IN_MESSAGE')}
                         </Link>
