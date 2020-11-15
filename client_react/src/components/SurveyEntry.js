@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,14 +8,14 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
-import {makeStyles} from '@material-ui/core/styles';
-import {withTranslation} from "react-i18next";
+import { makeStyles } from '@material-ui/core/styles';
+import { withTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
         display: 'none',
         [theme.breakpoints.up('sm')]: {
-            display: 'flex',
+            display: 'contents',
         },
     },
     sectionMobile: {
@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default withTranslation()(function SurveyEntry({t, onChange, name, maxValue, question, minLabel, maxLabel}) {
+export default withTranslation()(function SurveyEntry({ t, onChange, name, maxValue, question, minLabel, maxLabel }) {
     const classes = useStyles();
     const [answer, setAnswer] = useState('');
 
     function getSelectOptionLabelByIndex(index) {
         let label = `${index + 1}`;
-        if(index === 0) {
+        if (index === 0) {
             label = label.concat(` - ${minLabel}`);
         } else if (index === maxValue) {
             label = label.concat(` - ${maxLabel}`);
@@ -47,7 +47,7 @@ export default withTranslation()(function SurveyEntry({t, onChange, name, maxVal
             radios.push(<FormControlLabel
                 key={index}
                 value={`${index}`}
-                control={<Radio color="primary" inputProps={{'aria-label': index}}/>}
+                control={<Radio color="primary" inputProps={{ 'aria-label': index }} />}
                 label={`${index + 1}`}
                 labelPlacement="top"
             />);
@@ -73,24 +73,24 @@ export default withTranslation()(function SurveyEntry({t, onChange, name, maxVal
     }
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={4}>
             <Grid item xs={12}>
-                <Typography>{question}</Typography>
+                <Typography variant="h5" style={{ display: 'flex', justifyContent: 'center' }}>{question}</Typography>
             </Grid>
 
             <div className={classes.sectionDesktop}>
-                <Grid item xs={2}>
-                    {minLabel}
+                <Grid item xs>
+                    <Typography>{minLabel}</Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={5}>
                     <FormControl component="fieldset">
                         <RadioGroup row aria-label={name} name={name} value={answer} onChange={handleDesktopChange}>
                             {radios}
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-                <Grid item xs={2}>
-                    {maxLabel}
+                <Grid item xs>
+                    <Typography>{maxLabel}</Typography>
                 </Grid>
             </div>
 

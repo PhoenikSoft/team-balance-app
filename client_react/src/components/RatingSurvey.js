@@ -43,9 +43,11 @@ export default withTranslation()(function RatingSurvey({ t, onChange }) {
 
     return (
         <div>
-            <Typography>{t('RATING_SURVEY_TITLE')}</Typography>
+            <Typography variant="h4" style={{ display: 'flex', justifyContent: 'center' }}>
+                {t('RATING_SURVEY_TITLE')}
+            </Typography>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={6}>
                 <Grid item >
                     <SurveyEntry
                         name="techniqueQuestion"
