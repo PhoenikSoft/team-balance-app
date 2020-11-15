@@ -30,18 +30,36 @@ export default withTranslation()(function SurveyEntry({t, onChange, name, maxVal
     const classes = useStyles();
     const [answer, setAnswer] = useState('');
 
-    const radios = [];
-    const selectOptions = [];
-    for (let index = 0; index <= maxValue; index++) {
-        radios.push(<FormControlLabel
-            key={index}
-            value={`${index}`}
-            control={<Radio color="primary" inputProps={{'aria-label': index}}/>}
-            label={`${index + 1}`}
-            labelPlacement="top"
-        />);
-        selectOptions.push(<MenuItem key={index} value={`${index}`}>{index + 1}</MenuItem>);
+    function getSelectOptionLabelByIndex(index) {
+        let label = `${index + 1}`;
+        if(index === 0) {
+            label = label.concat(` - ${minLabel}`);
+        } else if (index === maxValue) {
+            label = label.concat(` - ${maxLabel}`);
+        }
+        return label;
     }
+
+    function createSurveyOptions() {
+        const radios = [];
+        const selectOptions = [];
+        for (let index = 0; index <= maxValue; index++) {
+            radios.push(<FormControlLabel
+                key={index}
+                value={`${index}`}
+                control={<Radio color="primary" inputProps={{'aria-label': index}}/>}
+                label={`${index + 1}`}
+                labelPlacement="top"
+            />);
+
+            const optionLabel = getSelectOptionLabelByIndex(index);
+            selectOptions.push(<MenuItem key={index} value={`${index}`}>{optionLabel}</MenuItem>);
+        }
+
+        return [radios, selectOptions];
+    }
+
+    const [radios, selectOptions] = createSurveyOptions();
 
     function handleDesktopChange(event, newValue) {
         setAnswer(newValue);
