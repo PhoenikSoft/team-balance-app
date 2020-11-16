@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slider from './Slider';
 import PhoneInput from './PhoneInput';
+import RatingSurvey from './RatingSurvey';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -56,7 +57,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
             lastName: '',
             email: '',
             phone: '',
-            rating: 50,
+            rating: null,
             confirmPassword: '',
             password: '',
         };
@@ -100,7 +101,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
 
     }
 
-    function handleRatingChange(e, newValue) {
+    function handleRatingChange(newValue) {
         setInputs(inputs => ({ ...inputs, rating: newValue }));
     }
 
@@ -149,8 +150,8 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
         return Object.values(errors).some(error => error) || Object.values(inputs).some(error => !error);
     }
 
-    return (
-        <Container component="main" maxWidth="xs">
+    return (<>
+        <Container maxWidth="sm">
             <CssBaseline />
             <div className={classes.paper}>
                 {isSignUp && <Avatar className={classes.avatar}>
@@ -170,7 +171,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                                 required
                                 fullWidth
                                 id="firstName"
-                                label={t("FIRST_NAME")}
+                                label={t('FIRST_NAME')}
                                 autoFocus
                                 onChange={handleChange}
                                 error={errors.firstNameError}
@@ -185,7 +186,7 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                                 required
                                 fullWidth
                                 id="lastName"
-                                label={t("LAST_NAME")}
+                                label={t('LAST_NAME')}
                                 name="lastName"
                                 autoComplete="lname"
                                 onChange={handleChange}
@@ -246,18 +247,36 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                                     onChange={handlePasswordChange}
                                 />
                             </Grid> </>}
-                        <Grid item xs={12}>
-                            <Typography>{t('RATING')}</Typography>
-                            <Slider
-                                name="rating"
-                                disabled={!isSignUp}
-                                onChange={handleRatingChange}
-                                value={inputs.rating}
-                            />
-                            {isSignUp &&
-                                <Typography color="textSecondary">{t('RATING_MESSAGE')}</Typography>}
-                        </Grid>
+
                     </Grid>
+                </form>
+            </div>
+        </Container>
+
+        <Container maxWidth="lg" >
+            <div className={classes.paper}>
+                <Grid container spacing={2}>
+                    <Grid item >
+                        {isSignUp && <RatingSurvey onChange={handleRatingChange} />}
+                    </Grid>
+                </Grid>
+                <Box mt={5} />
+            </div>
+        </Container>
+
+        <Container maxWidth="sm" >
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Typography variant='h5' 
+                    style={{ display: 'flex', justifyContent: 'center', paddingBottom:'20px' }}>{t('RATING')}</Typography>
+                    <Slider
+                        name="rating"
+                        disabled={true}
+                        value={inputs.rating}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
                     <Button
                         disabled={isSubmitDisabled()}
                         type="submit"
@@ -270,22 +289,25 @@ export default withTranslation()(function SignUp({ t, onRegisterClick, isSignUp,
                         }}>
                         {isSignUp ? t('SIGN_UP') : t('UPDATE')}
                     </Button>
+                </Grid>
 
-                    {isSignUp && <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link href="/login" variant="body2">
-                                {t('SIGN_IN_MESSAGE')}
-                            </Link>
-                        </Grid>
-                    </Grid>}
-                    {error && <Typography color="error">{error}</Typography>}
-                    {showErrors && getErrorsText(errors).map(errorText => {
-                        return <Typography color='error' key={errorText}>{errorText}</Typography>;
-                    })}
-                </form>
-            </div>
-            <Box mt={5}>
-            </Box>
+                {isSignUp && <Grid container justify="flex-end">
+                    <Grid item> 
+                        <Link href="/login" variant="body2">
+                            {t('SIGN_IN_MESSAGE')}
+                        </Link>
+                    </Grid>
+                </Grid>
+                }
+                {error && <Typography color="error">{error}</Typography>}
+                {showErrors && getErrorsText(errors).map(errorText => {
+                    return <Typography color='error' key={errorText}>{errorText}</Typography>;
+                })}
+            </Grid>
+
+            <Box mt={5}/>
         </Container>
+    </>
+
     );
 });

@@ -13,7 +13,6 @@ const mapDispatchToProps = dispatch => {
             };
         },
         fetchUser: async () => await dispatch(userActions.getCurrentUser()),
-
     }
 };
 

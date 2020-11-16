@@ -12,6 +12,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+import static com.phoenixoft.teambalanceapp.common.constants.AppConstants.MAX_RATING;
+
 @Data
 public class UserRegistrationRequestDto {
 
@@ -36,7 +38,7 @@ public class UserRegistrationRequestDto {
     private String phone;
 
     @NotNull(message = "{user.null.rating}")
-    @Max(100)
+    @Max(MAX_RATING)
     @Min(1)
     private BigDecimal rating;
 

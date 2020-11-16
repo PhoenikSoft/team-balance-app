@@ -14,5 +14,4 @@ public class VotingProperties {
 
     private long timeToVoteInSeconds;
     private BigDecimal minRating;
-    private BigDecimal maxRating;
 }

@@ -11,7 +11,7 @@ const mapDispatchToProps = dispatch => {
             return (inputs) => {
                 dispatch(userActions.register(inputs));
             };
-        }
+        },
     }
 };
 
