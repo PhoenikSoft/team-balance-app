@@ -12,6 +12,9 @@ export function game(state = {}, action) {
         case playersCosntants.TEAM_BALANCED:
             return { ...state, balancedTeams: action.balancedTeams }
 
+
+        case gameConstants.BOTS_ADDED:
+            return { ...state, players: [...state.players, ...action.bots] }
         case gameConstants.VOTES_FETCHED:
             return { ...state, submittedVotes: action.votes }
         case gameConstants.VOTES_SUBMITTED:

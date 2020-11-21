@@ -54,6 +54,10 @@ const votingFinished = () => dispatch => {
     dispatch({ type: gameConstants.VOTING_FINISHED })
 }
 
+const addBots = bots => dispatch => {
+    dispatch({ type: gameConstants.BOTS_ADDED, bots })
+}
+
 export const gamesActions = {
     deleteGame,
     addGame,
@@ -64,4 +68,5 @@ export const gamesActions = {
     addVote,
     flushVotes,
     votingFinished,
+    addBots,
 };
