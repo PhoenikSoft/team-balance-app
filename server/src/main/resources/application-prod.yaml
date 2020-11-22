@@ -4,10 +4,11 @@ spring:
 server:
   error:
     include-exception: false
+forgot-password:
+  url: https://teambalance.cc/forgot-password
 cors:
   origins:
     - https://teambalance.cc
-    - http://teambalanceapp-dev-env.eu-central-1.elasticbeanstalk.com
     - http://localhost
 voting:
   # Two days - 48h

@@ -43,13 +43,14 @@ spring:
   sendgrid:
     api-key: ${SENDGRID_API-KEY:dummy}
 
-
-
 quartz:
   datasource:
     jdbc-url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDB:teambalance}?currentSchema=quartz
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
+
+forgot-password:
+  url: http://localhost:3000/login
 
 cors:
   origins:

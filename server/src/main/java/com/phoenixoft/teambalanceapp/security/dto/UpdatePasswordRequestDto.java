@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.security.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
@@ -8,8 +9,9 @@ import javax.validation.constraints.NotBlank;
 public class UpdatePasswordRequestDto {
 
     @NotBlank(message = "{updatePassword.blank.newPassword}")
+    @Length(min = 8)
     private String newPassword;
 
-    @NotBlank(message = "{updatePassword.blank.oldPassword}")
-    private String oldPassword;
+    @NotBlank(message = "{updatePassword.blank.newPassword}")
+    private String securityToken;
 }
