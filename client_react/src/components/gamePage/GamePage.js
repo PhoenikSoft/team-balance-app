@@ -57,7 +57,6 @@ export default withTranslation()(function GamePage(
         votes,
         votingFinished }) {
     const classes = useStyles();
-
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
     const [voteDialogOpened, setVoteDialogOpened] = useState(false);
     const [teamCountDialogOpened, setTeamCountDialogOpened] = useState(false);

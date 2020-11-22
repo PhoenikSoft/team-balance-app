@@ -18,7 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 
 
-export default withTranslation()(function ({ t, open, handleClose, onSubmit, players }) {
+export default withTranslation()(function ({ t, open, handleClose, onSubmit, players, bots, setBots }) {
     const defaultBot = {
         firstName: t('NEW'),
         lastName: t('BOT'),
@@ -35,16 +35,16 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
             store.dispatch({ type: alertConstants.ALERT_ERROR, text: alertConstants.PROVIDE_VALID_RATING });
         } else {
             setBots([...bots, { lastName, firstName, rating }]);
+            setLocalBots([...bots, { lastName, firstName, rating }]);
         };
     };
     const deleteBot = botToDelete => setBots(bots.filter(player => player.name !== botToDelete.name))
-    const [bots, setBots] = useState([]);
 
 
     const [newBot, setNewBot] = useState(defaultBot);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+    const [localBots, setLocalBots] = useState([]);
     return <Dialog
         open={open}
         onClose={handleClose}
@@ -55,14 +55,14 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
                 {t('CHOOSE_TEAMS_COUNT')}
             </DialogContentText>
             {bots.length ? <LocalizedMaterialTable
-                data={bots}
+                data={localBots}
                 columns={[
                     { title: t('FIRST_NAME'), field: 'firstName' },
                     { title: t('LAST_NAME'), field: 'lastName' },
                     { title: t('RATING'), field: 'rating', type: 'numeric' }
                 ]}
                 actions={[
-                    player => ({
+                    () => ({
                         icon: 'delete',
                         tooltip: t('DELETE_PLAYER'),
                         onClick: (event, botToDelete) => deleteBot(botToDelete)
@@ -113,7 +113,7 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
             <Button
                 onClick={() => {
                     onSubmit(bots);
-                    setBots([]);
+                    setLocalBots([]);
                     handleClose();
                 }}
                 disabled={!bots.length}
