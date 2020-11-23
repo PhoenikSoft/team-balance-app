@@ -9,6 +9,7 @@ import com.phoenixoft.teambalanceapp.security.dto.UpdatePasswordRequestDto;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.repository.UserRepository;
 import com.phoenixoft.teambalanceapp.util.SendGridMailService;
+import emails.ForgotPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ForgetPasswordService {
 
-    private static final String RESET_PASSWORD_EMAIL_CONTENT = "To complete the password reset process, please click here: %s?token=%s";
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordTokenRepository passwordTokenRepository;
@@ -33,7 +32,7 @@ public class ForgetPasswordService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
         String token = saveForgotPasswordRequest(user);
-        String mailContent = String.format(RESET_PASSWORD_EMAIL_CONTENT, forgotPasswordProperties.getUrl(), token);
+        String mailContent = ForgotPassword.template(forgotPasswordProperties.getUrl(), token).render().toString();
         mailService.sendMail(mailContent, email);
     }
 
