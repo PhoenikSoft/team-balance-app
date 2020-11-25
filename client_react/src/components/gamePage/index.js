@@ -10,9 +10,7 @@ const getGameId = () => urlParserHelper.getGameId();
 const mapDispatchToProps = dispatch => {
     return {
         // OPTIMIZATION: don't fetch if group is in state already
-        fetchGame: () => {
-            return dispatch(gamesActions.getGame(getGameId()));
-        },
+        fetchGame: () => dispatch(gamesActions.getGame(getGameId())),
         goBack: () => {
             navigation.goToGroupView(getGroupId());
         },

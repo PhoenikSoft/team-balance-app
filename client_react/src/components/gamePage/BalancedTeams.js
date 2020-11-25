@@ -27,14 +27,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default withTranslation() (function ({ t, balancedTeams, votes,
+export default withTranslation()(function ({ t, balancedTeams, votes,
     showTitle = true,
     showSlider = false,
     showTitleTable = true,
     showCurrentPlayer = true,
     showRating = true
 }) {
-
     let index = 1;
     return < Grid >
         {showTitle && <Grid container justify="center">
@@ -54,10 +53,10 @@ export default withTranslation() (function ({ t, balancedTeams, votes,
                 actionsColumnIndex: showSlider ? -1 : 0
             }}
         />}
-        {balancedTeams.map(team => {
+        {balancedTeams && balancedTeams.map(team => {
             team.players = mergePlayersWithVotes(team.players, votes);
             return React.cloneElement(<TeamTable />, {
-                t, 
+                t,
                 team: showCurrentPlayer
                     ? team
                     : { ...team, players: team.players.filter(player => player.id != authHelper.getCookie('userId')) },
@@ -90,9 +89,9 @@ function TeamTable({ t, team, index, actions, showSlider, votes, showRating }) {
                     {props.title}</h6>
             </div>,
             Action: props =>
-              (<div style={{ width: '150px', display: 'flex' }}>
-                  {showSlider && <VoteSlider rating={props.data.rating} userId={props.data.id} />}
-              </div>)
+                (<div style={{ width: '150px', display: 'flex' }}>
+                    {showSlider && <VoteSlider rating={props.data.rating} userId={props.data.id} />}
+                </div>)
         }}
         actions={actions}
     />

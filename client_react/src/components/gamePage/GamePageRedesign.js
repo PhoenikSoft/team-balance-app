@@ -55,7 +55,6 @@ export default withTranslation()(function GamePage(
         game,
         fetchGame,
         groupId,
-        goBack,
         deletePlayer,
         addPlayers,
         balanceTeams,
@@ -66,21 +65,45 @@ export default withTranslation()(function GamePage(
         votingFinished,
         addBots }) {
     const steps = ['Add members', 'Add unregistered', 'Choose teams amount', 'Balance teams'];
-    const defaultStep = game.balancedTeams ? 3 : 0;
-    const [activeStep, setActiveStep] = useState(defaultStep);
+
+    const [activeStep, setActiveStep] = useState();
     const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
     const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
+
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
     const [addBotsDialogOpened, setAddBotsDialogOpened] = useState(false);
+    const [voteDialogOpened, setVoteDialogOpened] = useState(false);
+
     const classes = useStyles();
     const [teamsCount, setTeamsCount] = useState('2');
     const [bots, setBots] = useState([]);
+
+    const isTeamsBalanced = game.balancedTeams && !!game.balancedTeams.teams;
+    const isGameContainsPlayers = game.players && !!game.players.length;
+
+
     useEffect(() => {
         const fetch = async () => {
-            await Promise.all([fetchGame(), getVotes()]);
+            const [fetchedGame] = await Promise.all([fetchGame(), getVotes()]);
+            setActiveStep(fetchedGame?.game?.balancedTeams ? 3 : 0);
         };
         fetch();
     }, []);
+
+
+    const getPlayersWithEmodjies = () => game?.players?.map(player => {
+        const firstName = player.id ? `✅${player.firstName}` : player.firstName;
+        return { ...player, firstName };
+    });
+    const getTeamsWithEmodjies = () =>
+        game.balancedTeams.teams.map(team =>
+            ({
+                ...team, players: team.players.map(player => {
+                    const firstName = player.id ? `✅${player.firstName}` : player.firstName;
+                    return { ...player, firstName };
+                })
+            })
+        );
 
     const getStepContent = step => {
         switch (step) {
@@ -103,7 +126,7 @@ export default withTranslation()(function GamePage(
                         <LocalizedMaterialTable
                             className={classes.paper}
                             title={t('PLAYERS')}
-                            data={game.players}
+                            data={getPlayersWithEmodjies()}
                             columns={[
                                 { title: t('NAME'), field: 'firstName' },
                                 { title: t('RATING'), field: 'rating', type: 'numeric' }
@@ -148,7 +171,7 @@ export default withTranslation()(function GamePage(
                         <LocalizedMaterialTable
                             className={classes.paper}
                             title={t('PLAYERS')}
-                            data={game.players}
+                            data={getPlayersWithEmodjies()}
                             columns={[
                                 { title: t('NAME'), field: 'firstName' },
                                 { title: t('RATING'), field: 'rating', type: 'numeric' }
@@ -193,15 +216,47 @@ export default withTranslation()(function GamePage(
                     </Grid>
                 </>;
             case 3:
-                return <Grid item xs={12} >
-                    <BalancedTeams
-                        balancedTeams={game.balancedTeams.teams}
-                        votes={votes}
-                    />
-                </Grid>
+                return <>
+                    {game.voteStatus === voteStatus.NOT_STARTED && isTeamsBalanced && <Grid item>
+                        <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
+                            {t('START_VOTING')}
+                        </Button>
+                    </Grid>}
+
+                    {game.voteStatus === voteStatus.STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item>
+                        <Button variant="contained" color="secondary" onClick={e => setVoteDialogOpened(true)}>
+                            {t('VOTE_FOR_PLAYERS')}
+                        </Button>
+                    </Grid>}
+                    {game.voteStatus === voteStatus.STARTED && game.endVotingTimestamp &&
+                        <>
+                            <Grid item >
+                                <Typography variant="h5" gutterBottom>
+                                    {t('TIME_LEFT_TO_VOTE')}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h5" gutterBottom>
+                                    <CountDownTimer deadline={game.endVotingTimestamp} votingFinished={votingFinished} />
+                                </Typography>
+                            </Grid>
+                        </>
+                    }
+                    {game.voteStatus === voteStatus.FINISHED && <Grid item>
+                        <Typography variant="h5" gutterBottom>
+                            {t('VOTING_IS_FINISHED')}
+                        </Typography>
+                    </Grid>}
+                    <Grid item xs={12} >
+                        <BalancedTeams
+                            balancedTeams={getTeamsWithEmodjies()}
+                            votes={votes}
+                        />
+                    </Grid>
+                </>
 
             default:
-                return 'Unknown step';
+                return '';
         };
     };
 
@@ -242,6 +297,17 @@ export default withTranslation()(function GamePage(
             players={game.players || []}
             bots={bots}
             setBots={setBots}
+        />
+
+        <VoteDialog
+            balancedTeams={game?.balancedTeams?.teams}
+            gameId={game.id}
+            open={voteDialogOpened}
+            handleClose={e => setVoteDialogOpened(false)}
+            onSubmit={votes => {
+                sendVotes(votes)
+                setVoteDialogOpened(false);
+            }}
         />
     </>
 });
