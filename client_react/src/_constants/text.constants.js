@@ -22,6 +22,7 @@ export const resources = {
 
             YOUR_GROUPS: 'Your groups:',
             ADD_GROUP: 'Create a group',
+            GROUPS_LIST_DESCRIPTION: 'Here you find football groups you are a member of. You can create a new one or join an existing group by the invite link.',
 
             ADD_GROUP_DIALOG_NEW_GROUP: 'New group',
 
@@ -138,6 +139,7 @@ export const resources = {
 
             YOUR_GROUPS: 'Ваши группы:',
             ADD_GROUP: 'Создать группу',
+            GROUPS_LIST_DESCRIPTION: 'Здесь отображаются футбольные группы, в которых состоите. Вы можете создать новую группу или попасть в существующую по приглашению.',
 
             ADD_GROUP_DIALOG_NEW_GROUP: 'Новая группа',
             ADD_GROUP_INPUT_NAME: 'Введите имя группы',
