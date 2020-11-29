@@ -12,6 +12,6 @@ public class UpdatePasswordRequestDto {
     @Length(min = 8)
     private String newPassword;
 
-    @NotBlank(message = "{updatePassword.blank.newPassword}")
+    @NotBlank(message = "{updatePassword.blank.securityToken}")
     private String securityToken;
 }
