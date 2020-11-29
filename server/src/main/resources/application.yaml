@@ -50,7 +50,7 @@ quartz:
     password: ${spring.datasource.password}
 
 forgot-password:
-  url: http://localhost:3000/login
+  url: http://localhost:3000/reset-password
 
 cors:
   origins:

@@ -16,15 +16,18 @@ function handleResponse(response) {
         if (!response.ok) {
             if (response.status === 401) {
                 authHelper.logout();
-            };
+            }
 
-            const error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
+            let error = (data && data.errors && data.errors.name && data.errors.name.length !== 0
                 && data.errors.name.toString()) || data.message || data.msg || response.statusText;
+            if(!error) {
+                error = 'Something went wrong';
+            }
             return Promise.reject(error);
-        };
+        }
         return data;
     });
-};
+}
 
 // call this function in catch or elsewhere to show error snack bar
 function actionsErrorHandler(errorText) {

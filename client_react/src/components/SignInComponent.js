@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { userActions } from '../actions';
 import SignIn from './SignIn';
-import { userData } from '../reducers/userData.reducer';
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -16,9 +15,10 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
+        message: state.authentication.message,
         error: state.authentication.error,
         refLink: state.userData.refLink,
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

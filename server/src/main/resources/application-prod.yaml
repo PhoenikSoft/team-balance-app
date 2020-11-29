@@ -5,7 +5,7 @@ server:
   error:
     include-exception: false
 forgot-password:
-  url: https://teambalance.cc/forgot-password
+  url: https://teambalance.cc/reset-password
 cors:
   origins:
     - https://teambalance.cc
