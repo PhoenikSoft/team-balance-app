@@ -1,20 +1,22 @@
 import config from '../config';
-import { serviceHelper, authHelper } from '../_helpers';
-import { apiConstants } from '../_constants';
+import {serviceHelper, authHelper} from '../_helpers';
+import {apiConstants} from '../_constants';
 
 export const userService = {
     login,
     logout,
     register,
     getUser,
-    update
+    update,
+    requestForgotPassword,
+    resetPassword
 };
 
 async function login(email, password) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password})
     };
 
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
@@ -28,10 +30,32 @@ function logout() {
     serviceHelper.logout();
 }
 
+async function requestForgotPassword(email) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email})
+    };
+
+    const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.FORGOT_PASSWORD_URL}`, requestOptions)
+    return await serviceHelper.handleResponse(res);
+}
+
+async function resetPassword(newPassword, token) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newPassword, securityToken: token})
+    };
+
+    const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.RESET_PASSWORD_URL}`, requestOptions)
+    return await serviceHelper.handleResponse(res);
+}
+
 async function register(input) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(input)
     };
 
@@ -45,7 +69,7 @@ async function register(input) {
 function getUser(userId) {
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', ...authHelper.authHeader() }
+        headers: {'Content-Type': 'application/json', ...authHelper.authHeader()}
     };
 
     return global.fetchWithLoader(`${config.apiUrl}${apiConstants.GET_USER}/${userId}`, requestOptions)

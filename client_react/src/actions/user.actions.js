@@ -9,7 +9,9 @@ export const userActions = {
     register,
     leaveFeedback,
     update,
-    getCurrentUser
+    getCurrentUser,
+    requestForgotPassword,
+    resetPassword
 };
 
 function login(username, password) {
@@ -72,13 +74,46 @@ function update(inputs) {
     }
 }
 
-
 function logout() {
     authHelper.logout();
 }
 
-function leaveFeedback(message) {
+function requestForgotPassword(email) {
+    return dispatch => {
+        dispatch(request({ email }));
 
+        return userService.requestForgotPassword(email)
+            .then(
+                () => dispatch(success(email)),
+                error => dispatch(failure(error.toString()))
+            );
+    }
+
+    function request(email) { return { type: userConstants.FORGOT_PASSWORD_REQUEST, email } }
+    function success(email) { return { type: userConstants.FORGOT_PASSWORD_SUCCESS, email } }
+    function failure(error) { return { type: userConstants.FORGOT_PASSWORD_FAILURE, error } }
+}
+
+function resetPassword(password, token) {
+    return dispatch => {
+        dispatch(request());
+
+        return userService.resetPassword(password, token)
+            .then(
+                () => {
+                    dispatch(success());
+                    navigation.goToLogin();
+                },
+                error => dispatch(failure(error.toString()))
+            );
+    }
+
+    function request() { return { type: userConstants.RESET_PASSWORD_REQUEST } }
+    function success() { return { type: userConstants.RESET_PASSWORD_SUCCESS } }
+    function failure(error) { return { type: userConstants.RESET_PASSWORD_FAILURE, error } }
+}
+
+function leaveFeedback(message) {
     return dispatch => {
         feedBackService.leaveFeedBack(message)
             .then(message => dispatch({ type: alertConstants.ALERT_SUCCESS, text: alertConstants.FEEDBACK_SUCCESS_TEXT }))

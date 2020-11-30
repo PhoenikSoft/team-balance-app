@@ -6,6 +6,8 @@ import SignUp from './SignUpContainer';
 import Home from './Home';
 import Loader from './Spinner';
 import AddMe from './AddMe';
+import ForgotPassword from './ForgotPasswordComponent';
+import ResetPassword from './ResetPasswordComponent';
 
 const App = () => (
     <div>
@@ -19,6 +21,12 @@ const App = () => (
                 </Route>
                 <Route path='/register'>
                     <SignUp />
+                </Route>
+                <Route path='/forgot-password'>
+                    <ForgotPassword />
+                </Route>
+                <Route path='/reset-password'>
+                    <ResetPassword />
                 </Route>
                 <Route path='/home' render={()=>(
                     authHelper.isAuthenticated()

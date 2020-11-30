@@ -20,6 +20,20 @@ export function authentication(state = initialState, action) {
         case userConstants.LOGOUT:
             return {};
 
+        case userConstants.FORGOT_PASSWORD_REQUEST:
+            return {};
+        case userConstants.FORGOT_PASSWORD_SUCCESS:
+            return { message: 'FORGOT_PASSWORD_SUCCESS_MSG', email: action.email };
+        case userConstants.FORGOT_PASSWORD_FAILURE:
+            return { error: action.error };
+
+        case userConstants.RESET_PASSWORD_REQUEST:
+            return {};
+        case userConstants.RESET_PASSWORD_SUCCESS:
+            return { message: 'RESET_PASSWORD_SUCCESS_MSG' };
+        case userConstants.RESET_PASSWORD_FAILURE:
+            return { error: action.error };
+
         case userConstants.REGISTER_FAILURE:
             return { error: action.error };
         default:

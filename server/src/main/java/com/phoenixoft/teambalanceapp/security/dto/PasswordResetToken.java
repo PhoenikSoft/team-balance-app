@@ -32,5 +32,4 @@ public class PasswordResetToken implements Serializable {
     private User user;
 
     private LocalDateTime expiryDate;
-
 }

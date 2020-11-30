@@ -37,11 +37,4 @@ public class UserController {
         User entity = userService.update(userId, dto);
         return DtoConverter.convertUser(entity);
     }
-
-    @PostMapping(path = "/updatePassword")
-    public void updatePassword(@RequestBody @Valid UpdatePasswordRequestDto dto,
-                               Authentication authentication) {
-        CustomUser user = (CustomUser) authentication.getPrincipal();
-        userService.updatePassword(dto, user);
-    }
 }

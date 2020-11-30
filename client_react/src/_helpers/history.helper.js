@@ -11,7 +11,8 @@ export const navigation = {
     goHome,
     goToRefLink,
     goToGameView,
-    goBack
+    goBack,
+    goToLogin
 }
 
 function goBack() {
@@ -28,6 +29,10 @@ function goToProfile() {
 
 function goHome() {
     history.push('/home');
+}
+
+function goToLogin() {
+    history.push('/login');
 }
 
 function goToRefLink(ref) {
