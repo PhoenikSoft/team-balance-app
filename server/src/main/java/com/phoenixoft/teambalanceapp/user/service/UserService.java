@@ -13,7 +13,7 @@ import com.phoenixoft.teambalanceapp.user.entity.Role;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import com.phoenixoft.teambalanceapp.user.repository.UserRepository;
 import com.phoenixoft.teambalanceapp.util.SendGridMailService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,16 +23,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
-
-    private PasswordEncoder passwordEncoder;
-
-    private PasswordTokenRepository passwordTokenRepository;
-
-    private SendGridMailService mailService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User save(UserRequestDto dto) {
         User user = new User();
@@ -87,45 +82,6 @@ public class UserService {
 
     private boolean emailExists(String email) {
         return userRepository.existsByEmail(email);
-    }
-
-    public void updatePassword(UpdatePasswordRequestDto dto, CustomUser authenticatedUser){
-        String email = authenticatedUser.getUsername();
-        userRepository.findByEmail(email).ifPresent(user -> {
-            if (passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
-                user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-                userRepository.save(user);
-            } else {
-                throw new ServiceException("Wrong current password provided.", HttpStatus.BAD_REQUEST);
-            }
-        });
-    }
-
-    public void resetPassword(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
-        String token = UUID.randomUUID().toString();
-
-        PasswordResetToken passwordResetToken = new PasswordResetToken();
-        passwordResetToken.setToken(token);
-        passwordResetToken.setUser(user);
-        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(2));
-        passwordTokenRepository.save(passwordResetToken);
-
-        String mailContent = "To complete the password reset process, please click here: "
-                + "http://localhost:5000/confirm-reset?token=" + token;
-        // need to add path to the reset password page with generated token
-
-        mailService.sendMail(mailContent, email);
-    }
-
-    public void validatePasswordToken(String token) {
-        PasswordResetToken passwordResetToken = passwordTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ServiceException("Provided token is not valid.", HttpStatus.BAD_REQUEST));
-        if (passwordResetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            throw new ServiceException("Provided token was expired.", HttpStatus.BAD_REQUEST);
-        }
-        // add removing token from db
     }
 
 }

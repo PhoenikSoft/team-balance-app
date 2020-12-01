@@ -3,6 +3,8 @@ import config from '../config';
 export const apiConstants = {
     LOGIN_URL: '/api/auth/login',
     REGISTER_URL: '/api/auth/register',
+    FORGOT_PASSWORD_URL: '/api/auth/init-reset-password',
+    RESET_PASSWORD_URL: '/api/auth/confirm-reset-password',
     GET_USER: '/api/users',
 
     FEEDBACK_URL: '/api/feedbacks',

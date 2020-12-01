@@ -1,6 +1,7 @@
 package com.phoenixoft.teambalanceapp.security.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
@@ -26,6 +27,7 @@ public class UserRegistrationRequestDto {
     private String lastName;
 
     @NotBlank(message = "{user.blank.password}")
+    @Length(min = 8)
     private String password;
 
     @Email(message = "{email.invalid}")

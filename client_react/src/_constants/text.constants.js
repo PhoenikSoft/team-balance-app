@@ -7,12 +7,23 @@ export const resources = {
             PASSWORD: 'Password',
             CONFIRM_PASSWORD: 'Confirm password',
             SIGN_UP_QUESTION: "Don't have an account? Sign Up",
+            FORGOT_PASSWORD_QUESTION: 'Forgot password? Change it',
             LINK_REGISTER_QUESTION: "You were invited by link. Please register if you don't have an account",
             LOGIN_FAILED: 'Login failed:',
             LEAVE_FEEDBACK: 'Leave Feedback',
             PROFILE: 'Profile',
             LOGOUT: 'Logout',
             PHONE_NUMBER: 'Phone',
+            FORGOT_PASSWORD_TITLE: 'Change password',
+            REQUEST_FORGOT_PASSWORD: 'Request change password',
+            FORGOT_PASSWORD_FAILED: 'Failed to send forgot password request: ',
+            FORGOT_PASSWORD_SUCCESS_MSG: 'Request was sent! Please check email: ',
+            RESET_PASSWORD_TITLE: 'Reset password',
+            NEW_PASSWORD: 'New password',
+            CONFIRM_NEW_PASSWORD: 'Confirm new password',
+            RESET_PASSWORD_BUTTON: 'Change password',
+            RESET_PASSWORD_FAILED: 'Change password failed: ',
+            RESET_PASSWORD_SUCCESS_MSG: 'Password has been changed successfully',
 
             // register validation error
             EMAIL_ERROR: 'Provide a valid email',
@@ -23,6 +34,7 @@ export const resources = {
 
             YOUR_GROUPS: 'Your groups:',
             ADD_GROUP: 'Create a group',
+            GROUPS_LIST_DESCRIPTION: 'Here you find football groups you are a member of. You can create a new one or join an existing group by the invite link.',
 
             ADD_GROUP_DIALOG_NEW_GROUP: 'New group',
 
@@ -145,7 +157,8 @@ export const resources = {
             PASSWORD: 'Пароль',
             HOME: 'На главную',
             CONFIRM_PASSWORD: 'Подтвердить пароль',
-            SIGN_UP_QUESTION: 'Нет аккаунта? Зарегестрируйся',
+            SIGN_UP_QUESTION: 'Нет аккаунта? Зарегистрируйтесь',
+            FORGOT_PASSWORD_QUESTION: 'Забыли пароль? Вы можете его изменить',
             LINK_REGISTER_QUESTION: 'Вас пригласили по ссылке. Зарегистрируйтесь, если у вас нет аккаунта.',
             LOGIN_FAILED: 'Не удалось авторизоваться:',
             LEAVE_FEEDBACK: 'Оставьте отзыв',
@@ -155,6 +168,16 @@ export const resources = {
             CREATE: 'Создать',
             ADD: 'Добавить',
             PHONE_NUMBER: 'Номер телефона',
+            FORGOT_PASSWORD_TITLE: 'Сменить пароль',
+            REQUEST_FORGOT_PASSWORD: 'Запросить смену пароля',
+            FORGOT_PASSWORD_FAILED: 'Не удалось запросить смену пароля: ',
+            FORGOT_PASSWORD_SUCCESS_MSG: 'Запрос отправлен! Пожалуйста проверерьте email: ',
+            RESET_PASSWORD_TITLE: 'Смена пароля',
+            NEW_PASSWORD: 'Новый пароль',
+            CONFIRM_NEW_PASSWORD: 'Подтвердить новый пароль',
+            RESET_PASSWORD_BUTTON: 'Сменить пароль',
+            RESET_PASSWORD_FAILED: 'Смена пароля провалилась: ',
+            RESET_PASSWORD_SUCCESS_MSG: 'Пароль был успешно изменен',
 
             // register validation error
             EMAIL_ERROR: 'Введите корректный адрес почты.',
@@ -165,6 +188,7 @@ export const resources = {
 GROUP:'Группа',
             YOUR_GROUPS: 'Ваши группы:',
             ADD_GROUP: 'Создать группу',
+            GROUPS_LIST_DESCRIPTION: 'Здесь отображаются футбольные группы, в которых состоите. Вы можете создать новую группу или попасть в существующую по приглашению.',
 
             ADD_GROUP_DIALOG_NEW_GROUP: 'Новая группа',
             ADD_GROUP_INPUT_NAME: 'Введите имя группы',
