@@ -11,6 +11,7 @@ import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import Dialog from './FeedBackDialog';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import BreadCrumbs from './BreadCrumbs';
 import { navigation } from '../_helpers';
 
 const useStyles = makeStyles((theme) => ({
@@ -195,6 +196,7 @@ export default withTranslation()(function PrimarySearchAppBar({ t, onLogoutClick
                     </div>
                 </Toolbar>
             </AppBar>
+            <BreadCrumbs />
             <Dialog open={open} handleClose={handleClose} onSubmit={onSubmit} />
         </div>
     );

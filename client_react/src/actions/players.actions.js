@@ -16,11 +16,8 @@ const balanceTeams = (gameId, teamsCount, bots) => dispatch =>
     playersService.balanceTeams(gameId, teamsCount, bots)
         .then(balancedTeams => dispatch({ type: playersCosntants.TEAM_BALANCED, balancedTeams, gameId }))
         .catch(e => {
-            if (e === `Argument 'players' is not valid`) {
-                serviceHelper.actionsErrorHandler('Make sure game contains more than 3 players');
-            } else {
-                serviceHelper.actionsErrorHandler();
-            }
+            serviceHelper.actionsErrorHandler(e);
+            return false;
         });
 
 export const playersActions = {

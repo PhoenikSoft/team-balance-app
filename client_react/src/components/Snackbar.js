@@ -54,10 +54,22 @@ function CustomizedSnackbars({ t, open, success, text, closeSnackBar }) {
     <div className={classes.root}>
       { open && <Snackbar open={open} autoHideDuration={2000} onClose={closeSnackBar}>
         <Alert onClose={handleClose} severity={success ? 'success' : 'error'}>
-          {t(text)}
+          {t(getErrorCodeByErrorText(text))}
         </Alert>
       </Snackbar>
       }
     </div>
   );
 }
+
+//TODO remove this after sends error codes instead of strings
+function getErrorCodeByErrorText(errorText) {
+
+  const textToCodeMap = {
+    'Not enough players to balance. Should be minimum 4': 'E_001',
+    'Not enough players to balance. Should be minimum 6': 'E_002',
+    'Not enough players to balance. Should be minimum 8': 'E_003',
+  };
+
+  return textToCodeMap[errorText] ? textToCodeMap[errorText] : errorText;
+};

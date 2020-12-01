@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import moment from 'moment';
+import { withTranslation } from 'react-i18next';
 
-export default function ({ deadline, votingFinished }) {
+export default withTranslation()(function ({ t, deadline, votingFinished }) {
     const isTimerExpired = total => total < 0;
     const [timer, setTimer] = useState(getTimeRemaining(deadline));
 
@@ -12,12 +13,12 @@ export default function ({ deadline, votingFinished }) {
 
     return !isTimerExpired(timer.total)
         ? (<div>
-            {`${timer.hours} hours `}
-            {`${timer.minutes} minutes `}
-            {`${timer.seconds} seconds `}
+            {`${timer.hours} ${t('HOURS')}`}
+            {`${timer.minutes} ${t('MINUTES')}`}
+            {`${timer.seconds} ${t('SECONDS')}`}
         </div>)
         : <div>Voting is closed</div>
-};
+});
 
 
 

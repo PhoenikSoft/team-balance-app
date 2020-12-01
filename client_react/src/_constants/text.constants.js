@@ -2,6 +2,7 @@ export const resources = {
     en: {
         translation: {
             SIGN_IN: 'Sign in',
+            HOME: 'HOME',
             EMAIL_ADDRESS: 'Email Address',
             PASSWORD: 'Password',
             CONFIRM_PASSWORD: 'Confirm password',
@@ -41,6 +42,7 @@ export const resources = {
             STAR: 'Star',
             ROWS: 'Rows',
             BACK_TO_GROUP: 'Back to group',
+            BACK: 'Back',
             ADD_MEMBERS: 'Add members',
             START_VOTING: 'Start voting',
             VOTE_FOR_PLAYERS: 'Vote for players',
@@ -56,16 +58,18 @@ export const resources = {
             MEMBERS: 'Members',
             PREVIOUS_PAGE: 'Previous page',
             NEXT_PAGE: 'Next page',
+            NEXT: 'Next',
             FIRST_PAGE: 'First page',
             LAST_PAGE: 'Last page',
             TEAM_COUNT_STEP_1: 'Choose how much teams you want to generate',
             ADD_BOTS: 'Add bots',
             TEAM_COUNT_PROCEED_TO_STEP_2: 'Proceed to team bots',
             TEAM_COUNT_GO_BACK_TO_STEP_1: 'Back to balance Teams',
+            
             NO_BOTS_ADDED: 'No bots added',
             NEW: 'New',
             BOT: 'Bot',
-            CHOOSE_TEAMS_COUNT: 'Choose the amount of the teams you want to generate',
+            CHOOSE_TEAMS_COUNT: 'Choose teams count',
             BALANCED_TEAMS: 'Balanced teams ⚖️',
             TEAM: 'Team',
             NAME: 'Name',
@@ -124,6 +128,13 @@ export const resources = {
             PROVIDE_VALID_RATING: 'Provide valid rating for a new bot',
             DEFAULT_ERROR_TEXT: 'Oooops...',
             VOTES: 'Votes',
+            ADD_UNREGISTERED: 'Add unregistered',
+            HOURS: 'hours',
+            MINUTES: 'minutes',
+            SECONDS: 'seconds',
+            GROUP:'Group',
+
+            
         }
     },
 
@@ -132,6 +143,7 @@ export const resources = {
             SIGN_IN: 'Логин',
             EMAIL_ADDRESS: 'Почта',
             PASSWORD: 'Пароль',
+            HOME: 'На главную',
             CONFIRM_PASSWORD: 'Подтвердить пароль',
             SIGN_UP_QUESTION: 'Нет аккаунта? Зарегестрируйся',
             LINK_REGISTER_QUESTION: 'Вас пригласили по ссылке. Зарегистрируйтесь, если у вас нет аккаунта.',
@@ -150,7 +162,7 @@ export const resources = {
             FIRST_NAME_ERROR: 'Поле имени не может быть пустым.',
             LAST_NAME_ERROR: 'Поле фамилии не может быть пустым.',
             PASSWORD_ERROR: 'Введите пароль не короче 8 символов и убедитесь что пароли совпадают.',
-
+GROUP:'Группа',
             YOUR_GROUPS: 'Ваши группы:',
             ADD_GROUP: 'Создать группу',
 
@@ -176,7 +188,7 @@ export const resources = {
             TEAM: 'Команда',
             TEAMS: 'Команды',
             VOTES: 'Голосование',
-            CHOOSE_TEAMS_COUNT: 'Выберите на какое количество команд сгенерировать составы',
+            CHOOSE_TEAMS_COUNT: 'Количество команд',
 
             SIGN_UP: 'Зарегистрироваться',
             FIRST_NAME: 'Имя',
@@ -191,6 +203,7 @@ export const resources = {
             ROWS: 'Строк',
             BACK_TO_GROUP: 'Вернуться обратно в группу',
             ADD_MEMBERS: 'Добавить участников',
+            ADD_UNREGISTERED: 'Добавить незарегистрированых',
             START_VOTING: 'Начать голосование',
             VOTE_FOR_PLAYERS: 'Проголосовать за игроков',
             TIME_LEFT_TO_VOTE: 'Осталось времени голосования',
@@ -212,6 +225,14 @@ export const resources = {
             SUBMIT_FEEDBACK: 'Отправить отзыв',
             FEEDBACK: 'Отзыв',
             NO_DATA_TO_DISPLAY: 'Нет данных в таблице',
+            BACK: 'Назад',
+            NEXT: 'Дальше',
+            HOURS: 'часов',
+            MINUTES: 'минут',
+            SECONDS: 'секунд',
+            
+
+
 
             // Rating Survey
             RATING_SURVEY_TITLE: 'Оцени свой уровень',
@@ -261,7 +282,12 @@ export const resources = {
             VOTING_STARTED: 'Голосование будет длиться 48 часов',
             BOT_EXISTS: 'Бот с таким же именем уже существует',
             PROVIDE_VALID_RATING: 'Предоставьте действительный рейтинг для бота',
-            DEFAULT_ERROR_TEXT: 'Ой, что-то пошло не так...'
+            DEFAULT_ERROR_TEXT: 'Ой, что-то пошло не так...',
+
+
+            E_001: 'Недостаточно игроков. Должно быть минимум 4',
+            E_002: 'Недостаточно игроков. Должно быть минимум 6',
+            E_003: 'Недостаточно игроков. Должно быть минимум 8',
         }
     },
     // uk: {

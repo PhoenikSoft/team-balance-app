@@ -77,7 +77,7 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
                     toolbar: false,
                 }}
             />
-                : <div>No bots added</div>}
+                : <DialogContentText>{t('NO_BOTS_ADDED')}</DialogContentText>}
 
             <ListItem>
                 <Grid container spacing={3} >

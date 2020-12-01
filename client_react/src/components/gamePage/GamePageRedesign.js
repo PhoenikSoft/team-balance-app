@@ -64,7 +64,7 @@ export default withTranslation()(function GamePage(
         votes,
         votingFinished,
         addBots }) {
-    const steps = ['Add members', 'Add unregistered', 'Choose teams amount', 'Balance teams'];
+    const steps = [t('ADD_MEMBERS'), t('ADD_UNREGISTERED'), t('CHOOSE_TEAMS_COUNT'), t('BALANCE_TEAMS')];
 
     const [activeStep, setActiveStep] = useState();
     const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -96,7 +96,7 @@ export default withTranslation()(function GamePage(
         return { ...player, firstName };
     });
     const getTeamsWithEmodjies = () =>
-        game.balancedTeams.teams.map(team =>
+        game?.balancedTeams?.teams.map(team =>
             ({
                 ...team, players: team.players.map(player => {
                     const firstName = player.id ? `✅${player.firstName}` : player.firstName;
@@ -104,6 +104,7 @@ export default withTranslation()(function GamePage(
                 })
             })
         );
+
 
     const getStepContent = step => {
         switch (step) {
@@ -117,9 +118,11 @@ export default withTranslation()(function GamePage(
                     </Grid>
 
                     <Grid item>
-                        <Button variant="contained" color="primary" onClick={handleNext}>
-                            Next
-                            </Button>
+                        <Button variant="contained" color="primary"
+                            onClick={handleNext}
+                            disabled={game?.players?.length === 0}>
+                            {t('NEXT')}
+                        </Button>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -151,8 +154,8 @@ export default withTranslation()(function GamePage(
                 return <>
                     <Grid item >
                         <Button variant="contained" color="primary" onClick={handleBack}>
-                            Back
-                            </Button>
+                            {t('BACK')}
+                        </Button>
                     </Grid>
 
                     <Grid item  >
@@ -164,8 +167,8 @@ export default withTranslation()(function GamePage(
 
                     <Grid item >
                         <Button variant="contained" color="primary" onClick={handleNext}>
-                            Next
-                            </Button>
+                            {t('NEXT')}
+                        </Button>
                     </Grid>
                     <Grid item xs={12}>
                         <LocalizedMaterialTable
@@ -196,16 +199,18 @@ export default withTranslation()(function GamePage(
                 return <>
                     <Grid item >
                         <Button variant="contained" color="primary" onClick={handleBack}>
-                            Back
-                            </Button>
+                            {t('BACK')}
+                        </Button>
                     </Grid>
                     <Grid item >
-                        <Button variant="contained" color="primary" onClick={async () => {
-                            await balanceTeams(teamsCount, bots);
-                            handleNext();
-                        }}>
-                            balance teams
-                            </Button>
+                        <Button variant="contained" color="primary"
+                            onClick={async () => {
+                                if (await balanceTeams(teamsCount, bots)) {
+                                    handleNext();
+                                };
+                            }}>
+                            {t('BALANCE_TEAMS')}
+                        </Button>
                     </Grid>
 
                     <Grid item xs={12} style={{ 'display': 'flex', 'justifyContent': 'center' }}>

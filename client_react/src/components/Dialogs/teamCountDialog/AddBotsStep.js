@@ -43,7 +43,7 @@ export default withTranslation()(function ({ t, bots, addBot, deleteBot }) {
                 toolbar: false,
             }}
         />
-            : <div>No bots added</div>}
+            : <div>{t('NO_BOTS_ADDED')}</div>}
 
         <ListItem>
             <Grid container spacing={3} >
