@@ -41,7 +41,7 @@ spring:
             dataSource: quartzDataSource
 
   sendgrid:
-    api-key: ${SENDGRID_API-KEY:dummy}
+    api-key: ${SENDGRID_API_KEY:dummy}
 
 quartz:
   datasource:
