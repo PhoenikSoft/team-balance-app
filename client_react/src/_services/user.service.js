@@ -13,12 +13,7 @@ export const userService = {
 };
 
 async function login(email, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, password})
-    };
-
+    const requestOptions = serviceHelper.getRequestOptions('POST', {}, {email, password});
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.LOGIN_URL}`, requestOptions)
     const user = await serviceHelper.handleResponse(res)
     authHelper.setUserToken(user.jwt);
@@ -31,34 +26,19 @@ function logout() {
 }
 
 async function requestForgotPassword(email) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email})
-    };
-
+    const requestOptions = serviceHelper.getRequestOptions('POST', {}, {email});
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.FORGOT_PASSWORD_URL}`, requestOptions)
     return await serviceHelper.handleResponse(res);
 }
 
 async function resetPassword(newPassword, token) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({newPassword, securityToken: token})
-    };
-
+    const requestOptions = serviceHelper.getRequestOptions('POST', {}, {newPassword, securityToken: token});
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.RESET_PASSWORD_URL}`, requestOptions)
     return await serviceHelper.handleResponse(res);
 }
 
 async function register(input) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(input)
-    };
-
+    const requestOptions = serviceHelper.getRequestOptions('POST', {}, input);
     const res = await global.fetchWithLoader(`${config.apiUrl}${apiConstants.REGISTER_URL}`, requestOptions)
     const user = await serviceHelper.handleResponse(res);
     authHelper.setUserToken(user.jwt);
@@ -67,11 +47,7 @@ async function register(input) {
 }
 
 function getUser(userId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json', ...authHelper.authHeader()}
-    };
-
+    const requestOptions = serviceHelper.getRequestOptions('GET', authHelper.authHeader());
     return global.fetchWithLoader(`${config.apiUrl}${apiConstants.GET_USER}/${userId}`, requestOptions)
         .then(serviceHelper.handleResponse)
 }

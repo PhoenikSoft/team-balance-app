@@ -1,7 +1,6 @@
 import { authHelper } from '.';
 import { alertConstants } from '../_constants';
-import { store } from '../index';
-
+import { store, i18next } from '../index';
 
 export const serviceHelper = {
     handleResponse,
@@ -40,7 +39,11 @@ function actionsErrorHandler(errorText) {
 function getRequestOptions(method, headers = {}, body) {
     const requestOptions = {
         method,
-        headers: { 'Content-Type': 'application/json', ...headers }
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept-Language': i18next.language,
+            ...headers
+        }
     };
     return body
         ? { ...requestOptions, body: JSON.stringify(body) }
