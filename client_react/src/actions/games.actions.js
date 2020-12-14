@@ -15,9 +15,9 @@ const addGame = (gameId, groupId) => dispatch =>
 // TODO add permission denied snackbar when BE is ready
 const getGame = gameId => dispatch =>
     gamesService.getGame(gameId)
-        .then(res => {
+        .then(res => 
             dispatch({ type: gameConstants.GAME_FETCHED, game: { ...res.game, submittedVotes: res.userVotes } })
-        })
+        )
         .catch(serviceHelper.actionsErrorHandler);
 
 const getVotes = gameId => dispatch =>
@@ -54,6 +54,10 @@ const votingFinished = () => dispatch => {
     dispatch({ type: gameConstants.VOTING_FINISHED })
 }
 
+const addBots = bots => dispatch => {
+    dispatch({ type: gameConstants.BOTS_ADDED, bots })
+}
+
 export const gamesActions = {
     deleteGame,
     addGame,
@@ -64,4 +68,5 @@ export const gamesActions = {
     addVote,
     flushVotes,
     votingFinished,
+    addBots,
 };

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import GamePage from './GamePage';
+import GamePage from './GamePageRedesign';
+//import GamePage from './GamePage';
 import { navigation, urlParserHelper } from '../../_helpers';
 import { gamesActions, playersActions } from '../../actions';
 
@@ -9,9 +10,7 @@ const getGameId = () => urlParserHelper.getGameId();
 const mapDispatchToProps = dispatch => {
     return {
         // OPTIMIZATION: don't fetch if group is in state already
-        fetchGame: () => {
-            return dispatch(gamesActions.getGame(getGameId()));
-        },
+        fetchGame: () => dispatch(gamesActions.getGame(getGameId())),
         goBack: () => {
             navigation.goToGroupView(getGroupId());
         },
@@ -23,7 +22,8 @@ const mapDispatchToProps = dispatch => {
         startVoting: gameId => dispatch(gamesActions.startVoting(gameId)),
         sendVotes: votes => dispatch(gamesActions.sendVotes(getGameId(), votes)),
         getVotes: () => dispatch(gamesActions.getVotes(getGameId())),
-        votingFinished:() => dispatch(gamesActions.votingFinished())
+        votingFinished: () => dispatch(gamesActions.votingFinished()),
+        addBots: bots => dispatch(gamesActions.addBots(bots)),
     }
 }
 
