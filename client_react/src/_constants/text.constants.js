@@ -127,8 +127,6 @@ export const resources = {
             PROVIDE_VALID_RATING: 'Provide valid rating for a new bot',
             DEFAULT_ERROR_TEXT: 'Oooops...',
             FEEDBACK:'Feedback',
-            NO_DATA_TO_DISPLAY: 'No records to display',
-            NO_DATA_TO_DISPLAY: 'No records to display',
 
             // Alerts
             FEEDBACK_SUCCESS_TEXT: 'Feedback sent. Thank you!',
@@ -296,7 +294,6 @@ GROUP:'Группа',
             PROVIDE_VALID_RATING: 'Предоставьте действительный рейтинг для бота',
             DEFAULT_ERROR_TEXT: 'Ой, что-то пошло не так...',
             FEEDBACK:'Отзыв',
-            NO_DATA_TO_DISPLAY: 'Нет данных в таблице',
 
             // Alerts
             FEEDBACK_SUCCESS_TEXT: 'Спасибо за отзыв!',

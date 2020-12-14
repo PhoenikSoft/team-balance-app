@@ -19,7 +19,7 @@ export default withTranslation()(function ({ t, game, deletePlayer, groupId, cla
                     icon: 'delete',
                     tooltip: t('DELETE_PLAYER'),
                     onClick: (event, player) => deletePlayer(player.id),
-                    disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
+                    disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getUserId()
                 })
             ]}
             options={{
