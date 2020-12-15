@@ -1,7 +1,10 @@
 FROM node:alpine
-WORKDIR "/app"
-RUN npm -g install @angular/cli
+
+WORKDIR /app
+
 COPY ./package.json ./
-RUN npm install
+COPY ./package-lock.json ./
+RUN npm i --silent
+
 COPY . .
-CMD ng serve --host 0.0.0.0
+CMD npm start

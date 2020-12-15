@@ -20,10 +20,10 @@ services:
     stdin_open: true
     build:
       dockerfile: Dockerfile.dev
-      context: ./client_react
+      context: ./client
     volumes:
       - '/app/node_modules'
-      - './client_react:/app'
+      - './client:/app'
     ports:
       - '3000:3000'
     environment:
