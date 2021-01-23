@@ -3,7 +3,9 @@ package com.phoenixoft.teambalanceapp.game.service;
 import com.phoenixoft.teambalanceapp.common.TestData;
 import com.phoenixoft.teambalanceapp.common.exception.ResourceNotFoundException;
 import com.phoenixoft.teambalanceapp.controller.dto.GameRequestDto;
+import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
+import com.phoenixoft.teambalanceapp.game.entity.GameBalancing;
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
 import com.phoenixoft.teambalanceapp.game.model.BalancingConfig;
@@ -12,6 +14,8 @@ import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.group.service.UserGroupService;
 import com.phoenixoft.teambalanceapp.security.dto.CustomUser;
 import com.phoenixoft.teambalanceapp.user.entity.User;
+import com.phoenixoft.teambalanceapp.vote.service.UserVoteService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +43,6 @@ import static org.mockito.Mockito.when;
 @DisplayName("Game service tests")
 public class UserGameServiceTest implements TestData {
 
-    @InjectMocks
     private UserGameService userGameService;
 
     @Mock
@@ -50,6 +53,17 @@ public class UserGameServiceTest implements TestData {
 
     @Mock
     private TeamBalancer teamBalancer;
+
+    @Mock
+    private TeamBalancer randomTeamBalancer;
+
+    @Mock
+    private UserVoteService userVoteService;
+
+    @BeforeEach
+    void beforeEach() {
+        userGameService = new UserGameService(gameRepository, userGroupService, teamBalancer, randomTeamBalancer, userVoteService);
+    }
 
     @Test
     @DisplayName("Should save game")
@@ -257,7 +271,7 @@ public class UserGameServiceTest implements TestData {
         List<User> players = Collections.singletonList(mockUser(playerId));
         mockGame.setPlayers(players);
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
-        when(teamBalancer.dividePlayersIntoBalancedTeams(argThat(list -> list.size() == 1), eq(1)))
+        when(teamBalancer.dividePlayersIntoBalancedTeams(argThat(config -> config.getPlayers().size() == 1 && config.getTeamsCount() == 1)))
                 .thenReturn(Collections.singletonList(Team.of(Collections.singletonList(mockPlayer(playerId)))));
         BalancingConfig balancingConfig = BalancingConfig.builder().userId(userId).gameId(gameId).teamsCount(1).bots(null).build();
 
@@ -265,6 +279,7 @@ public class UserGameServiceTest implements TestData {
 
         assertEquals(1, teams.size());
         assertEquals(playerId, teams.get(0).getPlayers().get(0).getId());
+        verify(gameRepository).save(mockGame);
     }
 
     @Test
@@ -280,7 +295,7 @@ public class UserGameServiceTest implements TestData {
         Player player = mockPlayer(playerId);
         Player bot = mockPlayer(botId);
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
-        when(teamBalancer.dividePlayersIntoBalancedTeams(argThat(list -> list.size() == 2), eq(1)))
+        when(teamBalancer.dividePlayersIntoBalancedTeams(argThat(config -> config.getPlayers().size() == 2 && config.getTeamsCount() == 1)))
                 .thenReturn(Collections.singletonList(Team.of(Arrays.asList(player, bot))));
         BalancingConfig balancingConfig = BalancingConfig.builder().userId(userId).gameId(gameId).teamsCount(1)
                 .bots(Collections.singletonList(bot)).build();
@@ -300,5 +315,35 @@ public class UserGameServiceTest implements TestData {
         BalancingConfig balancingConfig = BalancingConfig.builder().userId(userId).gameId(gameId).teamsCount(1).build();
 
         assertThrows(ResourceNotFoundException.class, () -> userGameService.generateBalancedTeams(balancingConfig));
+    }
+
+    @Test
+    @DisplayName("Should regenerate balanced teams")
+    public void testGenerateBalancedTeams_rebalancing() {
+        long userId = 1L;
+        long gameId = 2L;
+        Game mockGame = mockGameWithGroupMember(gameId, 0L, userId);
+        long playerId = 3L;
+        List<User> players = Collections.singletonList(mockUser(playerId));
+        mockGame.setPlayers(players);
+        mockGame.setGameBalancing(createMockBalancing(mockGame));
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
+        when(randomTeamBalancer.dividePlayersIntoBalancedTeams(argThat(config -> config.getGameId().equals(gameId) &&
+                config.getPlayers().size() == 1 && config.getTeamsCount() == 1)))
+                .thenReturn(Collections.singletonList(Team.of(Collections.singletonList(mockPlayer(playerId)))));
+        BalancingConfig balancingConfig = BalancingConfig.builder().userId(userId).gameId(gameId).teamsCount(1).bots(null).build();
+
+        List<Team> teams = userGameService.generateBalancedTeams(balancingConfig);
+
+        assertEquals(1, teams.size());
+        assertEquals(playerId, teams.get(0).getPlayers().get(0).getId());
+        verify(gameRepository).save(mockGame);
+    }
+
+    private static GameBalancing createMockBalancing(Game mockGame) {
+        var gameBalancing = new GameBalancing();
+        gameBalancing.setGame(mockGame);
+        gameBalancing.setBalancedTeams(new BalancedTeams());
+        return gameBalancing;
     }
 }

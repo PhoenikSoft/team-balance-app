@@ -2,6 +2,7 @@ package com.phoenixoft.teambalanceapp.game.service;
 
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
+import com.phoenixoft.teambalanceapp.game.model.TeamBalancingConfig;
 import com.phoenixoft.teambalanceapp.util.Tuple2;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,15 +22,13 @@ import static com.phoenixoft.teambalanceapp.util.AppUtils.removeElem;
 
 @Qualifier("allVariants")
 @Component
-public class AllVariantsTeamBalancer extends AbstractTeamBalancer {
-
-    public AllVariantsTeamBalancer(Random random) {
-        super(random);
-    }
+public class AllVariantsTeamBalancer implements TeamBalancer {
 
     @Override
     @Deprecated
-    public List<Team> dividePlayersIntoBalancedTeams(List<Player> players, int teamsCount) {
+    public List<Team> dividePlayersIntoBalancedTeams(TeamBalancingConfig teamBalancingConfig) {
+        int teamsCount = teamBalancingConfig.getTeamsCount();
+        List<Player> players = teamBalancingConfig.getPlayers();
         Preconditions.checkArgument(players.size() >= 2, "players");
 
         if (players.size() == teamsCount) {

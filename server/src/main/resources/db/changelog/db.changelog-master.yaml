@@ -214,3 +214,10 @@ databaseChangeLog:
         - sqlFile:
             path: changes/migrate_quartz_tables.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: create_balanceteams_table
+      author: Yevhen Karychkovskyi
+      changes:
+        - sqlFile:
+            path: changes/create_balanceteams_table.sql
+            relativeToChangelogFile: true

@@ -14,6 +14,7 @@ import com.phoenixoft.teambalanceapp.controller.dto.UserResponseDto;
 import com.phoenixoft.teambalanceapp.feedback.entity.Feedback;
 import com.phoenixoft.teambalanceapp.game.entity.BalancedTeams;
 import com.phoenixoft.teambalanceapp.game.entity.Game;
+import com.phoenixoft.teambalanceapp.game.entity.GameBalancing;
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.group.entity.Group;
 import com.phoenixoft.teambalanceapp.user.entity.User;
@@ -79,7 +80,8 @@ public class DtoConverter {
         dto.setStartVotingTimestamp(entity.getStartVotingTimestamp());
         dto.setEndVotingTimestamp(entity.getEndVotingTimestamp());
         dto.setPlayers(entity.getPlayers().stream().map(DtoConverter::convertUser).collect(Collectors.toList()));
-        Optional.ofNullable(entity.getBalancedTeams())
+        Optional.ofNullable(entity.getGameBalancing())
+                .map(GameBalancing::getBalancedTeams)
                 .map(BalancedTeams::getTeams)
                 .map(BalancedTeamsResponseDto::of)
                 .ifPresent(dto::setBalancedTeams);
