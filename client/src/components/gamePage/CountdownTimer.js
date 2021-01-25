@@ -12,9 +12,9 @@ export default withTranslation()(function ({ t, deadline, votingFinished }) {
     }, 1000);
 
     return !isTimerExpired(timer.total)
-        ? (<div>
-            {`${timer.hours} ${t('HOURS')}`}
-            {`${timer.minutes} ${t('MINUTES')}`}
+        ? (<div style={{ width: '350px' }}>
+            {timer.hours !== 0 && `${timer.hours} ${t('HOURS')} `}
+            {timer.minutes !== 0 && `${timer.minutes} ${t('MINUTES')} `}
             {`${timer.seconds} ${t('SECONDS')}`}
         </div>)
         : <div>Voting is closed</div>
