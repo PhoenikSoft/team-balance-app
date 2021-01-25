@@ -207,7 +207,7 @@ export default withTranslation()(function GamePage(
                             onClick={async () => {
                                 if (await balanceTeams(teamsCount, bots)) {
                                     handleNext();
-                                };
+                                }
                             }}>
                             {t('BALANCE_TEAMS')}
                         </Button>
@@ -233,6 +233,16 @@ export default withTranslation()(function GamePage(
                             {t('VOTE_FOR_PLAYERS')}
                         </Button>
                     </Grid>}
+
+                    {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item >
+                        <Button variant="contained" color="primary"
+                                onClick={async () => {
+                                    await balanceTeams(teamsCount, bots)
+                                }}>
+                            {t('REBALANCE_TEAMS')}
+                        </Button>
+                    </Grid>}
+
                     {game.voteStatus === voteStatus.STARTED && game.endVotingTimestamp &&
                         <>
                             <Grid item >

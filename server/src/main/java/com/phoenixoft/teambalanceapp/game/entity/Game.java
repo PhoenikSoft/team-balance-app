@@ -9,7 +9,6 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,18 +23,21 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "tbl_game")
 @Data
-@ToString(exclude = {"balancedTeams", "players", "group"})
-@EqualsAndHashCode(exclude = {"balancedTeams", "players", "group"})
+@ToString(exclude = {"players", "group"})
+@EqualsAndHashCode(exclude = {"players", "group"})
 public class Game implements Serializable {
 
     @Id
@@ -49,9 +51,12 @@ public class Game implements Serializable {
     private LocalDateTime startDateTime;
 
     @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")
-    @Column(name = "balanced_teams", columnDefinition = "jsonb")
-    @Basic(fetch = FetchType.LAZY)
-    private BalancedTeams balancedTeams;
+    @OneToOne(fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "game",
+            cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private GameBalancing gameBalancing;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "tbl_game_players",
@@ -81,10 +86,17 @@ public class Game implements Serializable {
     @Column
     private LocalDateTime endVotingTimestamp;
 
+    public void setNewBalancedTeams(List<Team> teams) {
+        GameBalancing gameBalancingObj = Optional.ofNullable(gameBalancing).orElse(new GameBalancing());
+        gameBalancingObj.setBalancedTeams(new BalancedTeams(teams));
+        gameBalancing = gameBalancingObj;
+        gameBalancing.setGame(this);
+    }
+
     public boolean removePlayer(Long playerId) {
         boolean removed = players.removeIf(player -> player.getId().equals(playerId));
-        if (removed) {
-            balancedTeams = null;
+        if (removed && gameBalancing != null) {
+            gameBalancing.resetBalancing();
         }
         return removed;
     }

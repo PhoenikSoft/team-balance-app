@@ -5,6 +5,7 @@ import com.phoenixoft.teambalanceapp.common.TestData;
 import com.phoenixoft.teambalanceapp.common.exception.TeamBalancerInvalidParamsException;
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
+import com.phoenixoft.teambalanceapp.game.model.TeamBalancingConfig;
 import com.phoenixoft.teambalanceapp.user.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
 
-    private final BestIntermediateAverageRatingTeamBalancer teamBalancer = new BestIntermediateAverageRatingTeamBalancer(new Random(1));
+    private final BestIntermediateAverageRatingTeamBalancer teamBalancer = new BestIntermediateAverageRatingTeamBalancer();
 
     @DisplayName("Should divide input list of players into balanced teams")
     @ParameterizedTest
@@ -34,8 +35,9 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedSecond,
                                             @ConvertWith(LongListArgumentConverter.class) List<Long> expectedThird) {
         List<Player> users = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
+        var teamBalancingConfig = TeamBalancingConfig.builder().players(users).teamsCount(3).build();
 
-        List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(users, 3);
+        List<Team> balancedTeams = teamBalancer.dividePlayersIntoBalancedTeams(teamBalancingConfig);
 
         List<Long> firstIds = balancedTeams.get(0).getPlayers().stream().map(Player::getId).collect(Collectors.toList());
         assertThat(firstIds).containsExactlyInAnyOrderElementsOf(expectedFirst);
@@ -50,7 +52,8 @@ class BestIntermediateAverageRatingTeamBalancerTest implements TestData {
     @ValueSource(strings = {"", "1", "1:2"})
     void testDividePlayersIntoBalancedTeams_tooSmallInputList(@ConvertWith(LongListArgumentConverter.class) List<Long> input) {
         List<Player> players = input.stream().map(id -> mockPlayer(id, new BigDecimal(id))).collect(Collectors.toList());
+        var teamBalancingConfig = TeamBalancingConfig.builder().players(players).teamsCount(3).build();
 
-        assertThrows(TeamBalancerInvalidParamsException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(players, 3));
+        assertThrows(TeamBalancerInvalidParamsException.class, () -> teamBalancer.dividePlayersIntoBalancedTeams(teamBalancingConfig));
     }
 }

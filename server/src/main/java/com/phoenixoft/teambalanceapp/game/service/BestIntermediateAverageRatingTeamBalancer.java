@@ -3,7 +3,9 @@ package com.phoenixoft.teambalanceapp.game.service;
 import com.phoenixoft.teambalanceapp.common.exception.TeamBalancerInvalidParamsException;
 import com.phoenixoft.teambalanceapp.game.entity.Player;
 import com.phoenixoft.teambalanceapp.game.entity.Team;
+import com.phoenixoft.teambalanceapp.game.model.TeamBalancingConfig;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +17,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,19 +24,17 @@ import java.util.stream.IntStream;
 
 import static com.phoenixoft.teambalanceapp.util.AppUtils.generateAllCombinations;
 
-@Primary
 @Component
-public class BestIntermediateAverageRatingTeamBalancer extends AbstractTeamBalancer {
-
-    public BestIntermediateAverageRatingTeamBalancer(Random random) {
-        super(random);
-    }
+@Qualifier("bestIntermediateAverageRatingTeamBalancer")
+public class BestIntermediateAverageRatingTeamBalancer implements TeamBalancer {
 
     @Override
-    public List<Team> dividePlayersIntoBalancedTeams(List<Player> players, int teamsCount) {
+    public List<Team> dividePlayersIntoBalancedTeams(TeamBalancingConfig teamBalancingConfig) {
+        int teamsCount = teamBalancingConfig.getTeamsCount();
         if (teamsCount < 1) {
             throw new TeamBalancerInvalidParamsException("Teams count param should be greater than 0");
         }
+        List<Player> players = teamBalancingConfig.getPlayers();
         int minPlayers = 2 * teamsCount;
         if (players.size() < minPlayers) {
             throw new TeamBalancerInvalidParamsException("Not enough players to balance. Should be minimum " + minPlayers);
