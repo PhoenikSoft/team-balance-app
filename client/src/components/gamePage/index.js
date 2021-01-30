@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import GamePage from './GamePageRedesign';
-//import GamePage from './GamePage';
+import GamePage from './GamePage';
 import { navigation, urlParserHelper } from '../../_helpers';
 import { gamesActions, playersActions } from '../../actions';
 

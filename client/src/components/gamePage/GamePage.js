@@ -9,10 +9,18 @@ import Typography from "@material-ui/core/Typography";
 import { authHelper } from '../../_helpers';
 import AddPlayersDialog from '../Dialogs/AddPlayersDialog';
 import VoteDialog from '../Dialogs/voteDialog';
-import TeamCountDialog from '../Dialogs/teamCountDialog';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 import BalancedTeams from './BalancedTeams';
 import CountDownTimer from './CountdownTimer';
 import LocalizedMaterialTable from '../LocalizedMaterialTable';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import IconButton from '@material-ui/core/IconButton';
+import AddBotsStep from './AddBotsDialog';
+import ChooseTeamCountStep from './ChooseTeamCountStep';
 
 const voteStatus = {
     NOT_STARTED: 'NOT_STARTED',
@@ -47,7 +55,6 @@ export default withTranslation()(function GamePage(
         game,
         fetchGame,
         groupId,
-        goBack,
         deletePlayer,
         addPlayers,
         balanceTeams,
@@ -55,45 +62,167 @@ export default withTranslation()(function GamePage(
         sendVotes,
         getVotes,
         votes,
-        votingFinished }) {
-    const classes = useStyles();
+        votingFinished,
+        addBots }) {
+    const steps = [t('ADD_MEMBERS'), t('ADD_UNREGISTERED'), t('CHOOSE_TEAMS_COUNT'), t('BALANCE_TEAMS')];
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [activeStep, setActiveStep] = useState();
+    const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
+    const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
+
     const [addPlayersDialogOpened, setaddPlayersDialogOpened] = useState(false);
+    const [addBotsDialogOpened, setAddBotsDialogOpened] = useState(false);
     const [voteDialogOpened, setVoteDialogOpened] = useState(false);
-    const [teamCountDialogOpened, setTeamCountDialogOpened] = useState(false);
-    const isGameContainsPlayers = game.players && !!game.players.length;
+
+    const classes = useStyles();
+    const [teamsCount, setTeamsCount] = useState('2');
+    const [bots, setBots] = useState([]);
+
     const isTeamsBalanced = game.balancedTeams && !!game.balancedTeams.teams;
+    const isGameContainsPlayers = game.players && !!game.players.length;
+
 
     useEffect(() => {
         const fetch = async () => {
-            await Promise.all([fetchGame(), getVotes()]);
+            const [fetchedGame] = await Promise.all([fetchGame(), getVotes()]);
+            setActiveStep(fetchedGame?.game?.balancedTeams ? 3 : 0);
         };
         fetch();
     }, []);
 
-    return (<>
-        <Grid container spacing={3}>
-            <Grid item xs={12} >
-                <Grid
-                    className={classes.buttonsBar}
-                    container
-                    justify="flex-start"
-                    spacing={1}>
-                    <Grid item xs={12} >
-                        <Typography variant="h5" gutterBottom>
-                            {game.name}
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" color="primary" onClick={e => goBack()}>
-                            {t('BACK_TO_GROUP')}
-                    </Button>
-                    </Grid>
-                    {game.voteStatus === voteStatus.NOT_STARTED && !isTeamsBalanced && <Grid item>
-                        <Button variant="contained" color="primary" onClick={e => setaddPlayersDialogOpened(true)}>
-                            {t('ADD_MEMBERS')}
-                        </Button>
-                    </Grid>}
 
+    const getPlayersWithEmodjies = () => game?.players?.map(player => {
+        const firstName = player.id ? `✅${player.firstName}` : player.firstName;
+        return { ...player, firstName };
+    });
+    const getTeamsWithEmodjies = () =>
+        game?.balancedTeams?.teams.map(team =>
+        ({
+            ...team, players: team.players.map(player => {
+                const firstName = player.id ? `✅${player.firstName}` : player.firstName;
+                return { ...player, firstName };
+            })
+        })
+        );
+
+
+    const getStepContent = step => {
+        switch (step) {
+            case 0:
+                return <>
+                    <Grid item >
+                        <IconButton variant="contained" color="primary"
+                            onClick={e => setaddPlayersDialogOpened(true)}>
+                            <PersonAddIcon fontSize="large" />
+                        </IconButton>
+                    </Grid>
+
+                    <Grid item >
+                        <Button variant="contained" color="primary"
+                            onClick={handleNext}
+                            disabled={game?.players?.length === 0}>
+                            {t('NEXT')}
+                        </Button>
+                    </Grid>
+
+                    <Grid item xs={12} >
+                        <LocalizedMaterialTable
+                            className={classes.paper}
+                            title={t('PLAYERS')}
+                            data={getPlayersWithEmodjies()}
+                            columns={[
+                                { title: t('NAME'), field: 'firstName' },
+                                { title: t('RATING'), field: 'rating', type: 'numeric' }
+                            ]}
+                            actions={[
+                                player => ({
+                                    icon: 'delete',
+                                    tooltip: t('DELETE_PLAYER'),
+                                    onClick: (event, player) => deletePlayer(player.id),
+                                    disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
+                                })
+                            ]}
+                            options={{
+                                actionsColumnIndex: -1,
+                                search: false
+                            }}
+                        />
+
+                    </Grid>
+                </>
+            case 1:
+                return <>
+                    <Grid item >
+                        <Button variant="contained" color="primary" onClick={handleBack}>
+                            {t('BACK')}
+                        </Button>
+                    </Grid>
+
+                    <Grid item  >
+                        <IconButton variant="contained" color="primary"
+                            onClick={e => setAddBotsDialogOpened(true)}>
+                            <PersonAddIcon fontSize="large" />
+                        </IconButton>
+                    </Grid>
+
+                    <Grid item >
+                        <Button variant="contained" color="primary" onClick={handleNext}>
+                            {t('NEXT')}
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <LocalizedMaterialTable
+                            className={classes.paper}
+                            title={t('PLAYERS')}
+                            data={getPlayersWithEmodjies()}
+                            columns={[
+                                { title: t('NAME'), field: 'firstName' },
+                                { title: t('RATING'), field: 'rating', type: 'numeric' }
+                            ]}
+                            actions={[
+                                player => ({
+                                    icon: 'delete',
+                                    tooltip: t('DELETE_PLAYER'),
+                                    onClick: (event, player) => deletePlayer(player.id),
+                                    disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
+                                })
+                            ]}
+                            options={{
+                                actionsColumnIndex: -1,
+                                search: false
+                            }}
+                        />
+
+                    </Grid>
+                </>
+            case 2:
+                return <>
+                    <Grid item >
+                        <Button variant="contained" color="primary" onClick={handleBack}>
+                            {t('BACK')}
+                        </Button>
+                    </Grid>
+                    <Grid item >
+                        <Button variant="contained" color="primary"
+                            onClick={async () => {
+                                if (await balanceTeams(teamsCount, bots)) {
+                                    handleNext();
+                                }
+                            }}>
+                            {t('BALANCE_TEAMS')}
+                        </Button>
+                    </Grid>
+
+                    <Grid item xs={12} style={{ 'display': 'flex', 'justifyContent': 'center' }}>
+                        <ChooseTeamCountStep
+                            teamsCount={teamsCount}
+                            setTeamsCount={setTeamsCount}
+                        />
+                    </Grid>
+                </>;
+            case 3:
+                return <>
                     {game.voteStatus === voteStatus.NOT_STARTED && isTeamsBalanced && <Grid item>
                         <Button variant="contained" color="primary" onClick={e => startVoting(game.id)}>
                             {t('START_VOTING')}
@@ -106,9 +235,18 @@ export default withTranslation()(function GamePage(
                         </Button>
                     </Grid>}
 
+                    {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item >
+                        <Button variant="contained" color="primary"
+                            onClick={async () => {
+                                await balanceTeams(teamsCount, bots)
+                            }}>
+                            {t('REBALANCE_TEAMS')}
+                        </Button>
+                    </Grid>}
+
                     {game.voteStatus === voteStatus.STARTED && game.endVotingTimestamp &&
                         <>
-                            <Grid item>
+                            <Grid item >
                                 <Typography variant="h5" gutterBottom>
                                     {t('TIME_LEFT_TO_VOTE')}
                                 </Typography>
@@ -120,60 +258,41 @@ export default withTranslation()(function GamePage(
                             </Grid>
                         </>
                     }
-
                     {game.voteStatus === voteStatus.FINISHED && <Grid item>
                         <Typography variant="h5" gutterBottom>
                             {t('VOTING_IS_FINISHED')}
                         </Typography>
                     </Grid>}
-
-                    {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && !isTeamsBalanced && <Grid item>
-                        <Button variant="contained" color="secondary" onClick={e => setTeamCountDialogOpened(true)}>
-                            {t('BALANCE_TEAMS')}
-                        </Button>
-                    </Grid>}
-
-                </Grid>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <LocalizedMaterialTable
-                    className={classes.paper}
-                    title={t('PLAYERS')}
-                    data={game.players}
-                    columns={[
-                        { title: t('NAME'), field: 'firstName' },
-                        { title: t('RATING'), field: 'rating', type: 'numeric' }
-                    ]}
-                    actions={[
-                        player => ({
-                            icon: 'delete',
-                            tooltip: t('DELETE_PLAYER'),
-                            onClick: (event, player) => deletePlayer(player.id),
-                            disabled: !authHelper.isGroupAdmin(groupId) || player.id == authHelper.getCookie('userId')
-                        })
-                    ]}
-                    options={{
-                        actionsColumnIndex: -1,
-                        search: false
-                    }}
-                />
-
-            </Grid>
-
-            {game.balancedTeams
-                ? <Grid item xs={12} sm={6}>
-                    <BalancedTeams
-                        balancedTeams={game.balancedTeams.teams}
-                        votes={votes}
-                    />
-                </Grid>
-                : <Grid container item xs={12} sm={6} justify="center" alignItems="center">
-                    <Grid item >
-                        <h6 className="MuiTypography-root MuiTypography-h6" style={{ textAlign: 'center' }}>
-                            {t('GAME_PAGE_CTA')}
-                        </h6>
+                    <Grid item xs={12} >
+                        <BalancedTeams
+                            balancedTeams={getTeamsWithEmodjies()}
+                            votes={votes}
+                        />
                     </Grid>
-                </Grid>}
+                </>
+
+            default:
+                return '';
+        };
+    };
+
+    return <>
+
+        <Stepper activeStep={activeStep} orientation={isMobile ? 'vertical' : 'horizontal'}>
+            {steps.map(label =>
+                <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                </Step>
+            )}
+        </Stepper>
+
+
+        <Grid container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={3}>
+            {getStepContent(activeStep)}
         </Grid>
 
         <AddPlayersDialog
@@ -187,8 +306,17 @@ export default withTranslation()(function GamePage(
             }}
         />
 
+        <AddBotsStep
+            open={addBotsDialogOpened}
+            handleClose={e => setAddBotsDialogOpened(false)}
+            onSubmit={addBots}
+            players={game.players || []}
+            bots={bots}
+            setBots={setBots}
+        />
+
         <VoteDialog
-            balancedTeams={game.balancedTeams && game.balancedTeams.teams}
+            balancedTeams={game?.balancedTeams?.teams}
             gameId={game.id}
             open={voteDialogOpened}
             handleClose={e => setVoteDialogOpened(false)}
@@ -197,17 +325,7 @@ export default withTranslation()(function GamePage(
                 setVoteDialogOpened(false);
             }}
         />
-
-        <TeamCountDialog
-            playersCount={game.players && game.players.length}
-            handleClose={e => setTeamCountDialogOpened(false)}
-            onSubmit={(teamsCount, bots) => {
-                balanceTeams(teamsCount, bots);
-                setTeamCountDialogOpened(false);
-            }}
-            open={teamCountDialogOpened}
-        />
-
     </>
-    )
 });
+
+
