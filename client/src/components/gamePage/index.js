@@ -30,7 +30,7 @@ const mapStateToProps = state => {
     return {
         game: state.game,
         groupId: getGroupId(),
-        votes: state.game.submittedVotes
+        votes: state.game.submittedVotes,
     }
 }
 

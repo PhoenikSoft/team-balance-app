@@ -76,12 +76,13 @@ export default withTranslation()(function GamePage(
     const [voteDialogOpened, setVoteDialogOpened] = useState(false);
 
     const classes = useStyles();
-    const [teamsCount, setTeamsCount] = useState('2');
-    const [bots, setBots] = useState([]);
 
     const isTeamsBalanced = game.balancedTeams && !!game.balancedTeams.teams;
     const isGameContainsPlayers = game.players && !!game.players.length;
 
+    const [bots, setBots] = useState([]);
+    const initialTeamsCountState = isTeamsBalanced ? game.balancedTeams.teams.length.toString() : '2';
+    const [teamsCount, setTeamsCount] = useState(initialTeamsCountState);
 
     useEffect(() => {
         const fetch = async () => {
@@ -238,7 +239,7 @@ export default withTranslation()(function GamePage(
                     {game.voteStatus === voteStatus.NOT_STARTED && isGameContainsPlayers && isTeamsBalanced && <Grid item >
                         <Button variant="contained" color="primary"
                             onClick={async () => {
-                                await balanceTeams(teamsCount, bots)
+                                await balanceTeams(teamsCount, game.bots)
                             }}>
                             {t('REBALANCE_TEAMS')}
                         </Button>
