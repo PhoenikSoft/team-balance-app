@@ -4,7 +4,7 @@ import { gameConstants, playersCosntants } from '../_constants';
 export function game(state = {}, action) {
     switch (action.type) {
         case gameConstants.GAME_FETCHED:
-            return action.game;
+            return { ...state, ...parseGame(action.game) };
         case playersCosntants.PLAYER_ADDED:
             return { ...state, players: action.newPlayersList }
         case playersCosntants.PLAYER_DELETED:
@@ -14,7 +14,7 @@ export function game(state = {}, action) {
 
 
         case gameConstants.BOTS_ADDED:
-            return { ...state, players: [...state.players, ...action.bots] }
+            return { ...state, bots: action.bots }
         case gameConstants.VOTES_FETCHED:
             return { ...state, submittedVotes: action.votes }
         case gameConstants.VOTES_SUBMITTED:
@@ -38,3 +38,11 @@ export function game(state = {}, action) {
             return state
     };
 };
+
+function parseGame(fetchedGame) {
+    const balancedTeams = fetchedGame.balancedTeams;
+    const parsedBots = balancedTeams ? balancedTeams.teams
+            .flatMap(team => team.players).filter(player => !player.id)
+        : [];
+    return {...fetchedGame, bots: parsedBots};
+}

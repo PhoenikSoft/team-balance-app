@@ -36,7 +36,7 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
         } else {
             setBots([...bots, { lastName, firstName, rating }]);
             setLocalBots([...bots, { lastName, firstName, rating }]);
-        };
+        }
     };
     const deleteBot = botToDelete => setBots(bots.filter(player => player.name !== botToDelete.name))
 
@@ -44,7 +44,7 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
     const [newBot, setNewBot] = useState(defaultBot);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const [localBots, setLocalBots] = useState([]);
+    const [localBots, setLocalBots] = useState(bots);
     return <Dialog
         open={open}
         onClose={handleClose}
@@ -113,7 +113,6 @@ export default withTranslation()(function ({ t, open, handleClose, onSubmit, pla
             <Button
                 onClick={() => {
                     onSubmit(bots);
-                    setLocalBots([]);
                     handleClose();
                 }}
                 disabled={!bots.length}
