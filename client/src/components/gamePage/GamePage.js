@@ -93,10 +93,12 @@ export default withTranslation()(function GamePage(
     }, []);
 
 
-    const getPlayersWithEmodjies = () => game?.players?.map(player => {
-        const firstName = player.id ? `✅${player.firstName}` : player.firstName;
-        return { ...player, firstName };
-    });
+    const getPlayersWithEmodjies = () =>{
+        return [...game?.players, ...game?.bots].map(player => {
+            const firstName = player.id ? `✅${player.firstName}` : player.firstName;
+            return { ...player, firstName };
+        });
+    };
     const getTeamsWithEmodjies = () =>
         game?.balancedTeams?.teams.map(team =>
         ({
